@@ -144,7 +144,7 @@ const computedBuffer = computed(() => {
 
 <template>
   <ACard
-    :title="$gettext('Nginx Log')"
+    :title="$gettext('Gateway Logs')"
     :bordered="false"
   >
     <AForm layout="vertical">
