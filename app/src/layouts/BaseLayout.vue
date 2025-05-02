@@ -99,6 +99,13 @@ provide('breadList', breadList)
 </style>
 
 <style lang="less">
+
+.light .ant-layout{
+  background-color: #FAFCFF;
+  .ant-layout-footer{
+    background-color: #FAFCFF;
+  }
+}
 .layout-sider .sidebar {
   ul.ant-menu-inline.ant-menu-root {
     height: calc(100vh - 160px);
@@ -147,7 +154,48 @@ body {
   }
 
   box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
+  border-right: 1px solid #CED3D9;
 }
+
+.dark .ant-layout-sider {
+  border-right: 1px solid #404040;
+}
+
+
+.ant-layout .ant-layout-sider-light .ant-layout-sider-trigger{
+  span{
+    position:absolute;
+    right:-20px;
+    top:-20px;
+    height: 40px;
+    width:40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:1px solid;
+    background-color: inherit
+  }
+}
+
+body.light{
+.ant-layout .ant-layout-sider-light .ant-layout-sider-trigger{
+  border-right: 1px solid #CED3D9;
+  span{
+    border-color: #CED3D9;
+  }
+}
+}
+
+body.dark{
+  .ant-layout .ant-layout-sider-light .ant-layout-sider-trigger{
+    border-right: 1px solid #404040;
+  span{
+    border-color: #404040
+  }
+}
+}
+
 
 .ant-drawer-body {
   .sidebar .logo {

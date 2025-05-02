@@ -1,19 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useUserStore } from '@/pinia'
 import {
   BellOutlined,
-  CloudOutlined,
-  CodeOutlined,
-  DatabaseOutlined,
-  FileOutlined,
   FileTextOutlined,
   HomeOutlined,
-  InfoCircleOutlined,
   SafetyCertificateOutlined,
   SettingOutlined,
-  ShareAltOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue'
 
@@ -37,77 +31,6 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           name: () => $gettext('Dashboard'),
           icon: HomeOutlined,
-        },
-      },
-      {
-        path: 'sites',
-        name: 'Manage Sites',
-        component: () => import('@/layouts/BaseRouterView.vue'),
-        meta: {
-          name: () => $gettext('Manage Sites'),
-          icon: CloudOutlined,
-        },
-        redirect: '/sites/list',
-        children: [{
-          path: 'list',
-          name: 'Sites List',
-          component: () => import('@/views/site/site_list/SiteList.vue'),
-          meta: {
-            name: () => $gettext('Sites List'),
-          },
-        }, {
-          path: 'add',
-          name: 'Add Site',
-          component: () => import('@/views/site/SiteAdd.vue'),
-          meta: {
-            name: () => $gettext('Add Site'),
-            lastRouteName: 'Sites List',
-          },
-        }, {
-          path: 'categories',
-          name: 'Site Categories',
-          component: () => import('@/views/site/site_category/SiteCategory.vue'),
-          meta: {
-            name: () => $gettext('Site Categories'),
-          },
-        }, {
-          path: ':name',
-          name: 'Edit Site',
-          component: () => import('@/views/site/site_edit/SiteEdit.vue'),
-          meta: {
-            name: () => $gettext('Edit Site'),
-            hiddenInSidebar: true,
-            lastRouteName: 'Sites List',
-          },
-        }],
-      },
-      {
-        path: 'streams',
-        name: 'Manage Streams',
-        component: () => import('@/views/stream/StreamList.vue'),
-        meta: {
-          name: () => $gettext('Manage Streams'),
-          icon: ShareAltOutlined,
-        },
-      },
-      {
-        path: 'stream/:name',
-        name: 'Edit Stream',
-        component: () => import('@/views/stream/StreamEdit.vue'),
-        meta: {
-          name: () => $gettext('Edit Stream'),
-          hiddenInSidebar: true,
-          lastRouteName: 'Manage Streams',
-        },
-      },
-      {
-        path: 'config',
-        name: 'Manage Configs',
-        component: () => import('@/views/config/ConfigList.vue'),
-        meta: {
-          name: () => $gettext('Manage Configs'),
-          icon: FileOutlined,
-          hideChildren: true,
         },
       },
       {
@@ -187,19 +110,10 @@ export const routes: RouteRecordRaw[] = [
         ],
       },
       {
-        path: 'terminal',
-        name: 'Terminal',
-        component: () => import('@/views/terminal/Terminal.vue'),
-        meta: {
-          name: () => $gettext('Terminal'),
-          icon: CodeOutlined,
-        },
-      },
-      {
         path: 'nginx_log',
         name: 'Nginx Log',
         meta: {
-          name: () => $gettext('Nginx Log'),
+          name: () => $gettext('Gateway Logs'),
           icon: FileTextOutlined,
         },
         children: [{
@@ -227,20 +141,6 @@ export const routes: RouteRecordRaw[] = [
         }],
       },
       {
-        path: 'environment',
-        name: 'Environment',
-        component: () => import('@/views/environment/Environment.vue'),
-        meta: {
-          name: () => $gettext('Environment'),
-          icon: DatabaseOutlined,
-          hiddenInSidebar: (): boolean => {
-            const settings = useSettingsStore()
-
-            return settings.is_remote
-          },
-        },
-      },
-      {
         path: 'notifications',
         name: 'Notifications',
         component: () => import('@/views/notification/Notification.vue'),
@@ -266,35 +166,6 @@ export const routes: RouteRecordRaw[] = [
           name: () => $gettext('Preference'),
           icon: SettingOutlined,
         },
-      },
-      {
-        path: 'system',
-        name: 'System',
-        redirect: 'system/about',
-        meta: {
-          name: () => $gettext('System'),
-          icon: InfoCircleOutlined,
-        },
-        children: [{
-          path: 'about',
-          name: 'About',
-          component: () => import('@/views/system/About.vue'),
-          meta: {
-            name: () => $gettext('About'),
-          },
-        }, {
-          path: 'upgrade',
-          name: 'Upgrade',
-          component: () => import('@/views/system/Upgrade.vue'),
-          meta: {
-            name: () => $gettext('Upgrade'),
-            hiddenInSidebar: (): boolean => {
-              const settings = useSettingsStore()
-
-              return settings.is_remote
-            },
-          },
-        }],
       },
     ],
   },

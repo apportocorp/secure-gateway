@@ -10,6 +10,8 @@ import { useUserStore } from '@/pinia'
 import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { Form, message } from 'ant-design-vue'
+import LoginHeader from './LoginHeader.vue';
+import Logo from '@/components/Logo/Logo.vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -182,97 +184,108 @@ async function handlePasskeyLogin() {
 
 <template>
   <ALayout>
+    <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
+      <LoginHeader @click-un-fold="drawer_visible = true" />
+    </ALayoutHeader>
     <ALayoutContent>
       <div class="login-container">
-        <div class="login-form">
-          <div class="project-title">
-            <h1>Nginx UI</h1>
+        <div class="login-panel">
+          <div class="background-tiles">
+            <img src="./../../assets/svg/tiles.svg" alt="background-tiles" />
           </div>
-          <AForm id="components-form-demo-normal-login">
-            <template v-if="!enabled2FA">
-              <AFormItem v-bind="validateInfos.username">
-                <AInput
-                  v-model:value="modelRef.username"
-                  :placeholder="$gettext('Username')"
-                >
-                  <template #prefix>
-                    <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInput>
-              </AFormItem>
-              <AFormItem v-bind="validateInfos.password">
-                <AInputPassword
-                  v-model:value="modelRef.password"
-                  :placeholder="$gettext('Password')"
-                >
-                  <template #prefix>
-                    <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInputPassword>
-              </AFormItem>
-              <AButton
-                v-if="has_casdoor"
-                block
-                html-type="submit"
-                :loading="loading"
-                class="mb-5"
-                @click="loginWithCasdoor"
-              >
-                {{ $gettext('SSO Login') }}
-              </AButton>
-            </template>
-            <div v-else>
-              <Authorization
-                ref="refOTP"
-                :two-f-a-status="{
-                  enabled: true,
-                  otp_status: true,
-                  passkey_status: false,
-                }"
-                @submit-o-t-p="handleOTPSubmit"
-              />
-            </div>
-
-            <AFormItem v-if="!enabled2FA">
-              <AButton
-                type="primary"
-                block
-                html-type="submit"
-                :loading="loading"
-                class="mb-2"
-                @click="onSubmit"
-              >
-                {{ $gettext('Login') }}
-              </AButton>
-
-              <div
-                v-if="passkeyConfigStatus"
-                class="flex flex-col justify-center"
-              >
-                <ADivider>
-                  <div class="text-sm font-normal opacity-75">
-                    {{ $gettext('Or') }}
-                  </div>
-                </ADivider>
-
+          <div class="page-title">
+            <h6>Sign In</h6>
+          </div>
+          <div class="login-form">
+            <AForm id="components-form-demo-normal-login">
+              <template v-if="!enabled2FA">
+                <AFormItem v-bind="validateInfos.username">
+                  <label>Email or Username</label>
+                  <AInput
+                    v-model:value="modelRef.username"
+                    :placeholder="$gettext('name@email.com')"
+                    class="input-field"
+                  >
+                    <template #prefix>
+                      <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                    </template>
+                  </AInput>
+                </AFormItem>
+                <AFormItem v-bind="validateInfos.password">
+                  <label>Password</label>
+                  <AInputPassword
+                    v-model:value="modelRef.password"
+                    :placeholder="$gettext('Your password')"
+                    class="input-field"
+                  >
+                    <template #prefix>
+                      <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                    </template>
+                  </AInputPassword>
+                </AFormItem>
                 <AButton
-                  :loading="passkeyLoginLoading"
-                  @click="handlePasskeyLogin"
+                  v-if="has_casdoor"
+                  block
+                  html-type="submit"
+                  :loading="loading"
+                  class="mb-5"
+                  @click="loginWithCasdoor"
                 >
-                  <KeyOutlined />
-                  {{ $gettext('Sign in with a passkey') }}
+                  {{ $gettext('SSO Login') }}
                 </AButton>
+              </template>
+              <div v-else>
+                <Authorization
+                  ref="refOTP"
+                  :two-f-a-status="{
+                    enabled: true,
+                    otp_status: true,
+                    passkey_status: false,
+                  }"
+                  @submit-o-t-p="handleOTPSubmit"
+                />
               </div>
-            </AFormItem>
-          </AForm>
-          <div class="footer">
-            <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
-            Language
-            <SetLanguage class="inline" />
-            <div class="flex justify-center mt-4">
-              <SwitchAppearance />
-            </div>
+
+              <AFormItem v-if="!enabled2FA">
+                <AButton
+                  type="primary"
+                  block
+                  html-type="submit"
+                  :loading="loading"
+                  class="mb-2 login-btn"
+                  @click="onSubmit"
+                >
+                  {{ $gettext('Login') }}
+                </AButton>
+
+                <div
+                  v-if="passkeyConfigStatus"
+                  class="flex flex-col justify-center"
+                >
+                  <ADivider>
+                    <div class="text-sm font-normal opacity-75">
+                      {{ $gettext('Or') }}
+                    </div>
+                  </ADivider>
+
+                  <AButton
+                    :loading="passkeyLoginLoading"
+                    @click="handlePasskeyLogin"
+                  >
+                    <KeyOutlined />
+                    {{ $gettext('Sign in with a passkey') }}
+                  </AButton>
+                </div>
+              </AFormItem>
+            </AForm>
           </div>
+          <div class="footer">
+            <Logo />
+            <p>Copyright © 2024 Apporto.com.</p>
+          </div>
+        </div>
+        <div class="login-background">
+          <img src="./../../assets/img/background-login.webp" alt="login-bg">
         </div>
       </div>
     </ALayoutContent>
@@ -290,32 +303,100 @@ async function handlePasskeyLogin() {
 
 .login-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 64px);
+  position: relative;
 
-  .login-form {
-    max-width: 400px;
-    width: 80%;
+  .login-panel {
+    position: relative;
+    z-index: 2;
+    width: 70vw;
+    padding: 0 calc(20vw + 70px) 0 70px;
+    height: 100%;
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0), #fff 20vw);
 
-    .project-title {
-      margin: 50px;
+    .login-form {
+      background-color: #fff;
+      border: 1px solid #D9D9D9;
+      border-radius: 8px;
+      padding: 30px;
+      width: 400px;
+      
+      .input-field:focus {
+        border-color: rgb(34, 83, 143);
+      }
+      .input-field:hover {
+        border-color: rgb(34, 83, 143); 
+      }
 
-      h1 {
-        font-size: 50px;
-        font-weight: 100;
-        text-align: center;
+      .login-btn {
+        background-color: rgb(34, 83, 143);
+        box-shadow: 0px 3px 3px rgba(34, 83, 143, 0.325);
+      }
+
+      .login-btn:hover {
+        background-color: rgb(18, 45, 78);
+      }
+
+      .anticon {
+        color: #a8a5a5 !important;
       }
     }
 
-    .anticon {
-      color: #a8a5a5 !important;
+    .background-tiles img {
+      position: absolute;
+      z-index: -1;
+      right: 25vw;
+      top: -40px;
+
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    }
+
+    .page-title {
+      margin: 50px 0px;
+
+      h6 {
+        font-size: 30px;
+        font-weight: 600;
+        text-align: left;
+        color: rgb(34, 83, 143);
+      }
     }
 
     .footer {
-      padding: 30px;
+      position: absolute;
+      width: 100%;
+      bottom: 0px;
+      left: 0;
+      padding: 0 30vw 0 10vw;
       text-align: center;
       font-size: 14px;
+    }
+  }
+  
+  .login-background {
+    z-index: 1;
+    width: 70vw;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+  }
+
+  .login-background img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+body.dark {
+  .login-container {
+    .login-panel {
+      background-image: linear-gradient(to left, rgba(0, 0, 0, 0), #000 20vw);
+      .login-form {
+        background-color: #000;
+        border: 1px solid #494949;
+      }
     }
   }
 }
