@@ -2,8 +2,6 @@
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'
@@ -185,14 +183,11 @@ async function handlePasskeyLogin() {
 <template>
   <ALayout>
     <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
-      <LoginHeader @click-un-fold="drawer_visible = true" />
+      <LoginHeader/>
     </ALayoutHeader>
     <ALayoutContent>
       <div class="login-container">
         <div class="login-panel">
-          <div class="background-tiles">
-            <img src="./../../assets/svg/tiles.svg" alt="background-tiles" />
-          </div>
           <div class="page-title">
             <h6>Sign In</h6>
           </div>
@@ -281,7 +276,7 @@ async function handlePasskeyLogin() {
           </div>
           <div class="footer">
             <Logo />
-            <p>Copyright © 2024 Apporto.com.</p>
+            <p>Copyright © {{thisYear}} Apporto.com.</p>
           </div>
         </div>
         <div class="login-background">
@@ -299,6 +294,32 @@ async function handlePasskeyLogin() {
 
 .dark .ant-layout-content {
   background: transparent;
+}
+
+.light h6{
+  color: rgb(34, 83, 143);
+}
+
+.login-form::after{
+    content: "";
+    position: absolute;
+    max-width: 371px;
+    width: 100%;
+    background-image: url(./../../assets/svg/tiles.svg);
+    background-repeat: no-repeat;
+    height: 458px;
+    left: 28%;
+    top: -107px;
+    -webkit-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
+    -webkit-background-position: top;
+    background-position: top;
+    -webkit-background-size: cover;
+    background-size: cover;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    z-index:-1
 }
 
 .login-container {
@@ -358,7 +379,6 @@ async function handlePasskeyLogin() {
         font-size: 30px;
         font-weight: 600;
         text-align: left;
-        color: rgb(34, 83, 143);
       }
     }
 
