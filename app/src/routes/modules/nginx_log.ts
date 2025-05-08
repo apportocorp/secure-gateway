@@ -3,10 +3,10 @@ import { FileTextOutlined } from '@ant-design/icons-vue'
 
 export const nginxLogRoutes: RouteRecordRaw[] = [
   {
-    path: 'nginx_log',
-    name: 'Nginx Log',
+    path: 'gateway_log',
+    name: 'Gateway Log',
     meta: {
-      name: () => $gettext('Nginx Log'),
+      name: () => $gettext('Gateway Log'),
       icon: FileTextOutlined,
     },
     children: [{

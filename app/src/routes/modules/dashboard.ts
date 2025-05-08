@@ -20,11 +20,11 @@ export const dashboardRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'nginx',
+        path: 'gateway',
         component: () => import('@/views/dashboard/NginxDashBoard.vue'),
-        name: 'NginxPerformance',
+        name: 'GatewayPerformance',
         meta: {
-          name: () => $gettext('Nginx'),
+          name: () => $gettext('Gateway'),
         },
       },
     ],
