@@ -8,6 +8,7 @@ import Components from 'unplugin-vue-components/vite'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vitePluginBuildId from 'vite-plugin-build-id'
+import Inspect from 'vite-plugin-inspect'
 import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
@@ -54,6 +55,9 @@ export default defineConfig(({ mode }) => {
               '$npgettext',
             ],
           },
+          {
+            '@/language': ['T'],
+          },
         ],
         vueTemplate: true,
         eslintrc: {
@@ -62,6 +66,7 @@ export default defineConfig(({ mode }) => {
         },
       }),
       DefineOptions(),
+      Inspect(),
     ],
     css: {
       preprocessorOptions: {
@@ -81,11 +86,19 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           ws: true,
+          timeout: 60000,
         },
       },
     },
     build: {
       chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'ace-editor': ['ace-builds'],
+          },
+        },
+      },
     },
   }
 })

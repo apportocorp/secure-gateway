@@ -1,21 +1,21 @@
 package main
 
 import (
-	"context"
-	"flag"
+	"crypto/tls"
+	"errors"
 	"fmt"
-	"net"
 	"net/http"
-	"os"
-	"os/signal"
+	"time"
 
-	"code.pfad.fr/risefront"
+	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/migrate"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
+	"github.com/jpillora/overseer"
 	"github.com/uozi-tech/cosy"
 	cKernel "github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
@@ -23,13 +23,19 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-func Program(confPath string) func(l []net.Listener) error {
-	return func(l []net.Listener) error {
+//go:generate go generate ./cmd/...
+func Program(confPath string) func(state overseer.State) {
+	return func(state overseer.State) {
 		defer logger.Sync()
 		defer logger.Info("Server exited")
+
+		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
+
 		cosy.RegisterModels(model.GenerateAllModel()...)
 
-		cosy.RegisterAsyncFunc(kernel.Boot, router.InitRouter)
+		cosy.RegisterMigration(migrate.Migrations)
+
+		cosy.RegisterInitFunc(kernel.Boot, router.InitRouter)
 
 		// Initialize settings package
 		settings.Init(confPath)
@@ -41,51 +47,60 @@ func Program(confPath string) func(l []net.Listener) error {
 		logger.Init(cSettings.ServerSettings.RunMode)
 		defer logger.Sync()
 
+		if state.Listener == nil {
+			return
+		}
 		// Gin router initialization
 		cRouter.Init()
 
 		// Kernel boot
 		cKernel.Boot()
 
+		addr := fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)
 		srv := &http.Server{
+			Addr:    addr,
 			Handler: cRouter.GetEngine(),
 		}
-
-		// defer Shutdown to wait for ongoing requests to be served before returning
-		defer func(srv *http.Server, ctx context.Context) {
-			err := srv.Shutdown(ctx)
+		var err error
+		if cSettings.ServerSettings.EnableHTTPS {
+			// Load TLS certificate
+			err = cert.LoadServerTLSCertificate()
 			if err != nil {
-				logger.Fatal(err)
+				logger.Fatalf("Failed to load TLS certificate: %v", err)
+				return
 			}
-		}(srv, context.Background())
-		return srv.Serve(l[0])
+
+			tlsConfig := &tls.Config{
+				GetCertificate: func(clientHello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+					return cert.GetServerTLSCertificate()
+				},
+				MinVersion: tls.VersionTLS12,
+			}
+
+			srv.TLSConfig = tlsConfig
+
+			logger.Info("Starting HTTPS server")
+			tlsListener := tls.NewListener(state.Listener, tlsConfig)
+			err = srv.Serve(tlsListener)
+		} else {
+			logger.Info("Starting HTTP server")
+			err = srv.Serve(state.Listener)
+		}
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
+			logger.Fatalf("listen: %s\n", err)
+		}
 	}
 }
 
 func main() {
-	var confPath string
-	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
-	flag.Parse()
+	appCmd := cmd.NewAppCmd()
 
+	confPath := appCmd.String("config")
 	settings.Init(confPath)
-
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer cancel()
-
-	err := risefront.New(ctx, risefront.Config{
-		Run:       Program(confPath),
-		Name:      "nginx-ui",
-		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
-		ErrorHandler: func(kind string, err error) {
-			if errors.Is(err, net.ErrClosed) {
-				return
-			}
-			logger.Error(kind, err)
-		},
+	overseer.Run(overseer.Config{
+		Program:          Program(confPath),
+		Address:          fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port),
+		TerminateTimeout: 5 * time.Second,
+		Debug:            cSettings.ServerSettings.RunMode == gin.DebugMode,
 	})
-	if err != nil && !errors.Is(err, context.DeadlineExceeded) &&
-		!errors.Is(err, context.Canceled) &&
-		!errors.Is(err, net.ErrClosed) {
-		logger.Error(err)
-	}
 }

@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -15,23 +14,37 @@ import (
 
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/jpillora/overseer"
 	"github.com/minio/selfupdate"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
 )
 
+const (
+	UpgradeStatusInfo     = "info"
+	UpgradeStatusError    = "error"
+	UpgradeStatusProgress = "progress"
+)
+
+type CoreUpgradeResp struct {
+	Status   string  `json:"status"`
+	Progress float64 `json:"progress"`
+	Message  string  `json:"message"`
+}
+
 type Upgrader struct {
-	Release TRelease
-	RuntimeInfo
+	Release version.TRelease
+	version.RuntimeInfo
 }
 
 func NewUpgrader(channel string) (u *Upgrader, err error) {
-	data, err := GetRelease(channel)
+	data, err := version.GetRelease(channel)
 	if err != nil {
 		return
 	}
-	runtimeInfo, err := GetRuntimeInfo()
+	runtimeInfo, err := version.GetRuntimeInfo()
 	if err != nil {
 		return
 	}
@@ -256,8 +269,7 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 
 	// gracefully restart
-	cmd := exec.Command(os.Args[0])
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Start()
+	overseer.Restart()
+
+	return
 }

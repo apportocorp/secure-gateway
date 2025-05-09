@@ -1,12 +1,12 @@
 package analytic
 
 import (
-	"github.com/shirou/gopsutil/v4/cpu"
-	"github.com/shirou/gopsutil/v4/disk"
-	"github.com/shirou/gopsutil/v4/net"
-	"github.com/uozi-tech/cosy/logger"
 	"runtime"
 	"time"
+
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func getTotalDiskIO() (read, write uint64) {
@@ -68,25 +68,32 @@ func recordCpu(now time.Time) {
 }
 
 func recordNetwork(now time.Time) {
-	network, err := net.IOCounters(false)
+	// Get network statistics using GetNetworkStat which includes Ethernet interfaces
+	networkStats, err := GetNetworkStat()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	if len(network) == 0 {
-		return
-	}
+	// Calculate usage since last record
+	bytesRecv := networkStats.BytesRecv - LastNetRecv
+	bytesSent := networkStats.BytesSent - LastNetSent
+
+	// Update records
 	NetRecvRecord = append(NetRecvRecord, Usage[uint64]{
 		Time:  now,
-		Usage: network[0].BytesRecv - LastNetRecv,
+		Usage: bytesRecv,
 	})
 	NetSentRecord = append(NetSentRecord, Usage[uint64]{
 		Time:  now,
-		Usage: network[0].BytesSent - LastNetSent,
+		Usage: bytesSent,
 	})
-	LastNetRecv = network[0].BytesRecv
-	LastNetSent = network[0].BytesSent
+
+	// Update last values
+	LastNetRecv = networkStats.BytesRecv
+	LastNetSent = networkStats.BytesSent
+
+	// Limit record size
 	if len(NetRecvRecord) > 100 {
 		NetRecvRecord = NetRecvRecord[1:]
 	}

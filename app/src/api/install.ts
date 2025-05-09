@@ -7,12 +7,17 @@ export interface InstallRequest {
   database: string
 }
 
+export interface InstallLockResponse {
+  lock: boolean
+  timeout: boolean
+}
+
 const install = {
   get_lock() {
-    return http.get('/install')
+    return http.get<InstallLockResponse>('/install')
   },
   install_nginx_ui(data: InstallRequest) {
-    return http.post('/install', data)
+    return http.post('/install', data, { crypto: true })
   },
 }
 

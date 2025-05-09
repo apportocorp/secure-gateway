@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ngx from '@/api/ngx'
 import { NginxStatus } from '@/constants'
-import { useGlobalStore } from '@/pinia/moudule/global'
+import { useGlobalStore } from '@/pinia'
 import { logLevel } from '@/views/config/constants'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
@@ -28,8 +28,6 @@ function reloadNginx() {
       message.warn(r.message)
     else
       message.error(r.message)
-  }).catch(e => {
-    message.error(`${$gettext('Server error')} ${e?.message}`)
   }).finally(() => getStatus())
 }
 
@@ -44,8 +42,6 @@ async function restartNginx() {
       message.warn(r.message)
     else
       message.error(r.message)
-  }).catch(e => {
-    message.error(`${$gettext('Server error')} ${e?.message}`)
   })
 }
 

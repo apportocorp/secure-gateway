@@ -3,11 +3,12 @@ package translation
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/0xJacky/pofile/pofile"
-	"github.com/samber/lo"
 	"io"
 	"log"
+
+	"github.com/0xJacky/Nginx-UI/app"
+	"github.com/0xJacky/pofile"
+	"github.com/samber/lo"
 )
 
 var Dict map[string]pofile.Dict

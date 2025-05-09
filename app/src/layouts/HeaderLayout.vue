@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import type { ShallowRef } from 'vue'
 import auth from '@/api/auth'
-import NginxControl from '@/components/NginxControl/NginxControl.vue'
-import Notification from '@/components/Notification/Notification.vue'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import NginxControl from '@/components/NginxControl'
+import Notification from '@/components/Notification'
+import ProcessingStatus from '@/components/ProcessingStatus'
+import { SelfCheckHeaderBanner } from '@/components/SelfCheck'
+import SetLanguage from '@/components/SetLanguage'
+import SwitchAppearance from '@/components/SwitchAppearance'
+import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { useElementSize } from '@vueuse/core'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -23,7 +25,16 @@ function logout() {
   })
 }
 
-const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElement>>
+const headerRef = useTemplateRef('headerRef') as Ref<HTMLElement>
+
+const userWrapperRef = useTemplateRef('userWrapperRef')
+const isWorkspace = computed(() => {
+  return !!window.inWorkspace
+})
+
+const { width: headerWidth } = useElementSize(headerRef)
+
+const { width: userWrapperWidth } = useElementSize(userWrapperRef)
 </script>
 
 <template>
@@ -32,13 +43,29 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
 
+    <SelfCheckHeaderBanner
+      :header-weight="headerWidth"
+      :user-wrapper-width="userWrapperWidth"
+    />
+
     <ASpace
+      ref="userWrapperRef"
       class="user-wrapper"
       :size="24"
     >
-      <SetLanguage class="set_lang" />
+      <SetLanguage v-if="!isWorkspace" class="set_lang" />
 
       <SwitchAppearance />
+
+      <div v-if="!isWorkspace" class="workspace-entry">
+        <RouterLink to="/workspace">
+          <ATooltip :title="$gettext('Workspace')">
+            <DesktopOutlined />
+          </ATooltip>
+        </RouterLink>
+      </div>
+
+      <ProcessingStatus />
 
       <Notification :header-ref="headerRef" />
 
@@ -48,7 +75,7 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
         <HomeOutlined />
       </a>
 
-      <a @click="logout">
+      <a v-if="!isWorkspace" @click="logout">
         <LogoutOutlined />
       </a>
     </ASpace>
@@ -62,7 +89,7 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
   background: transparent;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.00);
   width: 100%;
-
+  position: relative;
   a {
     color: #000000;
   }
@@ -82,6 +109,12 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
   position: absolute;
   left: 20px;
   @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.workspace-entry {
+  @media (max-width: 600px) {
     display: none;
   }
 }

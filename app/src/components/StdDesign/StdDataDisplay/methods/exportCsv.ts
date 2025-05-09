@@ -1,11 +1,9 @@
-import type { GetListResponse } from '@/api/curd'
-import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import type { Column } from '@/components/StdDesign/types'
+import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
+import type { Column, StdTableResponse } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import { downloadCsv } from '@/lib/helper'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import _ from 'lodash'
+import { get, set } from 'lodash'
 
 async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[]>) {
   const header: { title?: string, key: Column['dataIndex'] }[] = []
@@ -32,18 +30,16 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
   let hasMore = true
   let page = 1
   while (hasMore) {
-    // 准备 DataSource
+    // prepare dataSource
     await props
-    // eslint-disable-next-line ts/no-explicit-any
-      .api!.get_list({ page }).then((r: GetListResponse<any>) => {
+      .api!.get_list({ page }).then((r: StdTableResponse) => {
       if (r.data.length === 0) {
         hasMore = false
 
         return
       }
       dataSource.push(...r.data)
-    }).catch((e: { message?: string }) => {
-      message.error(e.message ?? $gettext('Server error'))
+    }).catch(() => {
       hasMore = false
     })
     page += 1
@@ -56,11 +52,11 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
     const obj: Record<string, any> = {}
 
     headerKeys.forEach(key => {
-      let _data = _.get(row, key)
+      let _data = get(row, key)
       const c = showColumnsMap[key]
 
       _data = c?.customRender?.({ text: _data }) ?? _data
-      _.set(obj, c.dataIndex as string, _data)
+      set(obj, c.dataIndex as string, _data)
     })
     data.push(obj)
   })

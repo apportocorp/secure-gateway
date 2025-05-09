@@ -6,7 +6,7 @@
 
 Yet another Nginx Web UI
 
-Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https://blog.kugeek.com/) 开发。
+Nginx 网络管理界面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://blog.kugeek.com/) 和 [Akino](https://github.com/akinoccc) 开发。
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
@@ -73,9 +73,12 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 ### 特色
 
 - 在线查看服务器 CPU、内存、系统负载、磁盘使用率等指标
-- 在线 ChatGPT 助理
+- 配置修改后会自动备份，可以对比任意版本或恢复到任意版本
+- 支持镜像操作到多个集群节点，轻松管理多服务器环境
+- 导出加密的 Nginx / Nginx UI 配置，方便快速部署和恢复到新环境
+- 增强版在线 ChatGPT 助手，支持多种模型，包括显示 Deepseek-R1 的思考链，帮助您更好地理解和优化配置
 - 一键申请和自动续签 Let's encrypt 证书
-- 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
+- 在线编辑 Nginx 配置文件，编辑器支持**大模型代码补全**和 Nginx 配置语法高亮
 - 在线查看 Nginx 日志
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
 - 保存配置后自动测试配置文件并重载 Nginx
@@ -102,6 +105,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)
 
 ## 入门指南
 
@@ -126,7 +130,8 @@ http {
 Nginx UI 可在以下平台中使用：
 
 - macOS 11 Big Sur 及之后版本（amd64 / arm64）
-- Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
+- Windows 10 及之后版本（x86 /amd64 / arm64）
+- Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64）
   - 包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux
 - FreeBSD
 - OpenBSD
@@ -195,6 +200,7 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -229,6 +235,7 @@ pnpm build
 请先完成前端编译，再回到项目的根目录执行以下命令。
 
 ```shell
+go generate
 go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
@@ -236,23 +243,37 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 
 ### 基本用法
 
+如果您在中国大陆，可能会遇到 GitHub 的网络问题。您可以通过以下命令设置代理服务器下载 Nginx UI，以加快下载速度。
+
+```bash
+export GH_PROXY=https://ghfast.top/
+```
+
+当以上地址不可用时，请检视 [GitHub Proxy](https://ghproxy.link/) 获得最新地址，或根据实际情况选择其他代理。
+
 **安装或升级**
 
 ```shell
-bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install -r https://mirror.ghproxy.com/
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
 
 **卸载 Nginx UI 但保留配置和数据库文件**
 
 ```shell
-bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+```
+
+**卸载 Nginx UI 不保留配置和数据库文件**
+
+```shell
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 ### 更多用法
 
 ````shell
-bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Nginx 反向代理配置示例

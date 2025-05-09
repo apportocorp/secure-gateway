@@ -1,13 +1,18 @@
 package certificate
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
+	"gorm.io/gen/field"
 )
 
 const (
@@ -24,28 +29,8 @@ type IssueCertResponse struct {
 	KeyType           certcrypto.KeyType `json:"key_type"`
 }
 
-func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan string) {
-	defer func() {
-		if err := recover(); err != nil {
-			logger.Error(err)
-		}
-	}()
-
-	for logString := range logChan {
-		log.Info(logString)
-
-		err := conn.WriteJSON(IssueCertResponse{
-			Status:  Info,
-			Message: logString,
-		})
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-	}
-}
-
 func IssueCert(c *gin.Context) {
+	name := c.Param("name")
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
@@ -59,9 +44,7 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	defer func(ws *websocket.Conn) {
-		_ = ws.Close()
-	}(ws)
+	defer ws.Close()
 
 	// read
 	payload := &cert.ConfigPayload{}
@@ -72,63 +55,62 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certModel, err := model.FirstOrCreateCert(c.Param("name"), payload.GetKeyType())
+	certModel, err := model.FirstOrInit(name, payload.GetKeyType())
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
-	if certInfo != nil {
-		payload.Resource = certModel.Resource
-		payload.NotBefore = certInfo.NotBefore
-	}
-
-	logChan := make(chan string, 1)
-	errChan := make(chan error, 1)
-
-	log := &cert.Logger{}
-	log.SetCertModel(&certModel)
-
 	payload.CertID = certModel.ID
 
-	go cert.IssueCert(payload, logChan, errChan)
+	if certModel.SSLCertificatePath != "" {
+		certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
+		if certInfo != nil {
+			payload.Resource = certModel.Resource
+			payload.NotBefore = certInfo.NotBefore
+		}
+	}
 
-	go handleIssueCertLogChan(ws, log, logChan)
+	errChan := make(chan error, 1)
+
+	log := cert.NewLogger()
+	log.SetCertModel(&certModel)
+	log.SetWebSocket(ws)
+	defer log.Close()
+
+	go cert.IssueCert(payload, log, errChan)
 
 	// block, until errChan closes
-	for err = range errChan {
-
+	if err := <-errChan; err != nil {
 		log.Error(err)
-
-		// Save logs to db
-		log.Exit()
-
 		err = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
 		if err != nil {
-			logger.Error(err)
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			return
 		}
-
-		return
 	}
 
-	err = certModel.Updates(&model.Cert{
-		Domains:                 payload.ServerName,
-		SSLCertificatePath:      payload.GetCertificatePath(),
-		SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
-		AutoCert:                model.AutoCertEnabled,
-		KeyType:                 payload.KeyType,
-		ChallengeMethod:         payload.ChallengeMethod,
-		DnsCredentialID:         payload.DNSCredentialID,
-		Resource:                payload.Resource,
-		MustStaple:              payload.MustStaple,
-		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
-	})
+	cert := query.Cert
 
+	_, err = cert.Where(cert.Name.Eq(name), cert.Filename.Eq(name), cert.KeyType.Eq(string(payload.KeyType))).
+		Assign(field.Attrs(&model.Cert{
+			Domains:                 payload.ServerName,
+			SSLCertificatePath:      payload.GetCertificatePath(),
+			SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
+			AutoCert:                model.AutoCertEnabled,
+			ChallengeMethod:         payload.ChallengeMethod,
+			DnsCredentialID:         payload.DNSCredentialID,
+			Resource:                payload.Resource,
+			MustStaple:              payload.MustStaple,
+			LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
+			Log:                     log.ToString(),
+			RevokeOld:               payload.RevokeOld,
+		})).FirstOrCreate()
 	if err != nil {
 		logger.Error(err)
 		_ = ws.WriteJSON(IssueCertResponse{
@@ -137,19 +119,17 @@ func IssueCert(c *gin.Context) {
 		})
 		return
 	}
-
-	// Save logs to db
-	log.Exit()
-
 	err = ws.WriteJSON(IssueCertResponse{
 		Status:            Success,
-		Message:           "Issued certificate successfully",
+		Message:           translation.C("[Nginx UI] Issued certificate successfully").ToString(),
 		SSLCertificate:    payload.GetCertificatePath(),
 		SSLCertificateKey: payload.GetCertificateKeyPath(),
 		KeyType:           payload.GetKeyType(),
 	})
 	if err != nil {
-		logger.Error(err)
+		if helper.IsUnexpectedWebsocketError(err) {
+			logger.Error(err)
+		}
 		return
 	}
 }

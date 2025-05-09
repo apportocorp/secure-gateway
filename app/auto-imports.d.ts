@@ -11,6 +11,7 @@ declare global {
   const $npgettext: typeof import('@/gettext')['$npgettext']
   const $pgettext: typeof import('@/gettext')['$pgettext']
   const EffectScope: typeof import('vue')['EffectScope']
+  const T: typeof import('@/language')['T']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -87,9 +88,10 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
 }
+
 // for vue template auto import
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
@@ -100,6 +102,7 @@ declare module 'vue' {
     readonly $npgettext: UnwrapRef<typeof import('@/gettext')['$npgettext']>
     readonly $pgettext: UnwrapRef<typeof import('@/gettext')['$pgettext']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly T: UnwrapRef<typeof import('@/language')['T']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>

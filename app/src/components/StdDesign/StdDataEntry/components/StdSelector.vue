@@ -2,8 +2,9 @@
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import { CloseCircleFilled } from '@ant-design/icons-vue'
 import { watchOnce } from '@vueuse/core'
-import _ from 'lodash'
+import { clone } from 'lodash'
 
 const props = defineProps<{
   placeholder?: string
@@ -27,6 +28,7 @@ const props = defineProps<{
   // eslint-disable-next-line ts/no-explicit-any
   getCheckboxProps?: (record: any) => any
   hideInputContainer?: boolean
+  expandAll?: boolean
 }>()
 
 const selectedKey = defineModel<number | number[] | undefined | null | string | string[]>('selectedKey')
@@ -36,10 +38,6 @@ onMounted(() => {
     watchOnce(selectedKey, _init)
   else
     _init()
-})
-
-const getParams = computed(() => {
-  return props.getParams
 })
 
 const visible = ref(false)
@@ -98,12 +96,13 @@ function show() {
     visible.value = true
 }
 
+// eslint-disable-next-line vue/require-typed-ref
 const selectedKeyBuffer = ref()
 // eslint-disable-next-line ts/no-explicit-any
 const selectedBuffer: Ref<any[]> = ref([])
 
 watch(selectedKey, () => {
-  selectedKeyBuffer.value = _.clone(selectedKey.value)
+  selectedKeyBuffer.value = clone(selectedKey.value)
 })
 
 watch(records, v => {
@@ -112,8 +111,8 @@ watch(records, v => {
 })
 
 onMounted(() => {
-  selectedKeyBuffer.value = _.clone(selectedKey.value)
-  selectedBuffer.value = _.clone(records.value)
+  selectedKeyBuffer.value = clone(selectedKey.value)
+  selectedBuffer.value = clone(records.value)
 })
 
 const computedSelectedKeys = computed({
@@ -133,13 +132,16 @@ async function ok() {
   selectedKey.value = selectedKeyBuffer.value
   records.value = selectedBuffer.value
   await nextTick()
-  M_values.value = _.clone(records.value)
+  M_values.value = clone(records.value)
 }
 
-// function clear() {
-//   M_values.value = []
-//   emit('update:selectedKey', '')
-// }
+function clear() {
+  M_values.value = []
+  if (props.selectionType === 'radio')
+    selectedKey.value = null
+  else
+    selectedKey.value = []
+}
 
 defineExpose({ show })
 </script>
@@ -152,9 +154,8 @@ defineExpose({ show })
     >
       <div
         class="std-selector"
-        @click="show"
       >
-        <div class="chips-container">
+        <div class="chips-container w-full" @click="show">
           <div v-if="props.recordValueIndex">
             <ATag
               v-for="(chipText, index) in ComputedMValue"
@@ -173,6 +174,10 @@ defineExpose({ show })
           >
             {{ placeholder }}
           </div>
+        </div>
+
+        <div class="close-btn flex text-trueGray-3" @click="clear">
+          <CloseCircleFilled />
         </div>
       </div>
     </div>
@@ -195,6 +200,7 @@ defineExpose({ show })
         :columns
         :disable-search
         :row-key="itemKey"
+        :expand-all
         :get-params
         :selection-type
         :get-checkbox-props
@@ -212,6 +218,8 @@ defineExpose({ show })
   align-items: self-start;
 
   .std-selector {
+    display: flex;
+    justify-content: space-between;
     overflow-y: auto;
     box-sizing: border-box;
     font-variant: tabular-nums;
@@ -229,6 +237,16 @@ defineExpose({ show })
     //margin: 0 10px 0 0;
     cursor: pointer;
     min-width: 180px;
+
+    .close-btn {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    &:hover {
+      .close-btn {
+        opacity: 1;
+      }
+    }
   }
 }
 

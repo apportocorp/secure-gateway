@@ -20,6 +20,7 @@ function handleGenerate() {
   const passwordLength = 12
   let password = ''
   for (let i = 0; i <= passwordLength; i++) {
+    // eslint-disable-next-line sonarjs/pseudo-random
     const randomNumber = Math.floor(Math.random() * chars.length)
 
     password += chars.substring(randomNumber, randomNumber + 1)
@@ -37,12 +38,14 @@ function handleGenerate() {
         v-model:value="modelValue"
         :class="{ compact: generate }"
         :placeholoder="placeholder"
+        :maxlength="20"
       />
       <AInput
         v-else
         v-model:value="modelValue"
         :class="{ compact: generate }"
         :placeholoder="placeholder"
+        :maxlength="20"
       />
       <AButton
         v-if="generate"

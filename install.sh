@@ -26,7 +26,9 @@ LOCAL_FILE=''
 PROXY=''
 
 # --reverse-proxy ?
-RPROXY=""
+# You can set this variable whatever you want in shell session right before running this script by issuing:
+# export GH_PROXY='https://cloud.nginxui.com/'
+RPROXY=$GH_PROXY
 
 # --purge
 PURGE='0'
@@ -270,8 +272,6 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/nginx-ui -config /usr/local/etc/nginx-ui/app.ini
-RuntimeDirectory=nginx-ui
-WorkingDirectory=/var/run/nginx-ui
 Restart=on-failure
 TimeoutStopSec=5
 KillMode=mixed
@@ -296,8 +296,8 @@ cat > "$DataPath/app.ini" << EOF
 PageSize = 10
 
 [server]
-HOST = 0.0.0.0
-PORT = 9000
+Host = 0.0.0.0
+Port = 9000
 RunMode = release
 
 [cert]
@@ -382,7 +382,7 @@ show_help() {
     echo '  install:'
     echo '    -l, --local               Install Nginx UI from a local file'
     echo '    -p, --proxy               Download through a proxy server, e.g., -p http://127.0.0.1:8118 or -p socks5://127.0.0.1:1080'
-    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://mirror.ghproxy.com/'
+    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://cloud.nginxui.com/'
     echo '  remove:'
     echo '    --purge                   Remove all the Nginx UI files, include logs, configs, etc'
     exit 0

@@ -4,7 +4,12 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -14,52 +19,35 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy/logger"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 type SyncConfigPayload struct {
-	Name        string `json:"name"`
-	Filepath    string `json:"filepath"`
-	NewFilepath string `json:"new_filepath"`
-	Content     string `json:"content"`
-	Overwrite   bool   `json:"overwrite"`
+	Name      string `json:"name" binding:"required"`
+	BaseDir   string `json:"base_dir"`
+	Content   string `json:"content"`
+	Overwrite bool   `json:"overwrite"`
 }
 
-func SyncToRemoteServer(c *model.Config, newFilepath string) (err error) {
+func SyncToRemoteServer(c *model.Config) (err error) {
 	if c.Filepath == "" || len(c.SyncNodeIds) == 0 {
 		return
 	}
 
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(c.Filepath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			c.Filepath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.Filepath, nginxConfPath)
 	}
 
-	if newFilepath != "" && !helper.IsUnderDirectory(newFilepath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			c.Filepath, nginxConfPath)
-	}
-
-	currentPath := c.Filepath
-	if newFilepath != "" {
-		currentPath = newFilepath
-	}
-	configBytes, err := os.ReadFile(currentPath)
+	configBytes, err := os.ReadFile(c.Filepath)
 	if err != nil {
 		return
 	}
 
 	payload := &SyncConfigPayload{
-		Name:        c.Name,
-		Filepath:    c.Filepath,
-		NewFilepath: newFilepath,
-		Content:     string(configBytes),
-		Overwrite:   c.SyncOverwrite,
+		Name:      c.Name,
+		BaseDir:   strings.ReplaceAll(filepath.Dir(c.Filepath), nginx.GetConfPath(), ""),
+		Content:   string(configBytes),
+		Overwrite: c.SyncOverwrite,
 	}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
@@ -67,7 +55,7 @@ func SyncToRemoteServer(c *model.Config, newFilepath string) (err error) {
 	}
 
 	q := query.Environment
-	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...)).Find()
+	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...), q.Enabled.Is(true)).Find()
 	for _, env := range envs {
 		go func() {
 			err := payload.deploy(env, c, payloadBytes)
@@ -87,13 +75,11 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (e
 
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(origPath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			origPath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), origPath, nginxConfPath)
 	}
 
 	if !helper.IsUnderDirectory(newPath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			newPath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), newPath, nginxConfPath)
 	}
 
 	payload := &RenameConfigPayload{
@@ -119,7 +105,7 @@ type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	ConfigName string `json:"config_name"`
 	EnvName    string `json:"env_name"`
-	RespBody   string `json:"resp_body"`
+	Response   string `json:"response"`
 }
 
 func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payloadBytes []byte) (err error) {
@@ -154,32 +140,15 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 		StatusCode: resp.StatusCode,
 		ConfigName: c.Name,
 		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err := json.Marshal(notificationPayload)
-	if err != nil {
-		return
+		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Config Error", string(notificationPayloadBytes))
+		notification.Error("Sync Config Error", "Sync config %{config_name} to %{env_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Config Success", string(notificationPayloadBytes))
-
-	// handle rename
-	if p.NewFilepath == "" || p.Filepath == p.NewFilepath {
-		return
-	}
-
-	payload := &RenameConfigPayload{
-		Filepath:    p.Filepath,
-		NewFilepath: p.NewFilepath,
-	}
-
-	err = payload.rename(env)
+	notification.Success("Sync Config Success", "Sync config %{config_name} to %{env_name} successfully", notificationPayload)
 
 	return
 }
@@ -194,7 +163,7 @@ type SyncRenameNotificationPayload struct {
 	OrigPath   string `json:"orig_path"`
 	NewPath    string `json:"new_path"`
 	EnvName    string `json:"env_name"`
-	RespBody   string `json:"resp_body"`
+	Response   string `json:"response"`
 }
 
 func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
@@ -242,20 +211,15 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 		OrigPath:   p.Filepath,
 		NewPath:    p.NewFilepath,
 		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err := json.Marshal(notificationPayload)
-	if err != nil {
-		return
+		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Rename Remote Config Error", string(notificationPayloadBytes))
+		notification.Error("Rename Remote Config Error", "Rename %{orig_path} to %{new_path} on %{env_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Rename Remote Config Success", string(notificationPayloadBytes))
+	notification.Success("Rename Remote Config Success", "Rename %{orig_path} to %{new_path} on %{env_name} successfully", notificationPayload)
 
 	return
 }

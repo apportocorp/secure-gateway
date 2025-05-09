@@ -13,7 +13,6 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"io"
-	"io/fs"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -40,14 +39,13 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 		Filename:    name,
 	}
 
-	file, _ := templ.DistFS.Open(filepath.Join(path, name))
+	file, err := templ.DistFS.Open(filepath.Join(path, name))
+	if err != nil {
+		logger.Error(err)
+		return
+	}
 
-	defer func(file fs.File) {
-		err := file.Close()
-		if err != nil {
-			logger.Error(err)
-		}
-	}(file)
+	defer file.Close()
 
 	r := bufio.NewReader(file)
 	lineBytes, _, err := r.ReadLine()
@@ -172,8 +170,12 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	for _, d := range config.GetDirectives() {
 		switch d.GetName() {
 		case nginx.Location:
+			var params []string
+			for _, param := range d.GetParameters() {
+				params = append(params, param.Value)
+			}
 			l := &nginx.NgxLocation{
-				Path: strings.Join(d.GetParameters(), " "),
+				Path: strings.Join(params, " "),
 			}
 			l.ParseLocation(d, 0)
 			c.NgxServer.Locations = append(c.NgxServer.Locations, l)

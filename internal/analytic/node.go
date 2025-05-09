@@ -2,25 +2,27 @@ package analytic
 
 import (
 	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/internal/transport"
-	"github.com/0xJacky/Nginx-UI/internal/upgrader"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/shirou/gopsutil/v4/load"
-	"github.com/shirou/gopsutil/v4/net"
-	"github.com/uozi-tech/cosy/logger"
+	"errors"
 	"io"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/internal/version"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/shirou/gopsutil/v4/load"
+	"github.com/shirou/gopsutil/v4/net"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type NodeInfo struct {
-	NodeRuntimeInfo upgrader.RuntimeInfo `json:"node_runtime_info"`
-	Version         string               `json:"version"`
-	CPUNum          int                  `json:"cpu_num"`
-	MemoryTotal     string               `json:"memory_total"`
-	DiskTotal       string               `json:"disk_total"`
+	NodeRuntimeInfo version.RuntimeInfo `json:"node_runtime_info"`
+	Version         string              `json:"version"`
+	CPUNum          int                 `json:"cpu_num"`
+	MemoryTotal     string              `json:"memory_total"`
+	DiskTotal       string              `json:"disk_total"`
 }
 
 type NodeStat struct {
@@ -69,14 +71,13 @@ func GetNode(env *model.Environment) (n *Node) {
 	return n
 }
 
-func InitNode(env *model.Environment) (n *Node) {
+func InitNode(env *model.Environment) (n *Node, err error) {
 	n = &Node{
 		Environment: env,
 	}
 
 	u, err := url.JoinPath(env.URL, "/api/node")
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 
@@ -90,7 +91,6 @@ func InitNode(env *model.Environment) (n *Node) {
 
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 
@@ -98,7 +98,6 @@ func InitNode(env *model.Environment) (n *Node) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 
@@ -106,13 +105,11 @@ func InitNode(env *model.Environment) (n *Node) {
 	bytes, _ := io.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
-		logger.Error(string(bytes))
-		return
+		return n, errors.New(string(bytes))
 	}
 
 	err = json.Unmarshal(bytes, &n.NodeInfo)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 

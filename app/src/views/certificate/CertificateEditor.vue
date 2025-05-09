@@ -2,14 +2,14 @@
 import type { Cert } from '@/api/cert'
 import type { Ref } from 'vue'
 import cert from '@/api/cert'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import AutoCertForm from '@/components/AutoCertForm'
+import CertInfo from '@/components/CertInfo'
+import CodeEditor from '@/components/CodeEditor'
+import FooterToolBar from '@/components/FooterToolbar'
+import NodeSelector from '@/components/NodeSelector'
 import { AutoCertState } from '@/constants'
-import RenewCert from '@/views/certificate/RenewCert.vue'
-import CertInfo from '@/views/site/cert/CertInfo.vue'
-import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 import { message } from 'ant-design-vue'
+import RenewCert from './components/RenewCert.vue'
 
 const route = useRoute()
 
@@ -40,34 +40,40 @@ onMounted(() => {
 
 const router = useRouter()
 const errors = ref({}) as Ref<Record<string, string>>
-function save() {
-  cert.save(data.value.id, data.value).then(r => {
+
+async function save() {
+  try {
+    const r = await cert.save(data.value.id, data.value)
     data.value = r
-    message.success($gettext('Save successfully'))
-    router.push(`/certificates/${r.id}`)
     errors.value = {}
-  }).catch(e => {
+    message.success($gettext('Save successfully'))
+    await router.push(`/certificates/${r.id}`)
+  }
+  // eslint-disable-next-line ts/no-explicit-any
+  catch (e: any) {
     errors.value = e.errors
-    message.error($gettext(e?.message ?? 'Server error'))
-  })
+    throw e
+  }
 }
 
+provide('saveCert', save)
+
 const log = computed(() => {
-  const logs = data.value.log?.split('\n')
+  if (!data.value.log)
+    return ''
 
-  logs.forEach((line, idx, lines) => {
-    const regex = /\[Nginx UI\] (.*)/
-
-    const matches = line.match(regex)
-
-    if (matches && matches.length > 1) {
-      const extractedText = matches[1]
-
-      lines[idx] = line.replaceAll(extractedText, $gettext(extractedText))
+  return data.value.log.split('\n').map(line => {
+    try {
+      return T(JSON.parse(line))
     }
-  })
-
-  return logs.join('\n')
+    catch {
+      // fallback to legacy log format
+      const matches = line.match(/\[Nginx UI\] (.*)/)
+      if (matches?.[1])
+        return line.replaceAll(matches[1], $gettext(matches[1]))
+      return line
+    }
+  }).join('\n')
 })
 
 const isManaged = computed(() => {
@@ -135,11 +141,13 @@ const isManaged = computed(() => {
               key_type: data.key_type,
               challenge_method: data.challenge_method,
               dns_credential_id: data.dns_credential_id,
+              acme_user_id: data.acme_user_id,
+              revoke_old: data.revoke_old,
             }"
             @renewed="init"
           />
 
-          <AutoCertStepOne
+          <AutoCertForm
             v-model:options="data"
             style="max-width: 600px"
             hide-note
@@ -211,6 +219,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              disable-code-completion
               :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>
@@ -224,6 +233,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate_key"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              disable-code-completion
               :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>

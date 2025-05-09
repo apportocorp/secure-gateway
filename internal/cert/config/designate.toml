@@ -7,7 +7,7 @@ Since = "v2.2.0"
 Example = '''
 # With a `clouds.yaml`
 OS_CLOUD=my_openstack \
-lego --email you@example.com --dns designate --domains my.example.org run
+lego --email you@example.com --dns designate -d '*.example.com' -d example.com run
 
 # or
 
@@ -16,7 +16,7 @@ OS_REGION_NAME=RegionOne \
 OS_PROJECT_ID=23d4522a987d4ab529f722a007c27846
 OS_USERNAME=myuser \
 OS_PASSWORD=passw0rd \
-lego --email you@example.com --dns designate --domains my.example.org run
+lego --email you@example.com --dns designate -d '*.example.com' -d example.com run
 
 # or
 
@@ -25,7 +25,7 @@ OS_REGION_NAME=RegionOne \
 OS_AUTH_TYPE=v3applicationcredential \
 OS_APPLICATION_CREDENTIAL_ID=imn74uq0or7dyzz20dwo1ytls4me8dry \
 OS_APPLICATION_CREDENTIAL_SECRET=68FuSPSdQqkFQYH5X1OoriEIJOwyLtQ8QSqXZOc9XxFK1A9tzZT6He2PfPw0OMja \
-lego --email you@example.com --dns designate --domains my.example.org run
+lego --email you@example.com --dns designate -d '*.example.com' -d example.com run
 '''
 
 Additional = '''
@@ -64,9 +64,9 @@ Public cloud providers with support for Designate:
     OS_PROJECT_ID = "Project ID"
     OS_TENANT_NAME = "Tenant name (deprecated see OS_PROJECT_NAME and OS_PROJECT_ID)"
     DESIGNATE_ZONE_NAME = "The zone name to use in the OpenStack Project to manage TXT records."
-    DESIGNATE_POLLING_INTERVAL = "Time between DNS propagation check"
-    DESIGNATE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DESIGNATE_TTL = "The TTL of the TXT record used for the DNS challenge"
+    DESIGNATE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 10)"
+    DESIGNATE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 600)"
+    DESIGNATE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 10)"
 
 [Links]
   API = "https://docs.openstack.org/designate/latest/"

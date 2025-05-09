@@ -2,18 +2,44 @@ package middleware
 
 import (
 	"encoding/base64"
-	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy/logger"
-	"io/fs"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy/logger"
 )
 
+// getToken from header, cookie or query
+func getToken(c *gin.Context) (token string) {
+	if token = c.GetHeader("Authorization"); token != "" {
+		return
+	}
+
+	if token = c.Query("token"); token != "" {
+		tokenBytes, _ := base64.StdEncoding.DecodeString(token)
+		return string(tokenBytes)
+	}
+
+	if token, _ = c.Cookie("token"); token != "" {
+		return token
+	}
+
+	return ""
+}
+
+// getXNodeID from header or query
+func getXNodeID(c *gin.Context) (xNodeID string) {
+	if xNodeID = c.GetHeader("X-Node-ID"); xNodeID != "" {
+		return xNodeID
+	}
+
+	return c.Query("x_node_id")
+}
+
+// AuthRequired is a middleware that checks if the user is authenticated
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		abortWithAuthFailure := func() {
@@ -22,21 +48,27 @@ func AuthRequired() gin.HandlerFunc {
 			})
 		}
 
-		token := c.GetHeader("Authorization")
+		xNodeID := getXNodeID(c)
+		if xNodeID != "" {
+			c.Set("ProxyNodeID", xNodeID)
+		}
+
+		if token := c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
+			c.Set("Secret", token)
+			c.Next()
+			return
+		}
+
+		if token := c.Query("node_secret"); token != "" && token == settings.NodeSettings.Secret {
+			c.Set("Secret", token)
+			c.Next()
+			return
+		}
+
+		token := getToken(c)
 		if token == "" {
-			if token = c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
-				c.Set("Secret", token)
-				c.Next()
-				return
-			} else {
-				c.Set("ProxyNodeID", c.Query("x_node_id"))
-				tokenBytes, _ := base64.StdEncoding.DecodeString(c.Query("token"))
-				token = string(tokenBytes)
-				if token == "" {
-					abortWithAuthFailure()
-					return
-				}
-			}
+			abortWithAuthFailure()
+			return
 		}
 
 		u, ok := user.GetTokenUser(token)
@@ -46,11 +78,6 @@ func AuthRequired() gin.HandlerFunc {
 		}
 
 		c.Set("user", u)
-
-		if nodeID := c.GetHeader("X-Node-ID"); nodeID != "" {
-			c.Set("ProxyNodeID", nodeID)
-		}
-
 		c.Next()
 	}
 }
@@ -72,22 +99,7 @@ func (f ServerFileSystemType) Exists(prefix string, _path string) bool {
 	return err == nil
 }
 
-func MustFs(dir string) (serverFileSystem static.ServeFileSystem) {
-
-	sub, err := fs.Sub(app.DistFS, path.Join("dist", dir))
-
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	serverFileSystem = ServerFileSystemType{
-		http.FS(sub),
-	}
-
-	return
-}
-
+// CacheJs is a middleware that send header to client to cache js file
 func CacheJs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.Request.URL.String(), "js") {

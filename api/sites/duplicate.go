@@ -1,10 +1,11 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/uozi-tech/cosy"
 )
 
 func DuplicateSite(c *gin.Context) {
@@ -16,13 +17,13 @@ func DuplicateSite(c *gin.Context) {
 		Name string `json:"name" binding:"required"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
 	err := site.Duplicate(src, json.Name)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

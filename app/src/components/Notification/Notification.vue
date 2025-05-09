@@ -1,48 +1,35 @@
 <script setup lang="ts">
 import type { Notification } from '@/api/notification'
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { SSEvent } from 'sse.js'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Ref } from 'vue'
 import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
+import { useSSE } from '@/composables/useSSE'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { message, notification } from 'ant-design-vue'
-import { SSE } from 'sse.js'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import notifications from './notifications'
 
 defineProps<{
   headerRef: HTMLElement
 }>()
 
+dayjs.extend(relativeTime)
+
 const loading = ref(false)
 
-const { token, unreadCount } = storeToRefs(useUserStore())
+const { unreadCount } = storeToRefs(useUserStore())
 
 const data = ref([]) as Ref<Notification[]>
 
-const sse = shallowRef(newSSE())
+const { connect } = useSSE()
 
-function reconnect() {
-  setTimeout(() => {
-    sse.value = newSSE()
-  }, 5000)
-}
-
-function newSSE() {
-  const s = new SSE('/api/notifications/live', {
-    headers: {
-      Authorization: token.value,
-    },
-  })
-
-  s.onmessage = (e: SSEvent) => {
-    const data = JSON.parse(e.data)
-    // data.type may be 0
-    if (data.type === undefined || data.type === null || data.type === '') {
-      return
-    }
-
+connect({
+  url: '/api/notifications/live',
+  onMessage: (data: Notification) => {
     const typeTrans = {
       0: 'error',
       1: 'warning',
@@ -52,24 +39,16 @@ function newSSE() {
 
     notification[typeTrans[data.type]]({
       message: $gettext(data.title),
-      description: detailRender({ text: data.details, record: data } as CustomRenderProps),
+      description: detailRender({ text: data.details, record: data } as CustomRender),
     })
-  }
-
-  // reconnect
-  s.onerror = reconnect
-  s.onabort = reconnect
-
-  return s
-}
+  },
+})
 
 function init() {
   loading.value = true
-  notificationApi.get_list().then(r => {
+  notificationApi.get_list({ sort: 'desc', order_by: 'created_at' }).then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   }).finally(() => {
     loading.value = false
   })
@@ -91,8 +70,7 @@ function clear() {
     message.success($gettext('Cleared successfully'))
     data.value = []
     unreadCount.value = 0
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
+    open.value = false
   })
 }
 
@@ -100,8 +78,6 @@ function remove(id: number) {
   notificationApi.destroy(id).then(() => {
     message.success($gettext('Removed successfully'))
     init()
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 
@@ -151,19 +127,7 @@ function viewAll() {
         >
           <template #renderItem="{ item }">
             <AListItem>
-              <template #actions>
-                <span
-                  key="list-loadmore-remove"
-                  class="cursor-pointer"
-                  @click="remove(item.id)"
-                >
-                  <DeleteOutlined />
-                </span>
-              </template>
-              <AListItemMeta
-                :title="$gettext(item.title)"
-                :description="detailRender({ text: item.details, record: item } as CustomRenderProps)"
-              >
+              <AListItemMeta>
                 <template #avatar>
                   <div>
                     <CloseCircleOutlined
@@ -182,6 +146,29 @@ function viewAll() {
                       v-else-if="item.type === NotificationTypeT.Success"
                       class="text-green-500"
                     />
+                  </div>
+                </template>
+                <template #title>
+                  <div class="flex justify-between items-center">
+                    {{ $gettext(item.title) }}
+                    <span class="text-xs text-trueGray-400 font-normal">
+                      {{ dayjs(item.created_at).fromNow() }}
+                    </span>
+                  </div>
+                </template>
+                <template #description>
+                  <div class="flex justify-between items-center">
+                    <div>
+                      {{ notifications[item.title]?.content(item.details)
+                        || item.content || item.details }}
+                    </div>
+                    <span
+                      key="list-loadmore-remove"
+                      class="cursor-pointer"
+                      @click="remove(item.id)"
+                    >
+                      <DeleteOutlined />
+                    </span>
                   </div>
                 </template>
               </AListItemMeta>

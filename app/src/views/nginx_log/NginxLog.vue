@@ -2,25 +2,24 @@
 import type { INginxLogData } from '@/api/nginx_log'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import nginx_log from '@/api/nginx_log'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import FooterToolBar from '@/components/FooterToolbar'
 import ws from '@/lib/websocket'
 import { debounce } from 'lodash'
 
-const logContainer = ref()
+const logContainer = useTemplateRef('logContainer')
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
 const buffer = ref('')
 const page = ref(0)
-const auto_refresh = ref(true)
+const autoRefresh = ref(true)
 const router = useRouter()
 const loading = ref(false)
 const filter = ref('')
 
-const control: INginxLogData = reactive({
+// Setup log control data based on route params
+const control = reactive<INginxLogData>({
   type: logType(),
-  conf_name: route.query.conf_name as string,
-  server_idx: Number.parseInt(route.query.server_idx as string),
-  directive_idx: Number.parseInt(route.query.directive_idx as string),
+  log_path: route.query.log_path as string,
 })
 
 function logType() {
@@ -33,9 +32,7 @@ function openWs() {
   websocket = ws('/api/nginx_log')
 
   websocket.onopen = () => {
-    websocket.send(JSON.stringify({
-      ...control,
-    }))
+    websocket.send(JSON.stringify(control))
   }
 
   websocket.onmessage = (m: { data: string }) => {
@@ -63,12 +60,13 @@ function init() {
     addLog(r.content)
     openWs()
   }).catch(e => {
-    addLog(e.error)
+    if (e.error)
+      addLog(T(e.error))
   })
 }
 
 function clearLog() {
-  logContainer.value.innerHTML = ''
+  buffer.value = ''
 }
 
 onMounted(() => {
@@ -79,10 +77,12 @@ onUnmounted(() => {
   websocket?.close()
 })
 
-watch(auto_refresh, value => {
+watch(autoRefresh, async value => {
   if (value) {
-    openWs()
     clearLog()
+    await nextTick()
+    await init()
+    openWs()
   }
   else {
     websocket.close()
@@ -90,32 +90,29 @@ watch(auto_refresh, value => {
 })
 
 watch(route, () => {
-  init()
-
+  // Update control data when route changes
   control.type = logType()
-  control.directive_idx = Number.parseInt(route.query.server_idx as string)
-  control.server_idx = Number.parseInt(route.query.directive_idx as string)
-  clearLog()
+  control.log_path = route.query.log_path as string
 
-  nextTick(() => {
-    websocket.send(JSON.stringify(control))
-  })
+  clearLog()
+  init()
 })
 
 watch(control, () => {
   clearLog()
-  auto_refresh.value = true
+  autoRefresh.value = true
 
   nextTick(() => {
     websocket.send(JSON.stringify(control))
   })
 })
 
-function on_scroll_log() {
+function onScrollLog() {
   if (!loading.value && page.value > 0) {
     loading.value = true
 
-    const elem = logContainer.value
+    const elem = logContainer.value!
+
     if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
       nginx_log.page(page.value, control).then(r => {
         page.value = r.page - 1
@@ -130,8 +127,8 @@ function on_scroll_log() {
   }
 }
 
-function debounce_scroll_log() {
-  return debounce(on_scroll_log, 100)()
+function debounceScrollLog() {
+  return debounce(onScrollLog, 100)()
 }
 
 const computedBuffer = computed(() => {
@@ -147,10 +144,15 @@ const computedBuffer = computed(() => {
     :title="$gettext('Gateway Logs')"
     :bordered="false"
   >
+    <template #extra>
+      <div class="flex items-center">
+        <span class="mr-2">
+          {{ $gettext('Auto Refresh') }}
+        </span>
+        <ASwitch v-model:checked="autoRefresh" />
+      </div>
+    </template>
     <AForm layout="vertical">
-      <AFormItem :label="$gettext('Auto Refresh')">
-        <ASwitch v-model:checked="auto_refresh" />
-      </AFormItem>
       <AFormItem :label="$gettext('Filter')">
         <AInput
           v-model:value="filter"
@@ -164,10 +166,10 @@ const computedBuffer = computed(() => {
         ref="logContainer"
         v-dompurify-html="computedBuffer"
         class="nginx-log-container"
-        @scroll="debounce_scroll_log"
+        @scroll="debounceScrollLog"
       />
     </ACard>
-    <FooterToolBar v-if="control.type === 'site'">
+    <FooterToolBar v-if="control.log_path">
       <AButton @click="router.go(-1)">
         {{ $gettext('Back') }}
       </AButton>

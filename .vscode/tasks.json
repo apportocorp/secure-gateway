@@ -1,0 +1,104 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "[Go] Start Backend",
+      "type": "shell",
+      "command": "air",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Start Frontend",
+      "type": "shell",
+      "command": "cd app && pnpm dev",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[Docs] Start Documentation",
+      "type": "shell",
+      "command": "cd docs && pnpm docs:dev",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[All] Start All Services",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "[Go] Start Backend",
+        "[App] Start Frontend",
+        "[Docs] Start Documentation"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Gettext Extract",
+      "type": "shell",
+      "command": "cd app && pnpm gettext:extract",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] ESLint Fix",
+      "type": "shell",
+      "command": "cd app && pnpm lint --fix",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Typecheck",
+      "type": "shell",
+      "command": "cd app && pnpm typecheck",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Build",
+      "type": "shell",
+      "command": "cd app && pnpm build",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[Go] Generate",
+      "type": "shell",
+      "command": "go generate",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[All] Bump Version",
+      "type": "shell",
+      "command": "./version.sh",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

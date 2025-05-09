@@ -1,10 +1,12 @@
 package nginx
 
 import (
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/config"
+	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
-	"strings"
 )
 
 const (
@@ -24,8 +26,12 @@ func (s *NgxServer) parseServer(directive config.IDirective) {
 	for _, d := range directive.GetBlock().GetDirectives() {
 		switch d.GetName() {
 		case Location:
+			var params []string
+			for _, param := range d.GetParameters() {
+				params = append(params, param.Value)
+			}
 			location := &NgxLocation{
-				Path:     strings.Join(d.GetParameters(), " "),
+				Path:     strings.Join(params, " "),
 				Comments: buildComment(d.GetComment()),
 			}
 			location.parseLocation(d, 0)
@@ -47,17 +53,28 @@ func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 	if directive.GetBlock() == nil {
 		return
 	}
+	if directive.GetBlock().GetCodeBlock() != "" {
+		// deep copy
+		style := *dumper.IndentedStyle
+		style.StartIndent = deep * style.Indent
+		l.Content += dumper.DumpLuaBlock(directive.GetBlock(), &style) + "\n"
+		return
+	}
 	for _, location := range directive.GetBlock().GetDirectives() {
 		if len(location.GetComment()) > 0 {
 			for _, c := range location.GetComment() {
 				l.Content += strings.Repeat("\t", deep) + c + "\n"
 			}
 		}
-		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ")
+		var params []string
+		for _, param := range location.GetParameters() {
+			params = append(params, param.Value)
+		}
+		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(params, " ")
 		if location.GetBlock() != nil && location.GetBlock().GetDirectives() != nil {
 			l.Content += " { \n"
 			l.parseLocation(location, deep+1)
-			l.Content += " } \n"
+			l.Content += strings.Repeat("\t", deep) + "} \n"
 		} else {
 			l.Content += ";\n"
 		}
@@ -73,7 +90,13 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 		d.Params += directive.GetName() + " "
 		d.Directive = ""
 	}
-	d.Params += strings.Join(directive.GetParameters(), " ")
+
+	var params []string
+	for _, param := range directive.GetParameters() {
+		params = append(params, param.Value)
+	}
+
+	d.Params += strings.Join(params, " ")
 	if directive.GetBlock() != nil {
 		d.Params += " {\n"
 		for _, location := range directive.GetBlock().GetDirectives() {
@@ -82,8 +105,12 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 					d.Params += strings.Repeat("\t", deep) + c + "\n"
 				}
 			}
+			var params []string
+			for _, param := range location.GetParameters() {
+				params = append(params, param.Value)
+			}
 			d.Params += strings.Repeat("\t", deep+1) + location.GetName() + " " +
-				strings.Join(location.GetParameters(), " ") + ";\n"
+				strings.Join(params, " ") + ";\n"
 			// d.parseDirective(location, deep+1)
 			if location.GetBlock() == nil {
 				continue
@@ -102,9 +129,13 @@ func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 		return
 	}
 	for _, us := range directive.GetBlock().GetDirectives() {
+		var params []string
+		for _, param := range us.GetParameters() {
+			params = append(params, param.Value)
+		}
 		d := &NgxDirective{
 			Directive: us.GetName(),
-			Params:    strings.Join(us.GetParameters(), " "),
+			Params:    strings.Join(params, " "),
 			Comments:  buildComment(us.GetComment()),
 		}
 		u.Directives = append(u.Directives, d)
@@ -113,12 +144,24 @@ func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 
 func (c *NgxConfig) parseCustom(directive config.IDirective) {
 	if directive.GetBlock() == nil {
+		// fix #699
+		c.Custom += ";\n"
 		return
 	}
-	c.Custom += "{\n"
+	c.Custom += "\n{\n"
 	for _, v := range directive.GetBlock().GetDirectives() {
+		var params []string
+		for _, param := range v.GetParameters() {
+			params = append(params, param.Value)
+		}
+
+		inlineComment := ""
+		for _, inline := range v.GetInlineComment() {
+			inlineComment += inline.Value + " "
+		}
+
 		c.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-			v.GetName() + " " + strings.Join(v.GetParameters(), " ") + ";\n"
+			v.GetName() + " " + strings.Join(params, " ") + ";" + inlineComment + "\n"
 	}
 	c.Custom += "}\n"
 }
@@ -129,7 +172,7 @@ func buildComment(c []string) string {
 
 func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 	if block == nil {
-		err = errors.New("block is nil")
+		err = ErrBlockIsNil
 		return
 	}
 	for _, v := range block.GetDirectives() {
@@ -141,18 +184,30 @@ func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 			server.parseServer(v)
 			ngxConfig.Servers = append(ngxConfig.Servers, server)
 		case Upstream:
+			var params []string
+			for _, param := range v.GetParameters() {
+				params = append(params, param.Value)
+			}
 			upstream := &NgxUpstream{
-				Name: strings.Join(v.GetParameters(), " "),
+				Name: strings.Join(params, " "),
 			}
 			upstream.Comments = comments
 			upstream.parseUpstream(v)
 			ngxConfig.Upstreams = append(ngxConfig.Upstreams, upstream)
 		default:
+			var params []string
+			for _, param := range v.GetParameters() {
+				params = append(params, param.Value)
+			}
 			ngxConfig.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-				v.GetName() + " " + strings.Join(v.GetParameters(), " ") + "\n"
+				v.GetName() + " " + strings.Join(params, " ")
 			ngxConfig.parseCustom(v)
 		}
 	}
+	if strings.TrimSpace(ngxConfig.Custom) == "" {
+		return
+	}
+
 	custom, err := FmtCode(ngxConfig.Custom)
 	if err != nil {
 		return

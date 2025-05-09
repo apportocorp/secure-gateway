@@ -1,20 +1,36 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import twoFA from '@/api/2fa'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import ws from '@/lib/websocket'
 import { FitAddon } from '@xterm/addon-fit'
 import { Terminal } from '@xterm/xterm'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 import '@xterm/xterm/css/xterm.css'
 
 let term: Terminal | null
-let ping: NodeJS.Timeout
+let ping: undefined | ReturnType<typeof setTimeout>
 
 const router = useRouter()
-const websocket = shallowRef()
+const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
 const lostConnection = ref(false)
+const insecureConnection = ref(false)
+
+// Check if using HTTP in a non-localhost environment
+function checkSecureConnection() {
+  const hostname = window.location.hostname
+  const protocol = window.location.protocol
+
+  // Check if it's not localhost and not HTTPS
+  if ((hostname !== 'localhost' && hostname !== '127.0.0.1') && protocol !== 'https:') {
+    insecureConnection.value = true
+  }
+}
 
 onMounted(() => {
+  // Check connection security
+  checkSecureConnection()
+
   twoFA.secure_session_status()
 
   const otpModal = use2FAModal()
@@ -24,12 +40,12 @@ onMounted(() => {
 
     nextTick(() => {
       initTerm()
-      websocket.value.onmessage = wsOnMessage
-      websocket.value.onopen = wsOnOpen
-      websocket.value.onerror = () => {
+      websocket.value!.onmessage = wsOnMessage
+      websocket.value!.onopen = wsOnOpen
+      websocket.value!.onerror = () => {
         lostConnection.value = true
       }
-      websocket.value.onclose = () => {
+      websocket.value!.onclose = () => {
         lostConnection.value = true
       }
     })
@@ -48,7 +64,7 @@ interface Message {
 
 const fitAddon = new FitAddon()
 
-const fit = _.throttle(() => {
+const fit = throttle(() => {
   fitAddon.fit()
 }, 50)
 
@@ -88,7 +104,7 @@ function initTerm() {
 }
 
 function sendMessage(data: Message) {
-  websocket.value.send(JSON.stringify(data))
+  websocket.value?.send(JSON.stringify(data))
 }
 
 function wsOnMessage(msg: { data: string | Uint8Array }) {
@@ -110,7 +126,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <ACard :title="$gettext('Terminal')">
+  <div>
+    <AAlert
+      v-if="insecureConnection"
+      class="mb-6"
+      type="warning"
+      show-icon
+      :message="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
+    />
     <AAlert
       v-if="lostConnection"
       class="mb-6"
@@ -122,7 +145,7 @@ onUnmounted(() => {
       id="terminal"
       class="console"
     />
-  </ACard>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -135,6 +158,9 @@ onUnmounted(() => {
 
   :deep(.xterm-viewport) {
     border-radius: 5px;
+    @media (max-width: 512px) {
+      border-radius: 0;
+    }
   }
 }
 </style>

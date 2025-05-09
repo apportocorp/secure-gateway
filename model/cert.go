@@ -1,13 +1,14 @@
 package model
 
 import (
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/lib/pq"
 	"gorm.io/gorm/clause"
-	"os"
 )
 
 const (
@@ -47,6 +48,7 @@ type Cert struct {
 	SyncNodeIds             []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
 	MustStaple              bool                 `json:"must_staple"`
 	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`
+	RevokeOld               bool                 `json:"revoke_old"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
@@ -60,6 +62,11 @@ func FirstCert(confName string) (c Cert, err error) {
 func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
 	// Filename is used to check whether this site is enabled
 	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
+	return
+}
+
+func FirstOrInit(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
+	err = db.FirstOrInit(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
 	return
 }
 
@@ -122,4 +129,13 @@ func (c *CertificateResource) GetResource() certificate.Resource {
 		IssuerCertificate: c.IssuerCertificate,
 		CSR:               c.CSR,
 	}
+}
+
+// GetCertList returns all certificates
+func GetCertList() (c []*Cert) {
+	if db == nil {
+		return
+	}
+	db.Find(&c)
+	return
 }

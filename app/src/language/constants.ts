@@ -18,6 +18,7 @@ export const msg = [
   $gettext('Reloading nginx'),
   $gettext('Finished'),
   $gettext('Issued certificate successfully'),
+  $gettext('Certificate renewed successfully'),
   $gettext('Environment variables cleaned'),
 
   $gettext('Initialing core upgrader'),
@@ -53,4 +54,7 @@ export const msg = [
   $gettext('Enable Remote Site Error'),
   $gettext('Rename Remote Site Success'),
   $gettext('Rename Remote Site Error'),
+
+  $gettext('All Recovery Codes Have Been Used'),
+  $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.'),
 ]

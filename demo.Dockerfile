@@ -1,12 +1,14 @@
 # CGO_ENABLED=1 GOOS=linux CC=x86_64-unknown-linux-gnu-gcc CXX=x86_64-unknown-linux-gnu-g++ GOARCH=amd64 go build -ldflags "-X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
-FROM --platform=$TARGETPLATFORM uozi/nginx-ui-base:latest
+FROM uozi/nginx-ui-base:latest
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT
 WORKDIR /app
 EXPOSE 80
 
+# copy demo config
 COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
+RUN ln -s /etc/nginx/sites-available/ojbk.me /etc/nginx/sites-enabled/ojbk.me
 COPY resources/demo/app.ini /etc/nginx-ui/app.ini
 COPY resources/demo/demo.db /etc/nginx-ui/database.db
 
@@ -18,6 +20,7 @@ RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
 # copy nginx config
 COPY resources/docker/nginx.conf /etc/nginx/nginx.conf
 COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
+COPY resources/demo/stub_status_nginx-ui.conf /etc/nginx/conf.d/stub_status_nginx-ui.conf
 
 # copy nginx-ui executable binary
 COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui

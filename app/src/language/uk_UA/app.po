@@ -1,0 +1,4917 @@
+# sergio_from_tauri <dedysobr@gmail.com>, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2025-04-16 15:12+0000\n"
+"Last-Translator: sergio_from_tauri <dedysobr@gmail.com>\n"
+"Language-Team: Ukrainian <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/uk/>\n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.11\n"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr ""
+"[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог CA: "
+"%{caDir}"
+
+#: src/language/generate.ts:32
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr ""
+"[Nginx UI] Резервне копіювання поточного сертифіката для подальшого "
+"відкликання"
+
+#: src/language/generate.ts:41
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "Сертифікат успішно поновлено"
+
+#: src/language/generate.ts:43
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Сертифікат успішно видалено"
+
+#: src/language/generate.ts:49
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr ""
+"[Nginx UI] Сертифікат використовувався для сервера, перезавантаження TLS-"
+"сертифіката сервера"
+
+#: src/language/generate.ts:4
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "[Nginx UI] Створення клієнта для спрощення зв’язку з сервером CA"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "Змінні навколишнього середовища очищення"
+
+#: src/language/generate.ts:48
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] Завершено"
+
+#: src/language/generate.ts:45
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "Сертифікат успішно видалено"
+
+#: src/language/generate.ts:6
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] Отримання сертифіката"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] Підготовка до відкликання сертифіката"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] Підготовка конфігурацій lego"
+
+#: src/language/generate.ts:40
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] Перезавантаження nginx"
+
+#: src/language/generate.ts:42
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] Відкликання завершено"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] Відкликання сертифіката"
+
+#: src/language/generate.ts:33
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] Відкликання старого сертифіката"
+
+#: src/language/generate.ts:19
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] Налаштування провайдера виклику DNS01"
+
+#: src/language/generate.ts:47
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "Змінні навколишнього середовища очищення"
+
+#: src/language/generate.ts:37
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] Налаштування провайдера HTTP01-виклику"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] Запис приватного ключа сертифіката на диск"
+
+#: src/language/generate.ts:12
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] Запис сертифіката на диск"
+
+#: src/views/user/userColumns.tsx:32
+msgid "2FA"
+msgstr "2FA"
+
+#: src/views/preference/tabs/AuthSettings.vue:70
+msgid "2FA Settings"
+msgstr "2FA Налаштування"
+
+#: src/routes/modules/system.ts:45
+msgid "About"
+msgstr "Про программу"
+
+#: src/views/nginx_log/NginxLogList.vue:23
+msgid "Access Log"
+msgstr "Логи доступу"
+
+#: src/constants/errors/self_check.ts:21
+msgid "Access log path not exist"
+msgstr "Шлях до журналу доступу не існує"
+
+#: src/components/NgxConfigEditor/LogEntry.vue:90
+#: src/routes/modules/nginx_log.ts:17
+msgid "Access Logs"
+msgstr "Логи доступу"
+
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
+#: src/views/certificate/components/ACMEUserSelector.vue:85
+msgid "ACME User"
+msgstr "ACME Логін"
+
+#: src/views/certificate/ACMEUser.vue:95
+#: src/views/certificate/CertificateList/certColumns.tsx:94
+#: src/views/certificate/DNSCredential.vue:33
+#: src/views/config/configColumns.tsx:44
+#: src/views/environments/group/columns.ts:43
+#: src/views/environments/list/envColumns.tsx:97
+#: src/views/nginx_log/NginxLogList.vue:46
+#: src/views/notification/notificationColumns.tsx:66
+#: src/views/preference/components/ExternalNotify/columns.ts:46
+#: src/views/preference/tabs/AuthSettings.vue:30
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
+#: src/views/user/userColumns.tsx:60
+msgid "Action"
+msgstr "Дія"
+
+#: src/composables/usePerformanceMetrics.ts:84
+#: src/views/dashboard/components/PerformanceTablesCard.vue:43
+msgid "Active connections"
+msgstr "Активні з’єднання"
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:48
+msgid "Actual worker to configured ratio"
+msgstr "Фактичне співвідношення робочих до налаштованих"
+
+#: src/components/NgxConfigEditor/NgxServer.vue:112
+#: src/components/NgxConfigEditor/NgxUpstream.vue:155
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:186
+#: src/views/preference/tabs/CertSettings.vue:45
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
+#: src/views/stream/StreamList.vue:178
+msgid "Add"
+msgstr "Додати"
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:45
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:49
+msgid "Add a passkey"
+msgstr "Додати ключ доступу"
+
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:244
+msgid "Add Configuration"
+msgstr "Додати конфігурацію"
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:102
+msgid "Add Directive Below"
+msgstr "Додайте директиву нижче"
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:131
+#: src/components/NgxConfigEditor/LocationEditor.vue:158
+msgid "Add Location"
+msgstr "Додати локацію"
+
+#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:73
+msgid "Add Site"
+msgstr "Додати сайт"
+
+#: src/views/stream/StreamList.vue:245
+msgid "Add Stream"
+msgstr "Додати стрім"
+
+#: src/views/stream/StreamList.vue:158
+msgid "Added successfully"
+msgstr "Успішно додано"
+
+#: src/views/certificate/components/DNSChallenge.vue:110
+msgid "Additional"
+msgstr "Додатково"
+
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
+#: src/views/stream/components/StreamEditor.vue:55
+msgid "Advance Mode"
+msgstr "Розширений режим"
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:99
+msgid "Afterwards, refresh this page and click add passkey again."
+msgstr ""
+"Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
+msgid "All"
+msgstr "Усі"
+
+#: src/components/Notification/notifications.ts:165
+#: src/language/constants.ts:58
+msgid "All Recovery Codes Have Been Used"
+msgstr "Усі коди відновлення використано"
+
+#: src/views/preference/tabs/OpenAISettings.vue:32
+msgid "API Base Url"
+msgstr "Базова URL-адреса API"
+
+#: src/views/certificate/components/DNSChallenge.vue:83
+msgid "API Document"
+msgstr "API Документація"
+
+#: src/views/preference/tabs/OpenAISettings.vue:46
+msgid "API Proxy"
+msgstr "API Проксі"
+
+#: src/views/preference/tabs/OpenAISettings.vue:58
+msgid "API Token"
+msgstr "API-токен"
+
+#: src/views/preference/tabs/OpenAISettings.vue:67
+msgid "API Type"
+msgstr "API Тип"
+
+#: src/views/preference/Preference.vue:52
+msgid "App"
+msgstr "Додаток"
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:103
+msgid "Apply"
+msgstr "Застосувати"
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:67
+msgid "Apply bulk action successfully"
+msgstr "Групову дію успішно застосовано"
+
+#: src/views/system/Upgrade.vue:176
+msgid "Arch"
+msgstr "\"Архітектура\""
+
+#: src/views/preference/tabs/AuthSettings.vue:162
+msgid "Are you sure to delete this banned IP immediately?"
+msgstr "Ви впевнені, що хочите видалити цю заборонену IP-адресу?"
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:113
+msgid "Are you sure to delete this passkey immediately?"
+msgstr "Ви впевнені, що хочете видалити цей ключ?"
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:154
+msgid "Are you sure to generate new recovery codes?"
+msgstr "Підтверджуєте генерацію нових кодів відновлення?"
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:85
+msgid "Are you sure to reset 2FA?"
+msgstr "Ви впевнені, що хочете скинути 2FA?"
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:96
+msgid "Are you sure you want to apply to all selected?"
+msgstr "Ви впевнені, що бажаєте застосувати до всіх вибраних?"
+
+#: src/components/Notification/Notification.vue:112
+#: src/views/notification/Notification.vue:39
+msgid "Are you sure you want to clear all notifications?"
+msgstr "Ви впевнені, що бажаєте очистити всі сповіщення?"
+
+#: src/components/ChatGPT/ChatGPT.vue:376
+msgid "Are you sure you want to clear the record of chat?"
+msgstr "Ви впевнені, що бажаєте очистити запис чату?"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:540
+msgid "Are you sure you want to delete this item permanently?"
+msgstr "Ви впевнені, що хочете остаточно видалити цей елемент?"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:512
+msgid "Are you sure you want to delete this item?"
+msgstr "Ви впевнені, що хочете видалити цей елемент?"
+
+#: src/views/site/site_list/SiteList.vue:108
+#: src/views/stream/StreamList.vue:229
+msgid "Are you sure you want to delete?"
+msgstr "Ви впевнені, що хочете видалити?"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:526
+msgid "Are you sure you want to recover this item?"
+msgstr "Ви впевнені, що бажаєте відновити цей елемент?"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+msgid "Are you sure you want to reload Nginx on the following sync nodes?"
+msgstr ""
+"Ви впевнені, що бажаєте перезавантажити Nginx на наступних вузлах "
+"синхронізації?"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:97
+msgid "Are you sure you want to remove this directive?"
+msgstr "Ви впевнені, що хочете видалити цю директиву?"
+
+#: src/views/preference/tabs/CertSettings.vue:71
+msgid "Are you sure you want to remove this item?"
+msgstr "Ви впевнені, що хочете видалити цей елемент?"
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:87
+msgid "Are you sure you want to remove this location?"
+msgstr "Ви впевнені, що хочете видалити цю локацію?"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+msgid "Are you sure you want to restart Nginx on the following sync nodes?"
+msgstr ""
+"Ви впевнені, що хочете перезавантажити Nginx на вказаних синхронізованих "
+"вузлах?"
+
+#: src/components/ChatGPT/ChatGPT.vue:318
+msgid "Ask ChatGPT for Help"
+msgstr "Запитати допомоги у ChatGPT"
+
+#: src/components/ChatGPT/ChatGPT.vue:333
+msgid "Assistant"
+msgstr "Помічник"
+
+#: src/components/SelfCheck/SelfCheck.vue:30
+msgid "Attempt to fix"
+msgstr "Спробувати виправити"
+
+#: src/views/preference/tabs/AuthSettings.vue:21
+msgid "Attempts"
+msgstr "Спроби"
+
+#: src/views/preference/Preference.vue:82
+msgid "Auth"
+msgstr "Авторизація"
+
+#: src/components/TwoFA/Authorization.vue:109
+msgid "Authenticate with a passkey"
+msgstr "Автентифікація пасоком"
+
+#: src/views/preference/tabs/AuthSettings.vue:88
+msgid "Authentication Settings"
+msgstr "Налаштування аутентифікації"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
+msgid "Author"
+msgstr "Автор"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:31
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
+msgid "Auto"
+msgstr "Автоматичний"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:200
+msgid "auto = CPU cores"
+msgstr "Auto = CPU ядра"
+
+#: src/views/nginx_log/NginxLog.vue:150
+msgid "Auto Refresh"
+msgstr "Автоматичне оновлення"
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:78
+msgid "Auto-renewal disabled for %{name}"
+msgstr "Автоматичне відновлення вимкнено на %{name}"
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:71
+msgid "Auto-renewal enabled for %{name}"
+msgstr "Автоматичне відновлення увімкнено для %{name}"
+
+#: src/views/certificate/components/RenewCert.vue:49
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:84
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert виконується, будь ласка, зачекайте..."
+
+#: src/components/ProcessingStatus/ProcessingStatus.vue:39
+msgid "AutoCert is running..."
+msgstr "\"AutoCert виконується...\""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:332
+msgid "Automatic Restart"
+msgstr "\"Автоматичний перезапуск\""
+
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
+#: src/views/stream/components/StreamEditor.vue:106
+msgid "Back"
+msgstr "\"Назад\""
+
+#: src/views/other/Error.vue:22
+msgid "Back Home"
+msgstr "На головну"
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:206
+msgid "Back to list"
+msgstr "Повернутися до списку"
+
+#: src/routes/modules/system.ts:26
+msgid "Backup"
+msgstr "Резервна копія"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:155
+msgid "Backup file integrity check failed, it may have been tampered with"
+msgstr ""
+"Перевірка цілісності резервного файлу не вдалася, можливо, його було змінено"
+
+#: src/constants/errors/backup.ts:41
+msgid "Backup file not found: {0}"
+msgstr "Файл резервної копії не знайдено: {0}"
+
+#: src/views/system/Backup/BackupCreator.vue:42
+msgid "Backup has been downloaded successfully"
+msgstr "Резервну копію успішно завантажено"
+
+#: src/views/preference/tabs/AuthSettings.vue:129
+msgid "Ban Threshold Minutes"
+msgstr "Хвилини до блокування"
+
+#: src/views/preference/tabs/AuthSettings.vue:150
+msgid "Banned IPs"
+msgstr "Заблоковані IP-адреси"
+
+#: src/views/preference/tabs/AuthSettings.vue:24
+msgid "Banned Until"
+msgstr "Заблоковано до"
+
+#: src/views/preference/components/ExternalNotify/bark.ts:5
+msgid "Bark"
+msgstr "Bark"
+
+#: src/views/site/site_add/SiteAdd.vue:79
+msgid "Base information"
+msgstr "Основна інформація"
+
+#: src/views/config/ConfigEditor.vue:294
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
+#: src/views/stream/components/RightPanel/RightPanel.vue:19
+msgid "Basic"
+msgstr "Базові"
+
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
+#: src/views/stream/components/StreamEditor.vue:58
+msgid "Basic Mode"
+msgstr "Базовий режим"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:119
+msgid "Basic Settings"
+msgstr "Основні налаштування"
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:83
+msgid "Batch Actions"
+msgstr "Масові дії"
+
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:62
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:448
+msgid "Batch Modify"
+msgstr "Масове редагування"
+
+#: src/views/environments/list/BatchUpgrader.vue:152
+msgid "Batch Upgrade"
+msgstr "Групове оновлення"
+
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:70
+msgid "Belows are selected items that you want to batch modify"
+msgstr "Нижче наведені елементи, які ви обрали для групового редагування"
+
+#: src/constants/errors/nginx.ts:2
+msgid "Block is nil"
+msgstr "Блок є nil"
+
+#: src/views/system/About.vue:55
+msgid "Build with"
+msgstr "Створено за допомогою"
+
+#: src/views/certificate/ACMEUser.vue:37
+msgid "CA Dir"
+msgstr "\"Каталог CA\""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:124
+msgid "Cache"
+msgstr "Кеш"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
+msgid "Cache items not accessed within this time will be removed"
+msgstr ""
+"Елементи кешу, до яких не було звернень протягом цього часу, будуть видалені"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
+msgid "Cache loader processing time threshold"
+msgstr "Порог часу обробки завантажувача кешу"
+
+#: src/composables/usePerformanceMetrics.ts:139
+#: src/views/dashboard/components/PerformanceTablesCard.vue:94
+msgid "Cache manager processes"
+msgstr "Процеси керування кешем"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
+msgid "Cache manager processing time threshold"
+msgstr "Порог часу обробки менеджера кешу"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
+msgid "Cache Manager Settings"
+msgstr "Налаштування менеджера кешу"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
+msgid "Cache Path"
+msgstr "Шлях до кешу"
+
+#: src/composables/usePerformanceMetrics.ts:57
+#: src/views/dashboard/components/ProcessDistributionCard.vue:14
+msgid "Cache Processes"
+msgstr "Кеш-процеси"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
+msgid "Cache subdirectory levels structure, e.g. 1:2"
+msgstr "Структура рівнів підкаталогів кешу, напр. 1:2"
+
+#: src/views/preference/tabs/CertSettings.vue:19
+msgid "CADir"
+msgstr "CADir"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
+#: src/views/dashboard/components/PerformanceTablesCard.vue:190
+msgid ""
+"Calculated based on worker_processes * worker_connections. Actual "
+"performance depends on hardware, configuration, and workload"
+msgstr ""
+"Розраховано на основі worker_processes * worker_connections. Фактична "
+"продуктивність залежить від апаратного забезпечення, конфігурації та "
+"навантаження"
+
+#: src/components/ChatGPT/ChatGPT.vue:356
+#: src/components/NgxConfigEditor/NgxServer.vue:54
+#: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
+#: src/components/StdDesign/StdDetail/StdDetail.vue:101
+#: src/views/preference/components/AuthSettings/Passkey.vue:141
+#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:40
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
+#: src/views/stream/components/RightPanel/Basic.vue:47
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: src/constants/errors/user.ts:11
+msgid "Cannot change initial user password in demo mode"
+msgstr ""
+"Не вдається змінити початковий пароль користувача в демонстраційному режимі"
+
+#: src/components/ConfigHistory/DiffViewer.vue:67
+#: src/components/ConfigHistory/DiffViewer.vue:84
+msgid "Cannot compare: Missing content"
+msgstr "Не вдається порівняти: відсутній вміст"
+
+#: src/views/dashboard/NginxDashBoard.vue:129
+msgid "Cannot get performance data in this state"
+msgstr "Не вдається отримати дані про ефективність у цьому стані"
+
+#: src/constants/errors/user.ts:10
+msgid "Cannot remove initial user"
+msgstr "Не можна видалити початкового користувача"
+
+#: src/views/preference/Preference.vue:88
+msgid "Cert"
+msgstr "Сертифікат"
+
+#: src/constants/errors/cert.ts:3
+msgid "Cert path is not under the nginx conf dir"
+msgstr "Шлях до сертифіката не знаходиться в каталозі конфігурації nginx"
+
+#: src/components/Notification/notifications.ts:26
+msgid "Certificate %{name} has expired"
+msgstr "Термін дії сертифіката %{name} закінчився"
+
+#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:38
+msgid "Certificate %{name} will expire in %{days} days"
+msgstr "Сертифікат %{name} закінчиться через %{days} днів"
+
+#: src/components/Notification/notifications.ts:42
+msgid "Certificate %{name} will expire in 1 day"
+msgstr "Термін дії сертифіката %{name} закінчиться через 1 день"
+
+#: src/constants/errors/cert.ts:4
+msgid "Certificate decode error"
+msgstr "Помилка декодування сертифіката"
+
+#: src/components/Notification/notifications.ts:29
+msgid "Certificate Expiration Notice"
+msgstr "Повідомлення про закінчення терміну дії сертифіката"
+
+#: src/components/Notification/notifications.ts:25
+msgid "Certificate Expired"
+msgstr "Термін дії сертифіката закінчився"
+
+#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:41
+msgid "Certificate Expiring Soon"
+msgstr "Сертифікат незабаром закінчується"
+
+#: src/language/generate.ts:46
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "Помилка декодування сертифіката"
+
+#: src/constants/errors/cert.ts:5
+msgid "Certificate parse error"
+msgstr "Помилка аналізу сертифіката"
+
+#: src/constants/errors/cert.ts:8
+msgid "Certificate path is empty"
+msgstr "Шлях до сертифіката порожній"
+
+#: src/views/certificate/components/RemoveCert.vue:41
+#: src/views/certificate/components/RemoveCert.vue:61
+msgid "Certificate removed successfully"
+msgstr "Сертифікат успішно видалено"
+
+#: src/views/preference/tabs/CertSettings.vue:27
+msgid "Certificate Renewal Interval"
+msgstr "Інтервал оновлення сертифіката"
+
+#: src/language/constants.ts:21
+msgid "Certificate renewed successfully"
+msgstr "Сертифікат успішно поновлено"
+
+#: src/language/generate.ts:18
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "Сертифікат успішно видалено"
+
+#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/site/site_edit/components/Cert/Cert.vue:58
+#, fuzzy
+msgid "Certificate Status"
+msgid_plural "Certificates Status"
+msgstr[0] "Статус сертифіката"
+msgstr[1] "Статус сертифіката"
+msgstr[2] "Статус сертифіката"
+
+#: src/routes/modules/certificates.ts:11
+#: src/views/certificate/CertificateList/Certificate.vue:19
+msgid "Certificates"
+msgstr "Сертифікати"
+
+#: src/routes/modules/certificates.ts:28
+msgid "Certificates List"
+msgstr "Список сертифікатів"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:65
+msgid "Challenge Method"
+msgstr "Метод перевірки"
+
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:49
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:53
+msgid "Change Certificate"
+msgstr "Змінити сертифікат"
+
+#: src/views/site/site_edit/components/Cert/Cert.vue:77
+#, fuzzy
+msgid "Changed Certificate"
+msgid_plural "Changed Certificates"
+msgstr[0] "Змінено сертифікат"
+msgstr[1] "Змінено сертифікат"
+msgstr[2] "Змінено сертифікат"
+
+#: src/views/config/ConfigEditor.vue:322
+msgid "Changed Path"
+msgstr "Змінений шлях"
+
+#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/system/Upgrade.vue:188
+msgid "Channel"
+msgstr "Канал"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
+#: src/views/stream/components/RightPanel/RightPanel.vue:22
+msgid "Chat"
+msgstr "Чат"
+
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
+msgid "Check"
+msgstr "Перевірити"
+
+#: src/views/system/Upgrade.vue:185
+msgid "Check again"
+msgstr "Перевірте ще раз"
+
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:14
+#, fuzzy
+msgid ""
+"Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
+"prevents using Passkeys and clipboard features"
+msgstr ""
+"Перевірте, чи ввімкнено HTTPS. Використання HTTP поза localhost є "
+"небезпечним і блокує функції Passkeys та буфера обміну."
+
+#: src/language/generate.ts:9
+msgid "Check if the docker socket exists."
+msgstr "Перевірте, чи існує сокет Docker."
+
+#: src/language/generate.ts:36
+msgid "Check if the nginx access log path exists"
+msgstr "Перевірити, чи існує шлях до журналу доступу nginx"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "Check if the nginx configuration directory exists"
+msgstr "Перевірте, чи файл nginx.conf містить каталог conf.d."
+
+#: src/language/generate.ts:25
+#, fuzzy
+msgid "Check if the nginx configuration entry file exists"
+msgstr "Перевірте, чи файл nginx.conf містить каталог conf.d."
+
+#: src/language/generate.ts:7
+msgid "Check if the nginx error log path exists"
+msgstr "Перевірити, чи існує шлях до журналу помилок nginx"
+
+#: src/language/generate.ts:35
+msgid "Check if the nginx PID path exists"
+msgstr "Перевірити, чи існує шлях до PID Nginx"
+
+#: src/language/generate.ts:23
+#, fuzzy
+msgid "Check if the nginx.conf includes the conf.d directory"
+msgstr "Перевірте, чи файл nginx.conf містить каталог conf.d."
+
+#: src/language/generate.ts:34
+#, fuzzy
+msgid "Check if the nginx.conf includes the sites-enabled directory"
+msgstr "Перевірте, чи включає файл nginx.conf каталог sites-enabled."
+
+#: src/language/generate.ts:22
+#, fuzzy
+msgid "Check if the nginx.conf includes the streams-enabled directory"
+msgstr "Перевірте, чи включає файл nginx.conf каталог streams-enabled."
+
+#: src/language/generate.ts:51
+#, fuzzy
+msgid ""
+"Check if the sites-available and sites-enabled directories are under the "
+"nginx configuration directory"
+msgstr ""
+"Перевірте, чи знаходяться каталоги sites-available та sites-enabled у "
+"каталозі конфігурації nginx."
+
+#: src/language/generate.ts:15
+#, fuzzy
+msgid ""
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
+msgstr ""
+"Перевірте, чи каталоги streams-available та streams-enabled знаходяться в "
+"каталозі конфігурації nginx."
+
+#: src/constants/errors/crypto.ts:3
+msgid "Cipher text is too short"
+msgstr "Зашифрований текст занадто короткий"
+
+#: src/language/constants.ts:13
+msgid "Cleaning environment variables"
+msgstr "Змінні навколишнього середовища очищення"
+
+#: src/components/ChatGPT/ChatGPT.vue:380
+#: src/components/Notification/Notification.vue:117
+#: src/views/notification/Notification.vue:44
+msgid "Clear"
+msgstr "Чіткий"
+
+#: src/components/Notification/Notification.vue:70
+#: src/views/notification/Notification.vue:13
+msgid "Cleared successfully"
+msgstr "Успішно очищено"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:194
+#: src/components/SystemRestore/SystemRestoreContent.vue:271
+msgid "Click or drag backup file to this area to upload"
+msgstr ""
+"Клацніть або перетягніть файл резервного копіювання в цю область, щоб "
+"завантажити"
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:110
+msgid "Click to copy"
+msgstr "Клацніть, щоб скопіювати"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+msgid "Client Body Buffer Size"
+msgstr "Розмір буфера кузова клієнта"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+msgid "Client Header Buffer Size"
+msgstr "Розмір буфера заголовків клієнта"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+msgid "Client Max Body Size"
+msgstr "Максимальний розмір тіла клієнта"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+msgid "Client request body buffer size"
+msgstr "Розмір буфера тіла запиту клієнта"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+msgid "Client request header buffer size"
+msgstr "Розмір буфера заголовка запиту клієнта"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:169
+msgid "Close"
+msgstr "Закрити"
+
+#: src/constants/errors/llm.ts:2
+msgid "Code completion is not enabled"
+msgstr "Автозавершення коду не ввімкнено"
+
+#: src/views/preference/tabs/OpenAISettings.vue:86
+msgid "Code Completion Model"
+msgstr "Модель автодоповнення коду"
+
+#: src/views/preference/tabs/LogrotateSettings.vue:23
+msgid "Command"
+msgstr "Команда"
+
+#: src/constants/errors/docker.ts:6
+msgid "Command exited with unexpected exit code: {0}, error: {1}"
+msgstr "Команда завершилася з неочікуваним кодом виходу: {0}, помилка: {1}"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
+#: src/components/NgxConfigEditor/LocationEditor.vue:104
+#: src/components/NgxConfigEditor/LocationEditor.vue:135
+#: src/components/NgxConfigEditor/NgxServer.vue:91
+msgid "Comments"
+msgstr "Коментарі"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:127
+msgid "Compare"
+msgstr "Порівнювати"
+
+#: src/components/ConfigHistory/DiffViewer.vue:388
+msgid "Compare Configurations"
+msgstr "Порівняйте конфігурації"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:130
+msgid "Compare Selected"
+msgstr "Порівняйте вибрані"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:129
+msgid "Compare with Current"
+msgstr "Порівняйте з струмом"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
+msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr "Рівень стиснення, 1 найнижчий, 9 - найвищий"
+
+#: src/constants/errors/self_check.ts:17
+msgid "Config directory not exist"
+msgstr "Каталог конфігурації не існує"
+
+#: src/constants/errors/self_check.ts:18
+msgid "Config entry file not exist"
+msgstr "Вхідний файл конфігурації не існує"
+
+#: src/constants/errors/backup.ts:14
+msgid "Config path is empty"
+msgstr "Конфігурація порожній"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+msgid "Config Template"
+msgstr "Шаблон конфігурації"
+
+#: src/views/config/InspectConfig.vue:27
+msgid "Configuration file is test successful"
+msgstr "Файл конфігурації успішно протестовано"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:138
+msgid "Configuration History"
+msgstr "Історія конфігурації"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:167
+msgid "Configuration information"
+msgstr "Інформація про конфігурацію"
+
+#: src/views/site/site_add/SiteAdd.vue:85
+msgid "Configuration Name"
+msgstr "Назва конфігурації"
+
+#: src/views/config/ConfigList.vue:104
+msgid "Configurations"
+msgstr "Конфігурації"
+
+#: src/views/site/site_add/SiteAdd.vue:80
+msgid "Configure SSL"
+msgstr "Налаштувати SSL"
+
+#: src/views/dashboard/Environments.vue:141
+msgid "Connected"
+msgstr "Підключено"
+
+#: src/views/dashboard/NginxDashBoard.vue:82
+msgid "Connection error, trying to reconnect..."
+msgstr "Помилка з'єднання, спроба повторного підключення..."
+
+#: src/views/terminal/Terminal.vue:142
+msgid "Connection lost, please refresh the page."
+msgstr "З'єднання, будь ласка, оновіть сторінку."
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
+msgid "Connection timeout period"
+msgstr "Період таймауту з'єднання"
+
+#: src/constants/errors/docker.ts:7
+msgid "Container status unknown"
+msgstr "Стан контейнера невідомий"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
+#: src/components/NgxConfigEditor/LocationEditor.vue:116
+#: src/components/NgxConfigEditor/LocationEditor.vue:144
+msgid "Content"
+msgstr "Вміст"
+
+#: src/components/SensitiveString/SensitiveString.vue:37
+#: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
+msgid "Copied"
+msgstr "Скопійовано"
+
+#: src/views/system/Backup/BackupCreator.vue:128
+msgid "Copied!"
+msgstr "Скопійовано!"
+
+#: src/components/SensitiveString/SensitiveString.vue:37
+#: src/views/system/Backup/BackupCreator.vue:128
+msgid "Copy"
+msgstr "Копіювати"
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
+msgid "Copy Codes"
+msgstr "Копіювати коди"
+
+#: src/views/system/Upgrade.vue:146
+msgid "Core Upgrade"
+msgstr "Оновлення ядра"
+
+#: src/views/dashboard/ServerAnalytic.vue:301
+msgid "CPU Status"
+msgstr "Статус процесора"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:27
+msgid "CPU Usage"
+msgstr "Використання процесора"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:38
+msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
+msgstr ""
+"Використання процесора відносно високе, розгляньте оптимізацію конфігурації "
+"Nginx"
+
+#: src/views/dashboard/ServerAnalytic.vue:195
+msgid "CPU:"
+msgstr "CPU:"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+msgid "Create"
+msgstr "Створити"
+
+#: src/views/site/site_add/SiteAdd.vue:139
+msgid "Create Another"
+msgstr "Створити ще один"
+
+#: src/views/system/Backup/BackupCreator.vue:86
+msgid "Create Backup"
+msgstr "Створити резервну копію"
+
+#: src/views/config/ConfigList.vue:122
+msgid "Create File"
+msgstr "Створити файл"
+
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+msgid "Create Folder"
+msgstr "Створити папку"
+
+#: src/views/system/Backup/BackupCreator.vue:75
+msgid ""
+"Create system backups including Nginx configuration and Nginx UI settings. "
+"Backup files will be automatically downloaded to your computer."
+msgstr ""
+"Створюйте резервні копії системи, включаючи конфігурацію Nginx та "
+"налаштування Nginx UI. Резервні файли будуть автоматично завантажені на ваш "
+"комп’ютер."
+
+#: src/views/environments/group/columns.ts:31
+#: src/views/notification/notificationColumns.tsx:45
+#: src/views/preference/components/AuthSettings/Passkey.vue:95
+#: src/views/preference/components/ExternalNotify/columns.ts:41
+#: src/views/user/userColumns.tsx:48
+msgid "Created at"
+msgstr "Створено"
+
+#: src/views/config/components/Mkdir.vue:35
+msgid "Created successfully"
+msgstr "Успішно створено"
+
+#: src/language/constants.ts:9
+msgid "Creating client facilitates communication with the CA server"
+msgstr "Створення клієнта сприяє комунікації з сервером CA"
+
+#: src/components/AutoCertForm/DNSChallenge.vue:104
+msgid "Credential"
+msgstr "Облікові дані"
+
+#: src/views/certificate/components/DNSChallenge.vue:99
+msgid "Credentials"
+msgstr "Повноваження"
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:72
+msgid "Current account is enabled TOTP."
+msgstr "Для поточного облікового запису ввімкнено TOTP."
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:70
+msgid "Current account is not enabled TOTP."
+msgstr "Поточний обліковий запис не має увімкненого TOTP."
+
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:27
+msgid "Current active connections"
+msgstr "Поточні активні з’єднання"
+
+#: src/components/ConfigHistory/DiffViewer.vue:72
+msgid "Current Content"
+msgstr ""
+"Поточний вміст\"\n"
+"\n"
+"Користувачі можуть надсилати асистенту вміст, який потребує перекладу.\n"
+"Асистент надасть відповідні результати перекладу та забезпечить їх "
+"відповідність до китайських мовних звичаїв.\n"
+"Ви можете регулювати свій тон та стиль, враховуючи культурні конотації та "
+"регіональні відмінності певних слів.\n"
+"Одночасно, як перекладач, ви маєте перекласти оригінальний текст згідно "
+"стандартів вірності та витонченості.\n"
+"\"Вірність\" означає точність до змісту та наміру оригінального тексту;\n"
+"\"Плавність\" означає, що переклад має бути зрозумілим та легким для "
+"сприйняття;\n"
+"\"Витонченість\" означає прагнення до культурної естетики перекладу та краси "
+"мови.\n"
+"Мета полягає у створенні перекладу, який був би вірним духу оригіналу,\n"
+"а також відповідав цільовій мові, культурі та естетичним уподобанням "
+"читачів.\n"
+"\n"
+"І необхідно дотримуватися цих правил:\n"
+"\n"
+"# Примітки:\n"
+"  - Китайська мова має дві різні системи письма: спрощену та традиційну.\n"
+"  - Переклад має бути в тій самій системі письма, що й вихідний текст.\n"
+"\n"
+"# Правила пробілів\n"
+"  - Додавати пробіл між нелатинськими (CJK/арабськими) та латинськими "
+"символами:\n"
+"    JP: \"Reactを使う\" → \"React を使う\"\n"
+"    KO: \"Node.js설치\" → \"Node.js 설치\"\n"
+"    TH: \"ติดตั้งPython3.9\" → \"ติดตั้ง Python 3.9\"\n"
+"  - Винятки: числа/одиниці/оператори (200GB硬盘 → 200GB 硬盘)\n"
+"\n"
+"# Вихідні дані\n"
+"  - Повертати лише результат перекладу\n"
+"  - Без будь-яких пояснень, коментарів чи іншого тексту\n"
+"  - Чисте форматування"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
+msgid "Current usage"
+msgstr "Поточне використання"
+
+#: src/views/system/Upgrade.vue:165
+msgid "Current Version"
+msgstr "Поточна версія"
+
+#: src/components/NgxConfigEditor/NgxConfigEditor.vue:33
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:104
+msgid "Custom"
+msgstr "Користувацький"
+
+#: src/views/preference/tabs/NodeSettings.vue:19
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr ""
+"Налаштуйте назву локального вузла для відображення в індикаторі середовища."
+
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
+#: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
+msgid "Dashboard"
+msgstr "Панель керування"
+
+#: src/views/install/components/InstallForm.vue:109
+msgid "Database (Optional, default: database)"
+msgstr "База даних (Необов’язково, за замовчуванням: database)"
+
+#: src/views/preference/tabs/CertSettings.vue:32
+msgid "Days"
+msgstr "Дні"
+
+#: src/constants/errors/middleware.ts:3
+msgid "Decryption failed"
+msgstr "Розшифрування не вдалося"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
+msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
+msgstr ""
+"Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
+
+#: src/components/NgxConfigEditor/NgxServer.vue:78
+#: src/components/NgxConfigEditor/NgxUpstream.vue:129
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
+#: src/views/certificate/components/RemoveCert.vue:87
+#: src/views/site/site_list/SiteList.vue:117
+#: src/views/stream/StreamList.vue:238
+msgid "Delete"
+msgstr "Видалити"
+
+#: src/views/certificate/components/RemoveCert.vue:92
+msgid "Delete Certificate"
+msgstr "Видалити сертифікат"
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:35
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
+msgid "Delete Permanently"
+msgstr "Видалити назавжди"
+
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
+msgid "Delete Remote Site Error"
+msgstr "Помилка видалення віддаленого сайту"
+
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
+msgid "Delete Remote Site Success"
+msgstr "Віддалений сайт успішно видалено"
+
+#: src/components/Notification/notifications.ts:125
+msgid "Delete Remote Stream Error"
+msgstr "Помилка видалення віддаленого потоку"
+
+#: src/components/Notification/notifications.ts:129
+msgid "Delete Remote Stream Success"
+msgstr "Віддалений потік успішно видалено"
+
+#: src/components/Notification/notifications.ts:70
+msgid "Delete site %{name} from %{node} failed"
+msgstr "Не вдалося видалити сайт %{name} з %{node}"
+
+#: src/components/Notification/notifications.ts:74
+msgid "Delete site %{name} from %{node} successfully"
+msgstr "Сайт %{name} успішно видалено з %{node}"
+
+#: src/views/site/site_list/SiteList.vue:49
+msgid "Delete site: %{site_name}"
+msgstr "Сайт видалено: %{site_name}"
+
+#: src/components/Notification/notifications.ts:126
+msgid "Delete stream %{name} from %{node} failed"
+msgstr "Не вдалося видалити потік %{name} з %{node}"
+
+#: src/components/Notification/notifications.ts:130
+msgid "Delete stream %{name} from %{node} successfully"
+msgstr "Потік %{name} успішно видалено з %{node}"
+
+#: src/views/stream/StreamList.vue:107
+msgid "Delete stream: %{stream_name}"
+msgstr "Видалити потік: %{stream_name}"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:183
+msgid "Deleted successfully"
+msgstr "Видалено успішно"
+
+#: src/views/preference/tabs/NodeSettings.vue:28
+msgid "Demo"
+msgstr "Демо"
+
+#: src/views/config/ConfigEditor.vue:338
+msgid "Deploy"
+msgstr "Розгорнути"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:74
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:98
+msgid "Description"
+msgstr ""
+"Опис\"\n"
+"\n"
+"Користувачі можуть надсилати вміст асистенту, який потребує перекладу.\n"
+"Асистент надасть відповідні результати перекладу та забезпечить їх "
+"відповідність до китайських мовних звичок.\n"
+"Ви можете регулювати свій тон та стиль, враховуючи культурні коннотації та "
+"регіональні відмінності певних слів.\n"
+"Одночасно, як перекладач, ви повинні перекладати оригінальний текст згідно "
+"зі стандартами вірності та елегантності.\n"
+"\"Вірність\" означає точність до змісту та наміру оригінального тексту;\n"
+"\"Плавність\" означає, що переклад має бути зрозумілим та легким для "
+"сприйняття;\n"
+"\"Елегантність\" означає прагнення до культурної естетики та краси мови "
+"перекладу.\n"
+"Мета полягає у створенні перекладу, який є вірним духу оригіналу,\n"
+"а також відповідає цільовій мові, культурі та естетичним уподобанням "
+"читачів.\n"
+"\n"
+"Потрібно дотримуватися таких правил:\n"
+"\n"
+"# Примітки:\n"
+"  - Китайська мова має дві різні системи письма: спрощену та традиційну.\n"
+"  - Переклад має бути в тій самій системі письма, що й вихідний текст.\n"
+"\n"
+"# Правила пробілів:\n"
+"  - Додавати пробіл між нелатинськими (CJK/арабськими) та латинськими "
+"символами:\n"
+"    JP: \"Reactを使う\" → \"React を使う\"\n"
+"    KO: \"Node.js설치\" → \"Node.js 설치\"\n"
+"    TH: \"ติดตั้งPython3.9\" → \"ติดตั้ง Python 3.9\"\n"
+"  - Винятки: числа/одиниці/оператори (200GB硬盘 → 200GB 硬盘)\n"
+"\n"
+"# Вихідні дані:\n"
+"  - Повертати лише результат перекладу\n"
+"  - Без будь-яких пояснень, коментарів чи іншого тексту\n"
+"  - Чисте форматування"
+
+#: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
+msgid "Destination file already exists"
+msgstr "Файл призначення вже існує"
+
+#: src/constants/errors/config.ts:3
+msgid "Destination file: {0} already exists"
+msgstr "Файл призначення: {0} вже існує"
+
+#: src/views/notification/notificationColumns.tsx:60
+msgid "Details"
+msgstr "Деталі"
+
+#: src/views/system/About.vue:28
+msgid "Development Mode"
+msgstr "Режим розробки"
+
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:5
+msgid "DingTalk"
+msgstr "ДінТок"
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:72
+msgid "Directive"
+msgstr "Директива"
+
+#: src/constants/errors/nginx_log.ts:6
+msgid "Directive params is empty"
+msgstr "Параметри директиви порожні"
+
+#: src/constants/errors/nginx_log.ts:5
+msgid "Directive.Params neither access_log nor error_log"
+msgstr "Параметри директиви не є ні access_log, ні error_log"
+
+#: src/constants/errors/nginx_log.ts:4
+msgid "DirectiveIdx out of range"
+msgstr "DirectiveIdx поза діапазоном"
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditor.vue:38
+msgid "Directives"
+msgstr "Директиви"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
+msgid "Directory Levels"
+msgstr "Рівні каталогу"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
+msgid "Directory path to store cache files"
+msgstr "Шлях до каталогу для зберігання файлів кешу"
+
+#: src/views/site/components/SiteStatusSegmented.vue:88
+msgid "disable"
+msgstr "Вимкнути"
+
+#: src/views/stream/StreamList.vue:209
+msgid "Disable"
+msgstr "Вимкнути"
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
+msgid "Disable auto-renewal failed for %{name}"
+msgstr "Не вдалося вимкнути автоматичне поновлення для %{name}"
+
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
+msgid "Disable Remote Site Error"
+msgstr "Помилка вимкнення віддаленого сайту"
+
+#: src/components/Notification/notifications.ts:101
+msgid "Disable Remote Site Maintenance Error"
+msgstr "Помилка вимкнення технічного обслуговування віддаленого сайту"
+
+#: src/components/Notification/notifications.ts:105
+msgid "Disable Remote Site Maintenance Success"
+msgstr "Вимкнення технічного обслуговування віддаленого сайту успішне"
+
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
+msgid "Disable Remote Site Success"
+msgstr "Віддалений сайт успішно вимкнено"
+
+#: src/components/Notification/notifications.ts:133
+msgid "Disable Remote Stream Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:137
+msgid "Disable Remote Stream Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:78
+msgid "Disable site %{name} from %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:82
+msgid "Disable site %{name} from %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:102
+msgid "Disable site %{name} maintenance on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:106
+msgid "Disable site %{name} maintenance on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:134
+msgid "Disable stream %{name} from %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:138
+msgid "Disable stream %{name} from %{node} successfully"
+msgstr ""
+
+#: src/views/environments/list/envColumns.tsx:61
+#: src/views/environments/list/envColumns.tsx:79
+#: src/views/preference/tabs/HTTPSettings.vue:24
+#: src/views/preference/tabs/NodeSettings.vue:25
+#: src/views/preference/tabs/NodeSettings.vue:30
+#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_list/columns.tsx:111
+#: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
+msgid "Disabled"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/stream/StreamList.vue:96
+msgid "Disabled successfully"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:366
+msgid "Disk IO"
+msgstr ""
+
+#: src/routes/modules/certificates.ts:56
+#: src/views/certificate/DNSCredential.vue:40
+msgid "DNS Credentials"
+msgstr ""
+
+#: src/components/AutoCertForm/DNSChallenge.vue:94
+#: src/views/certificate/components/DNSChallenge.vue:72
+msgid "DNS Provider"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:72
+msgid "DNS01"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:97
+msgid "Do not enable this option unless you are sure that you need it."
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:93
+msgid "Do you want to %{action} this site?"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
+msgid "Do you want to disable auto-cert renewal?"
+msgstr ""
+
+#: src/views/stream/components/RightPanel/Basic.vue:43
+msgid "Do you want to disable this stream?"
+msgstr ""
+
+#: src/views/stream/components/RightPanel/Basic.vue:43
+msgid "Do you want to enable this stream?"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:33
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
+msgid "Do you want to enable TLS?"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxServer.vue:50
+msgid "Do you want to remove this server?"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:33
+msgid "Do you want to remove this upstream?"
+msgstr ""
+
+#: src/constants/errors/docker.ts:2
+msgid "Docker client not initialized"
+msgstr ""
+
+#: src/language/generate.ts:8
+msgid "Docker socket exists"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:16
+msgid "Docker socket not exist"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
+#: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
+msgid "Document"
+msgid_plural "Documents"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/views/certificate/components/WildcardCertificate.vue:66
+msgid "Domain"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:112
+msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
+msgstr ""
+
+#: src/language/constants.ts:27
+msgid "Download latest release error"
+msgstr ""
+
+#: src/language/constants.ts:26
+msgid "Downloading latest release"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/system/Upgrade.vue:215
+msgid "Dry run mode enabled"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:101
+msgid ""
+"Due to the security policies of some browsers, you cannot use passkeys on "
+"non-HTTPS websites, except when running on localhost."
+msgstr ""
+
+#: src/views/site/site_list/SiteDuplicate.vue:72
+#: src/views/site/site_list/SiteList.vue:103
+#: src/views/stream/components/StreamDuplicate.vue:64
+#: src/views/stream/StreamList.vue:224
+msgid "Duplicate"
+msgstr ""
+
+#: src/views/site/site_list/SiteDuplicate.vue:48
+#: src/views/stream/components/StreamDuplicate.vue:40
+msgid "Duplicate to local successfully"
+msgstr ""
+
+#: src/components/StdDesign/StdDetail/StdDetail.vue:110
+msgid "Edit"
+msgstr ""
+
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
+#: src/views/stream/components/StreamEditor.vue:19
+msgid "Edit %{n}"
+msgstr ""
+
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
+msgid "Edit Configuration"
+msgstr ""
+
+#: src/routes/modules/sites.ts:34
+msgid "Edit Site"
+msgstr ""
+
+#: src/routes/modules/streams.ts:19
+msgid "Edit Stream"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:25
+#: src/views/preference/tabs/CertSettings.vue:12
+msgid "Email"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:78
+msgid "Email (*)"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:87
+msgid "enable"
+msgstr ""
+
+#: src/views/stream/StreamList.vue:217
+msgid "Enable"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:45
+msgid "Enable 2FA successfully"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:73
+msgid "Enable auto-renewal failed for %{name}"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:80
+msgid "Enable Code Completion"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
+msgid "Enable compression for content transfer"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:35
+msgid "Enable failed"
+msgstr ""
+
+#: src/views/preference/tabs/ServerSettings.vue:30
+msgid "Enable HTTPS"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:114
+msgid "Enable Proxy Cache"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
+msgid "Enable Remote Site Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:93
+msgid "Enable Remote Site Maintenance Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:97
+msgid "Enable Remote Site Maintenance Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
+msgid "Enable Remote Site Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:141
+msgid "Enable Remote Stream Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:145
+msgid "Enable Remote Stream Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:94
+msgid "Enable site %{name} maintenance on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:98
+msgid "Enable site %{name} maintenance on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:86
+msgid "Enable site %{name} on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:90
+msgid "Enable site %{name} on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:142
+msgid "Enable stream %{name} on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:146
+msgid "Enable stream %{name} on %{node} successfully"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:147
+msgid "Enable stub_status module"
+msgstr ""
+
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:115
+msgid "Enable TLS"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:81
+msgid "Enable TOTP"
+msgstr ""
+
+#: src/views/environments/list/envColumns.tsx:70
+#: src/views/environments/list/envColumns.tsx:76
+#: src/views/preference/tabs/HTTPSettings.vue:24
+#: src/views/preference/tabs/LogrotateSettings.vue:20
+#: src/views/preference/tabs/NodeSettings.vue:25
+#: src/views/preference/tabs/NodeSettings.vue:30
+#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
+#: src/views/site/site_list/columns.tsx:110
+#: src/views/stream/components/RightPanel/Basic.vue:62
+#: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/StreamList.vue:54 src/views/user/userColumns.tsx:38
+msgid "Enabled"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/site_add/SiteAdd.vue:32
+#: src/views/stream/components/RightPanel/Basic.vue:25
+#: src/views/stream/StreamList.vue:86
+msgid "Enabled successfully"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:76
+msgid "Encrypt website with Let's Encrypt"
+msgstr ""
+
+#: src/language/constants.ts:22
+msgid "Environment variables cleaned"
+msgstr ""
+
+#: src/routes/modules/environments.ts:11
+#: src/views/dashboard/Environments.vue:83
+#: src/views/environments/list/Environment.vue:74
+msgid "Environments"
+msgstr ""
+
+#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:44
+#: src/views/notification/notificationColumns.tsx:15
+msgid "Error"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:145
+msgid "Error initializing diff viewer"
+msgstr ""
+
+#: src/views/nginx_log/NginxLogList.vue:24
+msgid "Error Log"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:22
+msgid "Error log path not exist"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LogEntry.vue:98
+#: src/routes/modules/nginx_log.ts:24
+msgid "Error Logs"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:97
+msgid "Error processing content"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:177
+msgid "Executable Path"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:31
+#: src/views/certificate/CertificateList/certColumns.tsx:82
+msgid "Expired"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:38
+msgid "Expired At: %{date}"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:64
+msgid "Export"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:49
+msgid "External Docker Container"
+msgstr ""
+
+#: src/views/preference/Preference.vue:58
+#: src/views/preference/tabs/ExternalNotify.vue:10
+msgid "External Notify"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
+msgid "Fail to obtain certificate"
+msgstr ""
+
+#: src/constants/errors/docker.ts:4
+msgid "Failed to attach to exec instance: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:5
+msgid "Failed to backup Nginx config files: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:4
+msgid "Failed to backup Nginx UI files: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:18
+msgid "Failed to calculate hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:58
+msgid "Failed to calculate Nginx hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to calculate Nginx UI hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:13
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:15
+msgid "Failed to copy config file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:16
+msgid "Failed to copy database directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:17
+msgid "Failed to copy database file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:32
+msgid "Failed to copy file content: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:20
+msgid "Failed to copy Nginx config directory: {0}"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:10
+msgid "Failed to create backup"
+msgstr ""
+
+#: src/constants/errors/backup.ts:12
+msgid "Failed to create backup file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:46
+msgid "Failed to create directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:48
+msgid "Failed to create file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:6
+msgid "Failed to create hash info file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:47
+msgid "Failed to create parent directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:34
+msgid "Failed to create restore directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:50
+msgid "Failed to create symbolic link: {0}"
+msgstr ""
+
+#: src/constants/errors/docker.ts:13
+msgid "Failed to create temp container: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:2
+msgid "Failed to create temporary directory"
+msgstr ""
+
+#: src/constants/errors/backup.ts:3
+msgid "Failed to create temporary subdirectory"
+msgstr ""
+
+#: src/constants/errors/backup.ts:9
+msgid "Failed to create zip archive: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:29
+msgid "Failed to create zip entry: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:28
+msgid "Failed to create zip file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:31
+msgid "Failed to create zip header: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:26
+msgid "Failed to decrypt data: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:54
+msgid "Failed to decrypt file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:37
+msgid "Failed to decrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:36
+msgid "Failed to decrypt Nginx UI directory: {0}"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:66
+msgid "Failed to delete certificate"
+msgstr ""
+
+#: src/language/generate.ts:39
+msgid "Failed to delete certificate from database: %{error}"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/stream/components/RightPanel/Basic.vue:37
+#: src/views/stream/StreamList.vue:100
+msgid "Failed to disable %{msg}"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:72
+msgid "Failed to disable maintenance mode %{msg}"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/stream/components/RightPanel/Basic.vue:28
+#: src/views/stream/StreamList.vue:90
+msgid "Failed to enable %{msg}"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:59
+msgid "Failed to enable maintenance mode %{msg}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:25
+msgid "Failed to encrypt data: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:23
+msgid "Failed to encrypt file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:8
+msgid "Failed to encrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:7
+msgid "Failed to encrypt Nginx UI directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:52
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr ""
+
+#: src/constants/errors/docker.ts:3
+msgid "Failed to exec command: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:35
+msgid "Failed to extract archive: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:10
+msgid "Failed to generate AES key: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:11
+msgid "Failed to generate initialization vector: {0}"
+msgstr ""
+
+#: src/language/constants.ts:5
+msgid "Failed to get certificate information"
+msgstr ""
+
+#: src/constants/errors/docker.ts:10
+msgid "Failed to get hostname: {0}"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:61
+msgid "Failed to get Nginx performance settings"
+msgstr ""
+
+#: src/composables/useNginxPerformance.ts:49
+msgid "Failed to get performance data"
+msgstr ""
+
+#: src/constants/errors/docker.ts:8
+msgid "Failed to inspect container: {0}"
+msgstr ""
+
+#: src/constants/errors/docker.ts:12
+msgid "Failed to inspect current container: {0}"
+msgstr ""
+
+#: src/components/ConfigHistory/ConfigHistory.vue:77
+msgid "Failed to load history records"
+msgstr ""
+
+#: src/constants/errors/backup.ts:30
+msgid "Failed to open source file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:49
+msgid "Failed to open zip entry: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:45
+msgid "Failed to open zip file: {0}"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:5
+msgid "Failed to parse nginx.conf"
+msgstr ""
+
+#: src/constants/errors/docker.ts:11
+msgid "Failed to pull image: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:53
+msgid "Failed to read encrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:22
+msgid "Failed to read file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:56
+msgid "Failed to read hash info file: {0}"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:4
+msgid "Failed to read nginx.conf"
+msgstr ""
+
+#: src/constants/errors/docker.ts:5
+msgid "Failed to read output: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:21
+msgid "Failed to read symlink: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:39
+msgid "Failed to restore Nginx configs: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:40
+msgid "Failed to restore Nginx UI files: {0}"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:48
+msgid "Failed to revoke certificate"
+msgstr ""
+
+#: src/language/generate.ts:31
+msgid "Failed to revoke certificate: %{error}"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:90
+msgid "Failed to save Nginx performance settings"
+msgstr ""
+
+#: src/constants/errors/docker.ts:14
+msgid "Failed to start temp container: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:38
+msgid "Failed to verify hashes: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:55
+msgid "Failed to write decrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:24
+msgid "Failed to write encrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:33
+msgid "Failed to write to zip buffer: {0}"
+msgstr ""
+
+#: src/language/constants.ts:32
+msgid "File exists"
+msgstr ""
+
+#: src/views/other/Error.vue:8
+msgid "File Not Found"
+msgstr ""
+
+#: src/constants/errors/cert.ts:2
+msgid "Filename is empty"
+msgstr ""
+
+#: src/views/nginx_log/NginxLog.vue:156
+msgid "Filter"
+msgstr ""
+
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:81
+msgid "Finished"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
+msgid "First View"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:71
+msgid ""
+"Follow the instructions in the dialog to complete the passkey registration "
+"process."
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:42
+#: src/views/preference/tabs/NodeSettings.vue:54
+msgid "For Chinese user"
+msgstr ""
+
+#: src/views/preference/tabs/HTTPSettings.vue:19
+msgid "For Chinese user: https://cloud.nginxui.com/"
+msgstr ""
+
+#: src/constants/errors/middleware.ts:4
+msgid "Form parse failed"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:269
+msgid "Format Code"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:216
+msgid "Format successfully"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:32
+msgid "General Certificate"
+msgstr ""
+
+#: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:55
+msgid "Generate"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:138
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:161
+msgid "Generate New Recovery Codes"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:161
+msgid "Generate Recovery Codes"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:32
+msgid "Generate recovery codes successfully"
+msgstr ""
+
+#: src/language/constants.ts:7
+msgid "Generating private key for registering account"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:138
+msgid "Get data failed"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/system/Upgrade.vue:169
+msgid "Get release information error"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:46
+msgid "Getting the certificate, please wait..."
+msgstr ""
+
+#: src/views/preference/tabs/HTTPSettings.vue:11
+msgid "Github Proxy"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
+msgid "GZIP Compression"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:87
+msgid "GZIP Compression Level"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
+msgid "GZIP Min Length"
+msgstr ""
+
+#: src/constants/errors/backup.ts:59
+msgid "Hash verification failed: file integrity compromised"
+msgstr ""
+
+#: src/components/SensitiveString/SensitiveString.vue:40
+msgid "Hide"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
+msgid "Higher value means better connection reuse"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:254
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
+#: src/views/stream/components/StreamEditor.vue:43
+msgid "History"
+msgstr ""
+
+#: src/routes/index.ts:47
+msgid "Home"
+msgstr ""
+
+#: src/views/preference/tabs/ServerSettings.vue:19
+msgid "Host"
+msgstr ""
+
+#: src/views/preference/Preference.vue:70
+msgid "HTTP"
+msgstr ""
+
+#: src/views/preference/tabs/CertSettings.vue:15
+msgid "HTTP Challenge Port"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:69
+msgid "HTTP01"
+msgstr ""
+
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:13
+msgid "HTTPS Protocol"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:34
+msgid "ICP Number"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:45
+msgid "If left blank, the default CA Dir will be used."
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:145
+msgid ""
+"If the number of login failed attempts from a ip reach the max attempts in "
+"ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:116
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
+msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:107
+msgid ""
+"If your domain has CNAME records and you cannot obtain certificates, you "
+"need to enable this option."
+msgstr ""
+
+#: src/views/certificate/CertificateList/Certificate.vue:27
+msgid "Import"
+msgstr ""
+
+#: src/routes/modules/certificates.ts:46
+#: src/views/certificate/CertificateEditor.vue:85
+msgid "Import Certificate"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:176
+msgid "Inactive Time"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:54
+msgid ""
+"Includes master process, worker processes, cache processes, and other Nginx "
+"processes"
+msgstr ""
+
+#: src/components/ProcessingStatus/ProcessingStatus.vue:32
+msgid "Indexing..."
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:15
+msgid "Indicator"
+msgstr ""
+
+#: src/components/StdDesign/StdDetail/StdDetail.vue:81
+#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:29
+msgid "Info"
+msgstr ""
+
+#: src/language/constants.ts:25
+msgid "Initial core upgrader error"
+msgstr ""
+
+#: src/language/constants.ts:24
+msgid "Initialing core upgrader"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:119
+msgid "Input the code from the app:"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:72
+msgid "Input the recovery code:"
+msgstr ""
+
+#: src/views/preference/tabs/HTTPSettings.vue:22
+msgid "Insecure Skip Verify"
+msgstr ""
+
+#: src/routes/modules/auth.ts:8
+#: src/views/install/components/InstallForm.vue:124
+#: src/views/install/components/InstallHeader.vue:9
+msgid "Install"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:60
+msgid "Install successfully"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:63
+msgid "Installation"
+msgstr ""
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/install/components/TimeoutAlert.vue:11
+msgid ""
+"Installation is not allowed after 10 minutes of system startup, please "
+"restart the Nginx UI."
+msgstr ""
+
+#: src/views/preference/tabs/LogrotateSettings.vue:26
+msgid "Interval"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:129
+msgid "Invalid"
+msgstr ""
+
+#: src/constants/errors/backup.ts:44
+msgid "Invalid AES IV format: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:43
+msgid "Invalid AES key format: {0}"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:121
+msgid "Invalid file object"
+msgstr ""
+
+#: src/constants/errors/backup.ts:51
+msgid "Invalid file path: {0}"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:66
+#: src/views/config/ConfigEditor.vue:303
+msgid "Invalid filename"
+msgstr ""
+
+#: src/views/config/components/Mkdir.vue:57
+msgid "Invalid folder name"
+msgstr ""
+
+#: src/constants/errors/notification.ts:3
+msgid "Invalid notifier config"
+msgstr ""
+
+#: src/constants/errors/user.ts:4
+msgid "Invalid otp code"
+msgstr ""
+
+#: src/constants/errors/backup.ts:27
+msgid "Invalid padding in decrypted data"
+msgstr ""
+
+#: src/components/TwoFA/use2FAModal.ts:61
+msgid "Invalid passcode or recovery code"
+msgstr ""
+
+#: src/constants/errors/user.ts:5
+msgid "Invalid recovery code"
+msgstr ""
+
+#: src/constants/errors/middleware.ts:2
+msgid "Invalid request format"
+msgstr ""
+
+#: src/constants/errors/backup.ts:42
+msgid "Invalid security token format"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:18
+msgid "IP"
+msgstr ""
+
+#: src/views/certificate/CertificateList/Certificate.vue:37
+msgid "Issue wildcard certificate"
+msgstr ""
+
+#: src/views/certificate/components/WildcardCertificate.vue:57
+msgid "Issue Wildcard Certificate"
+msgstr ""
+
+#: src/language/constants.ts:20
+msgid "Issued certificate successfully"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:35
+msgid "Issuer: %{issuer}"
+msgstr ""
+
+#: src/views/preference/tabs/AppSettings.vue:11
+msgid "Jwt Secret"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:74
+msgid ""
+"Keep your recovery codes as safe as your password. We recommend saving them "
+"with a password manager."
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
+msgid "Keepalive Timeout"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:76
+#: src/views/certificate/CertificateList/certColumns.tsx:59
+msgid "Key Type"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/columns.ts:29
+msgid "Language"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark.ts:5
+msgid "Lark"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark_custom.ts:5
+msgid "Lark Custom"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:179
+msgid "Last checked at"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:113
+msgid "Last update"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:96
+msgid "Last used at"
+msgstr ""
+
+#: src/views/user/userColumns.tsx:25
+msgid "Leave blank for no change"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:41
+msgid "Leave blank for the default: https://api.openai.com/"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:79
+msgid "Leave blank if do not want to modify"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:59
+msgid "Leave blank if you don't need this."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
+msgid "Leave blank will not change anything"
+msgstr ""
+
+#: src/constants/errors/user.ts:6
+msgid "Legacy recovery code not allowed since totp is not enabled"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:104
+msgid "Lego disable CNAME Support"
+msgstr "Lego вимкнути підтримку CNAME"
+
+#: src/views/system/About.vue:63
+msgid "License"
+msgstr ""
+
+#: src/views/dashboard/Environments.vue:141
+#: src/views/dashboard/Environments.vue:156
+msgid "Link Start"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:173
+msgid "List"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:183
+msgid "Load Average:"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:80
+msgid "Load from settings"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:20
+msgid "Load successfully"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:313
+msgid "Loader Files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:308
+msgid "Loader Settings"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:323
+msgid "Loader Sleep"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:348
+msgid "Loader Threshold"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:175
+msgid "Loading data..."
+msgstr ""
+
+#: src/components/EnvIndicator/EnvIndicator.vue:39
+#: src/components/NodeSelector/NodeSelector.vue:86
+#: src/views/preference/tabs/NginxSettings.vue:55
+msgid "Local"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:69
+msgid "Location"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:51
+msgid "Locations"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:247
+msgid "Log"
+msgstr ""
+
+#: src/language/generate.ts:10
+msgid ""
+"Log file %{log_path} is not a regular file. If you are using nginx-ui in "
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
+msgstr ""
+
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
+msgid "Log List"
+msgstr ""
+
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:222
+msgid "Login"
+msgstr ""
+
+#: src/views/other/Login.vue:114 src/views/other/Login.vue:65
+msgid "Login successful"
+msgstr ""
+
+#: src/layouts/HeaderLayout.vue:22
+msgid "Logout successful"
+msgstr "Вихід успішний"
+
+#: src/views/preference/Preference.vue:106
+msgid "Logrotate"
+msgstr ""
+
+#: src/views/preference/tabs/LogrotateSettings.vue:13
+msgid ""
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
+#: src/views/site/site_list/columns.tsx:112
+msgid "Maintenance"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:66
+msgid "Maintenance mode disabled successfully"
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:53
+msgid "Maintenance mode enabled successfully"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:52
+msgid ""
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort before obtaining the certificate."
+msgstr ""
+
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
+#: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
+msgid "Manage Configs"
+msgstr ""
+
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:76
+msgid "Manage Sites"
+msgstr ""
+
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:175
+msgid "Manage Streams"
+msgstr ""
+
+#: src/routes/modules/user.ts:10 src/views/user/User.vue:10
+msgid "Manage Users"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:31
+msgid "Managed Certificate"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:251
+msgid "Manager Files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:261
+msgid "Manager Sleep"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:286
+msgid "Manager Threshold"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
+msgid "Manual"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
+msgid "manually set"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Master"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:134
+#: src/views/dashboard/components/PerformanceTablesCard.vue:89
+msgid "Master process"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:56
+#: src/views/dashboard/components/ProcessDistributionCard.vue:13
+msgid "Master Process"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:135
+msgid "Max Attempts"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
+msgid "Max Concurrent Connections"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
+msgid "Max Requests Per Second"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:199
+msgid "Maximum Cache Size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+msgid "Maximum client request body size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:49
+msgid "Maximum number of concurrent connections"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:174
+#: src/views/dashboard/components/PerformanceTablesCard.vue:125
+msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:201
+msgid "Maximum total size of the cache"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:195
+msgid "Maximum worker process number:"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:222
+#: src/views/dashboard/ServerAnalytic.vue:223
+msgid "Memory"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:212
+msgid "Memory and Storage"
+msgstr ""
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:51
+msgid "Memory Usage (RSS)"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
+msgid "Minimum file size for compression"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:224
+msgid "Minimum Free Space"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:226
+msgid "Minimum free space in the cache directory"
+msgstr ""
+
+#: src/views/preference/tabs/LogrotateSettings.vue:30
+msgid "Minutes"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:20
+msgid "Model"
+msgstr ""
+
+#: src/components/ConfigHistory/ConfigHistory.vue:55
+msgid "Modified At"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:352
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:498
+#: src/views/config/ConfigList.vue:174
+msgid "Modify"
+msgstr ""
+
+#: src/routes/modules/certificates.ts:36
+#: src/views/certificate/CertificateEditor.vue:85
+msgid "Modify Certificate"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:136
+msgid "Modify Config"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
+msgid "Modify Mode"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
+msgid "Multi-line Directive"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateList/certColumns.tsx:10
+#: src/views/certificate/DNSCredential.vue:11
+#: src/views/config/components/Mkdir.vue:64
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
+#: src/views/environments/group/columns.ts:8
+#: src/views/environments/list/envColumns.tsx:9
+#: src/views/nginx_log/NginxLogList.vue:30
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:35
+#: src/views/site/site_list/columns.tsx:18
+#: src/views/site/site_list/SiteDuplicate.vue:79
+#: src/views/stream/components/RightPanel/Basic.vue:69
+#: src/views/stream/components/StreamDuplicate.vue:71
+#: src/views/stream/StreamList.vue:20 src/views/stream/StreamList.vue:250
+msgid "Name"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:170
+msgid "Need to enable the stub_status module"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:327
+msgid "Network"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:269
+msgid "Network Statistics"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:276
+msgid "Network Total Receive"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:282
+msgid "Network Total Send"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:107
+msgid "New Installation"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:74
+msgid "New name"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:322
+msgid "New Path"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:208
+msgid "New version released"
+msgstr ""
+
+#: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/install/components/InstallView.vue:94
+#: src/views/site/site_add/SiteAdd.vue:123
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
+msgid "Next"
+msgstr ""
+
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:94
+msgid "Nginx"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:13
+msgid "Nginx Access Log Path"
+msgstr ""
+
+#: src/language/generate.ts:29
+msgid "Nginx access log path exists"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:6
+msgid "Nginx conf no http block"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:8
+msgid "Nginx conf no stream block"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:15
+msgid "Nginx conf not include conf.d directory"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:7
+msgid "Nginx conf not include sites-enabled"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:9
+msgid "Nginx conf not include stream-enabled"
+msgstr ""
+
+#: src/constants/errors/backup.ts:19
+msgid "Nginx config directory is not set"
+msgstr ""
+
+#: src/language/generate.ts:44
+#, fuzzy
+msgid "Nginx configuration directory exists"
+msgstr "Історія конфігурації"
+
+#: src/language/generate.ts:28
+msgid "Nginx configuration entry file exists"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:138
+msgid "Nginx configuration has been restored"
+msgstr ""
+
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
+#: src/views/stream/components/StreamEditor.vue:74
+msgid "Nginx Configuration Parse Error"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:22
+msgid "Nginx Configuration Path"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:19
+msgid "Nginx Configurations Directory"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:64
+msgid "Nginx Control"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:46
+msgid "Nginx Control Mode"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:149
+#: src/views/dashboard/components/PerformanceTablesCard.vue:104
+msgid "Nginx CPU usage rate"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:16
+msgid "Nginx Error Log Path"
+msgstr ""
+
+#: src/language/generate.ts:30
+msgid "Nginx error log path exists"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
+#: src/composables/useNginxPerformance.ts:43
+#: src/views/dashboard/NginxDashBoard.vue:109
+#: src/views/dashboard/NginxDashBoard.vue:128
+#: src/views/dashboard/NginxDashBoard.vue:77
+msgid "Nginx is not running"
+msgstr ""
+
+#: src/constants/errors/docker.ts:9
+msgid "Nginx is not running in another container"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:109
+msgid "Nginx is running"
+msgstr ""
+
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
+msgid "Nginx Log"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:25
+msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:154
+#: src/views/dashboard/components/PerformanceTablesCard.vue:109
+msgid "Nginx Memory usage"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:34
+msgid "Nginx PID Path"
+msgstr ""
+
+#: src/language/generate.ts:38
+msgid "Nginx PID path exists"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:40
+msgid "Nginx Reload Command"
+msgstr ""
+
+#: src/constants/errors/config.ts:5 src/constants/errors/site.ts:7
+#: src/constants/errors/stream.ts:6
+msgid "Nginx reload failed: {0}"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:41
+msgid "Nginx reload operations have been dispatched to remote nodes"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:26
+msgid "Nginx reloaded successfully"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:43
+msgid "Nginx Restart Command"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:55
+msgid "Nginx restart operations have been dispatched to remote nodes"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:40
+msgid "Nginx restarted successfully"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:37
+msgid "Nginx Test Config Command"
+msgstr ""
+
+#: src/constants/errors/config.ts:4 src/constants/errors/site.ts:6
+#: src/constants/errors/stream.ts:5
+msgid "Nginx test failed: {0}"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:180
+msgid "Nginx theoretical maximum performance"
+msgstr ""
+
+#: src/constants/errors/system.ts:2
+msgid "Nginx UI already installed"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:142
+msgid "Nginx UI configuration has been restored"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:336
+msgid ""
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
+msgstr ""
+
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Nginx.conf includes conf.d directory"
+msgstr "Перевірте, чи файл nginx.conf містить каталог conf.d."
+
+#: src/language/generate.ts:21
+#, fuzzy
+msgid "Nginx.conf includes sites-enabled directory"
+msgstr "Перевірте, чи включає файл nginx.conf каталог sites-enabled."
+
+#: src/language/generate.ts:16
+#, fuzzy
+msgid "Nginx.conf includes streams-enabled directory"
+msgstr "Перевірте, чи включає файл nginx.conf каталог streams-enabled."
+
+#: src/components/ChatGPT/ChatGPT.vue:374
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
+#: src/components/NgxConfigEditor/LocationEditor.vue:89
+#: src/components/Notification/Notification.vue:110
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
+#: src/views/notification/Notification.vue:37
+#: src/views/preference/tabs/AuthSettings.vue:164
+#: src/views/preference/tabs/CertSettings.vue:73
+#: src/views/site/site_list/SiteList.vue:106
+#: src/views/stream/StreamList.vue:227
+msgid "No"
+msgstr ""
+
+#: src/views/environments/group/columns.ts:21
+#: src/views/environments/group/EnvGroup.vue:34
+msgid "No Action"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:177
+msgid "No data"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:54
+msgid "No records selected"
+msgstr ""
+
+#: src/views/preference/Preference.vue:64
+msgid "Node"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:41
+#: src/views/site/site_list/columns.tsx:66
+#: src/views/stream/components/RightPanel/Basic.vue:77
+#: src/views/stream/StreamList.vue:30
+msgid "Node Group"
+msgstr ""
+
+#: src/routes/modules/environments.ts:33
+#: src/views/environments/group/EnvGroup.vue:10
+msgid "Node Groups"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:15
+msgid "Node name"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:11
+msgid "Node Secret"
+msgstr ""
+
+#: src/routes/modules/environments.ts:25
+msgid "Nodes"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:88
+msgid "Not After"
+msgstr ""
+
+#: src/routes/modules/error.ts:8
+msgid "Not Found"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:41
+msgid "Not Valid Before: %{date}"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:38
+#: src/views/certificate/DNSCredential.vue:49
+msgid "Note"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
+#: src/views/stream/components/RightPanel/Basic.vue:99
+msgid ""
+"Note, if the configuration file include other configurations or "
+"certificates, please synchronize them to the remote nodes in advance."
+msgstr ""
+
+#: src/views/notification/Notification.vue:28
+msgid "Notification"
+msgstr ""
+
+#: src/components/Notification/Notification.vue:108
+#: src/routes/modules/notifications.ts:10
+msgid "Notifications"
+msgstr ""
+
+#: src/constants/errors/notification.ts:2
+msgid "Notifier not found"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
+msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:315
+msgid "Number of files processed by cache loader at once"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:253
+msgid "Number of files processed by cache manager at once"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:129
+#: src/composables/usePerformanceMetrics.ts:169
+#: src/views/dashboard/components/PerformanceTablesCard.vue:120
+#: src/views/dashboard/components/PerformanceTablesCard.vue:84
+msgid "Number of worker processes"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:185
+msgid "Obtain certificate"
+msgstr ""
+
+#: src/language/constants.ts:15
+msgid "Obtaining certificate"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:94
+msgid "OCSP Must Staple"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:98
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:165
+msgid "Off"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NodeSelector/NodeSelector.vue:109
+#: src/views/dashboard/Environments.vue:107
+#: src/views/environments/list/envColumns.tsx:56
+msgid "Offline"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:247
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:511
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:525
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:539
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:188
+msgid "Ok"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:375
+#: src/components/NgxConfigEditor/NgxServer.vue:53
+#: src/components/NgxConfigEditor/NgxUpstream.vue:36
+#: src/components/Notification/Notification.vue:111
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
+#: src/views/notification/Notification.vue:38
+#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:39
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
+#: src/views/site/site_list/SiteList.vue:107
+#: src/views/stream/components/RightPanel/Basic.vue:46
+#: src/views/stream/StreamList.vue:228
+#: src/views/system/Backup/BackupCreator.vue:149
+msgid "OK"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:72
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
+msgid "On"
+msgstr ""
+
+#: src/views/certificate/DNSCredential.vue:59
+msgid "Once the verification is complete, the records will be removed."
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NodeSelector/NodeSelector.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:89
+#: src/views/dashboard/Environments.vue:100
+#: src/views/environments/list/envColumns.tsx:52
+msgid "Online"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:78
+msgid "Only zip files are allowed"
+msgstr ""
+
+#: src/views/preference/Preference.vue:100
+msgid "OpenAI"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
+msgid "Or"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:112
+msgid "Or enter the secret: %{secret}"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:70
+msgid "Original name"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:175
+msgid "OS"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:189
+msgid "OS:"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:144
+#: src/views/dashboard/components/PerformanceTablesCard.vue:99
+msgid "Other Nginx processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:58
+#: src/views/dashboard/components/ProcessDistributionCard.vue:15
+msgid "Other Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Others"
+msgstr ""
+
+#: src/constants/errors/user.ts:9
+msgid "Otp or recovery code empty"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:347
+msgid "Overwrite"
+msgstr ""
+
+#: src/views/config/ConfigEditor.vue:351
+msgid "Overwrite exist file"
+msgstr ""
+
+#: src/views/preference/tabs/AppSettings.vue:14
+msgid "Page Size"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:77
+msgid "Params"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:109
+#: src/views/dashboard/components/ParamsOptimization.vue:115
+msgid "Params Optimization"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:59
+msgid "Passkey"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:62
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
+"facial recognition, a device password, or a PIN. They can be used as a "
+"password replacement or as a 2FA method."
+msgstr ""
+
+#: src/views/other/Login.vue:183 src/views/user/userColumns.tsx:18
+msgid "Password"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:98
+msgid "Password (*)"
+msgstr ""
+
+#: src/constants/errors/user.ts:2
+msgid "Password incorrect"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:42
+msgid "Password length cannot exceed 20 characters"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:110
+#: src/components/NgxConfigEditor/LocationEditor.vue:138
+#: src/views/config/ConfigEditor.vue:316
+#: src/views/nginx_log/NginxLogList.vue:38
+msgid "Path"
+msgstr ""
+
+#: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
+msgid "Path: {0} is not under the nginx conf dir: {1}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:6
+msgid "Payload resource is nil"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:232
+msgid "Perform"
+msgstr ""
+
+#: src/language/constants.ts:29
+msgid "Perform core upgrade error"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:121
+msgid "Performance"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:182
+msgid "Performance Metrics"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOptimization.vue:86
+msgid "Performance settings saved successfully"
+msgstr ""
+
+#: src/language/constants.ts:28
+msgid "Performing core upgrade"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:19
+msgid "PID path not exist"
+msgstr ""
+
+#: src/constants/errors/crypto.ts:2
+msgid "Plain text is empty"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:171
+msgid ""
+"Please enable the stub_status module to get request statistics, connection "
+"count, etc."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:69
+msgid ""
+"Please enter a name for the passkey you wish to create and click the OK "
+"button below."
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:85
+msgid "Please enter the OTP code:"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
+msgid "Please enter the security token"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:210
+#: src/components/SystemRestore/SystemRestoreContent.vue:287
+msgid "Please enter the security token received during backup"
+msgstr ""
+
+#: src/views/certificate/DNSCredential.vue:53
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
+msgid "Please fill in the required fields"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:56
+msgid ""
+"Please first add credentials in Certification > DNS Credentials, and then "
+"select one of the credentialsbelow to request the API of the DNS provider."
+msgstr ""
+
+#: src/components/Notification/notifications.ts:166
+#: src/language/constants.ts:59
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr ""
+
+#: src/views/config/components/Rename.vue:65
+#: src/views/config/ConfigEditor.vue:302
+msgid "Please input a filename"
+msgstr ""
+
+#: src/views/config/components/Mkdir.vue:56
+msgid "Please input a folder name"
+msgstr ""
+
+#: src/views/stream/components/StreamDuplicate.vue:25
+msgid ""
+"Please input name, this will be used as the filename of the new "
+"configuration!"
+msgstr ""
+
+#: src/views/site/site_list/SiteDuplicate.vue:33
+msgid ""
+"Please input name, this will be used as the filename of the new "
+"configuration."
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:26
+msgid "Please input your E-mail!"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:38 src/views/other/Login.vue:47
+msgid "Please input your password!"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:32 src/views/other/Login.vue:41
+msgid "Please input your username!"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:48
+#: src/views/system/Backup/SystemRestore.vue:10
+msgid "Please log in."
+msgstr ""
+
+#: src/views/certificate/DNSCredential.vue:62
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:100
+msgid "Please resolve all issues before proceeding with installation"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:107
+msgid "Please save this security token, you will need it for restoration:"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:107
+msgid "Please select a backup file"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:35
+msgid "Please select at least one node to reload Nginx"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:49
+msgid "Please select at least one node to restart Nginx"
+msgstr ""
+
+#: src/views/environments/list/Environment.vue:91
+msgid "Please select at least one node to upgrade"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:27
+msgid "Please type \"Revoke\" to confirm"
+msgstr ""
+
+#: src/views/preference/tabs/ServerSettings.vue:22
+msgid "Port"
+msgstr ""
+
+#: src/views/environments/group/columns.ts:17
+#: src/views/environments/group/EnvGroup.vue:26
+msgid "Post-sync Action"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:167
+#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
+msgid "Pre-release"
+msgstr ""
+
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:41
+msgid "Preference"
+msgstr ""
+
+#: src/language/constants.ts:8
+msgid "Preparing lego configurations"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:26
+msgid "Process Distribution"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:154
+msgid "Process information"
+msgstr ""
+
+#: src/language/constants.ts:3
+msgid "Prohibit changing root password in demo"
+msgstr ""
+
+#: src/language/constants.ts:4
+msgid "Prohibit deleting the default user"
+msgstr ""
+
+#: src/views/system/About.vue:51
+msgid "Project Team"
+msgstr ""
+
+#: src/views/certificate/DNSCredential.vue:19
+msgid "Provider"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:51
+msgid "Proxy"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:46
+msgid "Public Security Number"
+msgstr ""
+
+#: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
+msgid "Read dir failed: {0}"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:104
+#: src/views/dashboard/components/PerformanceTablesCard.vue:63
+msgid "Read requests"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:37
+#: src/views/dashboard/ServerAnalytic.vue:383
+msgid "Reads"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:334
+#: src/views/dashboard/ServerAnalytic.vue:35
+msgid "Receive"
+msgstr ""
+
+#: src/components/SelfCheck/SelfCheck.vue:23
+msgid "Recheck"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:533
+msgid "Recover"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:189
+msgid "Recovered Successfully"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:79
+msgid "Recovery"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:68
+msgid "Recovery Codes"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:73
+msgid ""
+"Recovery codes are used to access your account when you lose access to your "
+"2FA device. Each code can only be used once."
+msgstr ""
+
+#: src/views/preference/tabs/CertSettings.vue:40
+msgid "Recursive Nameservers"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:387
+msgid "Regenerate response"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:137
+msgid "Register"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:56
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:106
+msgid "Register failed"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:77
+msgid "Register On Startup"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:25
+msgid "Register passkey successfully"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:104
+msgid "Register successfully"
+msgstr ""
+
+#: src/language/constants.ts:14
+msgid "Registering user"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:120
+msgid "Registration Status"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:226
+msgid "Reinstall"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:249
+msgid "Release Note"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:362
+#: src/components/NginxControl/NginxControl.vue:99
+msgid "Reload"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/views/environments/group/columns.ts:24
+#: src/views/environments/group/EnvGroup.vue:37
+#: src/views/environments/list/Environment.vue:120
+#: src/views/environments/list/Environment.vue:128
+msgid "Reload Nginx"
+msgstr ""
+
+#: src/constants/errors/nginx.ts:3
+msgid "Reload nginx failed: {0}"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:10
+msgid "Reload Nginx on %{node} failed, response: %{resp}"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:14
+msgid "Reload Nginx on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:9
+msgid "Reload Remote Nginx Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:13
+msgid "Reload Remote Nginx Success"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+msgid "Reload request failed, please check your network connection"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:73
+msgid "Reloading"
+msgstr ""
+
+#: src/language/constants.ts:18
+msgid "Reloading nginx"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:169
+msgid "Remove"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:46
+#: src/views/preference/tabs/AuthSettings.vue:51
+msgid "Remove successfully"
+msgstr ""
+
+#: src/components/Notification/Notification.vue:79
+msgid "Removed successfully"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:126
+#: src/views/config/components/ConfigName.vue:51
+#: src/views/config/components/Rename.vue:56
+#: src/views/config/ConfigList.vue:181
+#: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
+#: src/views/stream/components/ConfigName.vue:44
+msgid "Rename"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:62
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:66
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
+msgid "Rename Remote Config Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
+msgid "Rename Remote Config Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:109
+#: src/language/constants.ts:56
+msgid "Rename Remote Site Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:113
+#: src/language/constants.ts:55
+msgid "Rename Remote Site Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:149
+msgid "Rename Remote Stream Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:153
+msgid "Rename Remote Stream Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:110
+msgid "Rename site %{name} to %{new_name} on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:114
+msgid "Rename site %{name} to %{new_name} on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:150
+msgid "Rename stream %{name} to %{new_name} on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:154
+msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:43
+msgid "Rename successfully"
+msgstr ""
+
+#: src/views/config/components/ConfigName.vue:30
+#: src/views/site/site_edit/components/ConfigName/ConfigName.vue:27
+#: src/views/stream/components/ConfigName.vue:27
+msgid "Renamed successfully"
+msgstr ""
+
+#: src/views/certificate/components/RenewCert.vue:46
+#: src/views/certificate/components/RenewCert.vue:53
+msgid "Renew Certificate"
+msgstr ""
+
+#: src/language/constants.ts:36
+msgid "Renew Certificate Error"
+msgstr ""
+
+#: src/language/constants.ts:35
+msgid "Renew Certificate Success"
+msgstr ""
+
+#: src/views/certificate/components/RenewCert.vue:28
+#: src/views/certificate/components/WildcardCertificate.vue:46
+msgid "Renew successfully"
+msgstr "Оновлення успішне"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:141
+msgid "Request statistics"
+msgstr ""
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
+msgstr ""
+
+#: src/language/constants.ts:33
+msgid "Requested with wrong parameters"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:77
+msgid "Requests Per Connection"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:442
+msgid "Reset"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:93
+msgid "Reset 2FA"
+msgstr ""
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:53
+msgid ""
+"Resident Set Size: Actual memory resident in physical memory, including all "
+"shared library memory, which will be repeated calculated for multiple "
+"processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:109
+#: src/views/dashboard/components/PerformanceTablesCard.vue:68
+msgid "Responses"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:92
+msgid "Restart"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/views/environments/list/Environment.vue:141
+#: src/views/environments/list/Environment.vue:149
+msgid "Restart Nginx"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:18
+msgid "Restart Nginx on %{node} failed, response: %{resp}"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:22
+msgid "Restart Nginx on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:17
+msgid "Restart Remote Nginx Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:21
+msgid "Restart Remote Nginx Success"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+msgid "Restart request failed, please check your network connection"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:78
+msgid "Restarting"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:135
+msgid "Restore completed successfully"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:110
+msgid "Restore from Backup"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:223
+#: src/components/SystemRestore/SystemRestoreContent.vue:300
+msgid "Restore Nginx Configuration"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:234
+#: src/components/SystemRestore/SystemRestoreContent.vue:311
+msgid "Restore Nginx UI Configuration"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:412
+#: src/components/ConfigHistory/DiffViewer.vue:425
+msgid "Restore this version"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:26
+#: src/views/certificate/components/RemoveCert.vue:95
+msgid "Revoke"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:113
+msgid "Revoke Old Certificate"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:109
+msgid "Revoke this certificate"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:117
+msgid ""
+"Revoking a certificate will affect any services currently using it. This "
+"action cannot be undone."
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:107
+msgid "RP Display Name"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:113
+msgid "RP Origins"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:101
+msgid "RPID"
+msgstr ""
+
+#: src/views/preference/tabs/ServerSettings.vue:25
+msgid "Run Mode"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:68
+msgid "Running"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:355
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
+#: src/components/StdDesign/StdDetail/StdDetail.vue:93
+#: src/views/certificate/CertificateEditor.vue:266
+#: src/views/config/components/ConfigName.vue:59
+#: src/views/config/ConfigEditor.vue:275
+#: src/views/preference/components/AuthSettings/Passkey.vue:130
+#: src/views/preference/Preference.vue:117
+#: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:157
+#: src/views/stream/components/ConfigName.vue:52
+#: src/views/stream/components/StreamEditor.vue:113
+msgid "Save"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:112
+msgid "Save Directive"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:45
+#: src/views/site/site_add/SiteAdd.vue:38
+msgid "Save error %{msg}"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:117
+#: src/language/constants.ts:48
+msgid "Save Remote Site Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:121
+#: src/language/constants.ts:47
+msgid "Save Remote Site Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:157
+msgid "Save Remote Stream Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:161
+msgid "Save Remote Stream Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:118
+msgid "Save site %{name} to %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:122
+msgid "Save site %{name} to %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:158
+msgid "Save stream %{name} to %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:162
+msgid "Save stream %{name} to %{node} successfully"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
+#: src/views/certificate/CertificateEditor.vue:49
+#: src/views/preference/store/index.ts:118
+msgid "Save successfully"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
+#: src/views/config/ConfigEditor.vue:194 src/views/site/site_add/SiteAdd.vue:29
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+msgid "Saved successfully"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:20
+msgid "Sbin path not exist"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:69
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+
+#: src/views/certificate/components/DNSChallenge.vue:90
+msgid "SDK"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:109
+msgid "Secret has been copied"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:207
+#: src/components/SystemRestore/SystemRestoreContent.vue:284
+msgid "Security Token"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:94
+msgid "Security Token Information"
+msgstr ""
+
+#: src/views/environments/group/EnvGroup.vue:29
+msgid "Select an action after sync"
+msgstr ""
+
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
+msgid "Selector"
+msgstr ""
+
+#: src/components/SelfCheck/SelfCheck.vue:15 src/routes/modules/system.ts:19
+msgid "Self Check"
+msgstr ""
+
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:37
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:60
+msgid "Self check failed, Nginx UI may not work properly"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:344
+#: src/views/dashboard/ServerAnalytic.vue:35
+msgid "Send"
+msgstr ""
+
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
+msgid "Server"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:175
+msgid "Server Info"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+msgid "Server Names Hash Bucket Size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+msgid "Server names hash table size"
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:105
+msgid "server_name not found in directives"
+msgstr ""
+
+#: src/constants/errors/nginx_log.ts:3
+msgid "ServerIdx out of range"
+msgstr ""
+
+#: src/constants/errors/user.ts:12
+msgid "Session not found"
+msgstr ""
+
+#: src/views/preference/tabs/CertSettings.vue:36
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+#: src/views/site/components/SiteStatusSegmented.vue:89
+msgid "set to maintenance mode"
+msgstr ""
+
+#: src/language/constants.ts:11
+msgid "Setting DNS01 challenge provider"
+msgstr ""
+
+#: src/language/constants.ts:12
+msgid "Setting environment variables"
+msgstr ""
+
+#: src/language/constants.ts:10
+msgid "Setting HTTP01 challenge provider"
+msgstr ""
+
+#: src/constants/errors/nginx_log.ts:8
+msgid ""
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/constants/errors/nginx_log.ts:7
+msgid ""
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:64
+msgid "Setup your Nginx UI"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
+msgid "Shared Memory Zone"
+msgstr ""
+
+#: src/components/SensitiveString/SensitiveString.vue:40
+msgid "Show"
+msgstr ""
+
+#: src/views/other/Login.vue:240
+msgid "Sign in with a passkey"
+msgstr ""
+
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:48
+msgid "Single Directive"
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:129
+msgid "Site Config Created Successfully"
+msgstr ""
+
+#: src/constants/errors/site.ts:4
+msgid "Site is enabled"
+msgstr ""
+
+#: src/constants/errors/site.ts:5
+msgid "Site is in maintenance mode"
+msgstr ""
+
+#: src/routes/modules/nginx_log.ts:31
+msgid "Site Logs"
+msgstr ""
+
+#: src/constants/errors/site.ts:2
+msgid "Site not found"
+msgstr ""
+
+#: src/language/generate.ts:50
+msgid "Sites directory exists"
+msgstr ""
+
+#: src/routes/modules/sites.ts:19
+msgid "Sites List"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:11
+msgid "Sites-available directory not exist"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:12
+msgid "Sites-enabled directory not exist"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:23
+msgid "Skip Installation"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:325
+msgid "Sleep time between cache loader iterations"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
+msgid "Sleep time between cache manager iterations"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:213
+msgid "SSL Certificate Content"
+msgstr ""
+
+#: src/constants/errors/system.ts:8
+msgid "SSL certificate file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:6
+msgid "SSL certificate file not found"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:227
+msgid "SSL Certificate Key Content"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:192
+msgid "SSL Certificate Key Path"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/preference/tabs/ServerSettings.vue:37
+msgid "SSL Certificate Path"
+msgstr ""
+
+#: src/constants/errors/system.ts:4
+msgid "SSL certificate path is required when HTTPS is enabled"
+msgstr ""
+
+#: src/constants/errors/system.ts:9
+msgid "SSL key file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:7
+msgid "SSL key file not found"
+msgstr ""
+
+#: src/views/preference/tabs/ServerSettings.vue:41
+msgid "SSL Key Path"
+msgstr ""
+
+#: src/constants/errors/system.ts:5
+msgid "SSL key path is required when HTTPS is enabled"
+msgstr ""
+
+#: src/views/other/Login.vue:197
+msgid "SSO Login"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:164
+#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
+msgid "Stable"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:246
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
+msgid "Start Restore"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:65
+#: src/views/certificate/CertificateList/certColumns.tsx:65
+#: src/views/environments/list/envColumns.tsx:44
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:28
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/StreamList.vue:47
+msgid "Status"
+msgstr ""
+
+#: src/components/NginxControl/NginxControl.vue:83
+msgid "Stopped"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:250
+#: src/views/dashboard/ServerAnalytic.vue:251
+msgid "Storage"
+msgstr ""
+
+#: src/constants/errors/stream.ts:4
+msgid "Stream is enabled"
+msgstr ""
+
+#: src/constants/errors/stream.ts:2
+msgid "Stream not found"
+msgstr ""
+
+#: src/language/generate.ts:20
+msgid "Streams directory exists"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:13
+msgid "Streams-available directory not exist"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:14
+msgid "Streams-enabled directory not exist"
+msgstr ""
+
+#: src/views/preference/tabs/NginxSettings.vue:10
+msgid "Stub Status Port"
+msgstr ""
+
+#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:36
+msgid "Success"
+msgstr ""
+
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:13
+msgid ""
+"Support communication with the backend through the WebSocket protocol. If "
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:197
+#: src/components/SystemRestore/SystemRestoreContent.vue:274
+msgid "Supported file type: .zip"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:236
+#: src/views/dashboard/ServerAnalytic.vue:237
+msgid "Swap"
+msgstr ""
+
+#: src/components/SwitchAppearance/SwitchAppearance.vue:13
+msgid "Switch to dark theme"
+msgstr ""
+
+#: src/components/SwitchAppearance/SwitchAppearance.vue:13
+msgid "Switch to light theme"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:81
+msgid "Sync"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:30
+msgid "Sync Certificate"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:46
+msgid "Sync Certificate %{cert_name} to %{env_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:50
+msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
+msgid "Sync Certificate Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
+msgid "Sync Certificate Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:54
+msgid "Sync config %{config_name} to %{env_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:58
+msgid "Sync config %{config_name} to %{env_name} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
+msgid "Sync Config Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
+msgid "Sync Config Success"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/views/environments/group/EnvGroup.vue:18
+msgid "Sync Nodes"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:58
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
+#: src/views/stream/components/RightPanel/Basic.vue:105
+#: src/views/stream/components/RightPanel/Basic.vue:92
+msgid "Sync strategy"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:206
+msgid "Sync to"
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:56
+#: src/views/stream/components/RightPanel/Basic.vue:90
+msgid "Synchronization"
+msgstr ""
+
+#: src/routes/modules/system.ts:11
+msgid "System"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:71
+msgid "System Backup"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:59
+msgid "System Check"
+msgstr ""
+
+#: src/views/certificate/components/ACMEUserSelector.vue:88
+msgid "System Initial User"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+msgid "System Restore"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:44
+#: src/views/system/Backup/SystemRestore.vue:6
+msgid "System restored successfully."
+msgstr ""
+
+#: src/constants/errors/self_check.ts:3
+msgid "Task is not fixable"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:2
+msgid "Task not found"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/telegram.ts:5
+msgid "Telegram"
+msgstr ""
+
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:76
+msgid "Terminal"
+msgstr "Термінал"
+
+#: src/views/preference/tabs/TerminalSettings.vue:10
+msgid "Terminal Start Command"
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:48
+msgid ""
+"The certificate for the domain will be checked 30 minutes, and will be "
+"renewed if it has been more than 1 week or the period you set in settings "
+"since it was last issued."
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:48
+msgid "The filename cannot contain the following characters: %{c}"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:37
+msgid ""
+"The ICP Number should only contain letters, unicode, numbers, hyphens, "
+"dashes, colons, and dots."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:216
+msgid "The input is not a SSL Certificate"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:230
+msgid "The input is not a SSL Certificate Key"
+msgstr ""
+
+#: src/constants/errors/nginx_log.ts:2
+msgid ""
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:23
+#: src/views/preference/tabs/OpenAISettings.vue:89
+msgid ""
+"The model name should only contain letters, unicode, numbers, hyphens, "
+"dashes, colons, and dots."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:90
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:18
+msgid ""
+"The node name should only contain letters, unicode, numbers, hyphens, "
+"dashes, colons, and dots."
+msgstr ""
+
+#: src/views/site/site_add/SiteAdd.vue:95
+msgid "The parameter of server_name is required"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:181
+msgid "The path exists, but the file is not a certificate"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:196
+msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/preference/tabs/NodeSettings.vue:49
+msgid ""
+"The Public Security Number should only contain letters, unicode, numbers, "
+"hyphens, dashes, colons, and dots."
+msgstr ""
+
+#: src/views/dashboard/Environments.vue:148
+msgid ""
+"The remote Nginx UI version is not compatible with the local Nginx UI "
+"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"match the local version."
+msgstr ""
+
+#: src/components/AutoCertForm/AutoCertForm.vue:43
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate, supportmultiple domains."
+msgstr ""
+
+#: src/views/preference/tabs/CertSettings.vue:22
+#: src/views/preference/tabs/HTTPSettings.vue:14
+msgid "The url is invalid"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:35
+#: src/views/preference/tabs/OpenAISettings.vue:49
+msgid "The url is invalid."
+msgstr ""
+
+#: src/language/constants.ts:2
+msgid "The username or password is incorrect"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:184
+msgid "Theoretical maximum concurrent connections:"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:188
+msgid "Theoretical maximum RPS (Requests Per Second):"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:104
+msgid ""
+"These codes are the last resort for accessing your account in case you lose "
+"your password and second factors. If you cannot find these codes, you will "
+"lose access to your account."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:102
+msgid "This Auto Cert item is invalid, please remove it."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:92
+msgid "This certificate is managed by Nginx UI"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
+msgid "This field is required"
+msgstr ""
+
+#: src/constants/form_errors.ts:3
+msgid "This field should be a valid email address"
+msgstr ""
+
+#: src/constants/form_errors.ts:5
+msgid "This field should be a valid hostname"
+msgstr ""
+
+#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:39
+#: src/constants/form_errors.ts:2
+msgid "This field should not be empty"
+msgstr ""
+
+#: src/constants/form_errors.ts:6
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:150
+msgid ""
+"This module provides Nginx request statistics, connection count, etc. data. "
+"After enabling it, you can view performance statistics"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:103
+msgid ""
+"This operation will only remove the certificate from the database. The "
+"certificate files on the file system will not be deleted."
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:141
+msgid ""
+"This token will only be shown once and cannot be retrieved later. Please "
+"make sure to save it in a secure location."
+msgstr ""
+
+#: src/constants/form_errors.ts:4
+msgid "This value is already taken"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:227
+#: src/components/SystemRestore/SystemRestoreContent.vue:304
+msgid ""
+"This will restore all Nginx configuration files. Nginx will restart after "
+"the restoration is complete."
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:238
+#: src/components/SystemRestore/SystemRestoreContent.vue:315
+msgid ""
+"This will restore configuration files and database. Nginx UI will restart "
+"after the restoration is complete."
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:182
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:124
+msgid "Throttle"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:65
+#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/LogrotateSettings.vue:12
+msgid "Tips"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:206
+msgid ""
+"Tips: You can increase the concurrency processing capacity by increasing "
+"worker_processes or worker_connections"
+msgstr ""
+
+#: src/views/notification/notificationColumns.tsx:52
+msgid "Title"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:121
+msgid "To confirm revocation, please type \"Revoke\" in the field below:"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:68
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:89
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
+"Please manually configure the following in the app.ini configuration file "
+"and restart Nginx UI."
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:34
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
+msgid ""
+"To make sure the certification auto-renewal can work normally, we need to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
+"continue?"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:36
+msgid ""
+"To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
+"provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
+"local API."
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:55
+msgid "Toggle failed"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:61
+msgid "Token is not valid"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdPagination.vue:40
+msgid "Total %{total} item"
+msgid_plural "Total %{total} items"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/composables/usePerformanceMetrics.ts:94
+#: src/views/dashboard/components/PerformanceTablesCard.vue:53
+msgid "Total connections"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:89
+#: src/views/dashboard/components/PerformanceTablesCard.vue:48
+msgid "Total handshakes"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:53
+msgid "Total Nginx processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
+msgid "Total Nginx Processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:99
+#: src/views/dashboard/components/PerformanceTablesCard.vue:58
+msgid "Total requests"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
+msgid "Total Requests / Total Connections"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:66
+msgid "TOTP"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/TOTP.vue:67
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:197
+msgid "Trash"
+msgstr ""
+
+#: src/components/TwoFA/use2FAModal.ts:67
+msgid "Two-factor authentication required"
+msgstr ""
+
+#: src/views/certificate/CertificateList/certColumns.tsx:25
+#: src/views/nginx_log/NginxLogList.vue:14
+#: src/views/notification/notificationColumns.tsx:9
+#: src/views/preference/components/ExternalNotify/columns.ts:17
+msgid "Type"
+msgstr ""
+
+#: src/composables/useNginxPerformance.ts:18
+msgid "Unknown"
+msgstr ""
+
+#: src/components/SelfCheck/SelfCheck.vue:43
+msgid "Unknown issue"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:39
+msgid "Update successfully"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:88
+#: src/views/certificate/DNSCredential.vue:27
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
+#: src/views/environments/group/columns.ts:37
+#: src/views/environments/list/envColumns.tsx:90
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:38
+#: src/views/site/site_list/columns.tsx:83
+#: src/views/stream/components/RightPanel/Basic.vue:73
+#: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
+msgid "Updated at"
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:121
+msgid "Updated successfully"
+msgstr ""
+
+#: src/routes/modules/system.ts:33
+#: src/views/environments/list/Environment.vue:107
+#: src/views/environments/list/Environment.vue:99
+#: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
+msgid "Upgrade"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:137
+msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgstr ""
+
+#: src/language/constants.ts:30
+msgid "Upgraded successfully"
+msgstr ""
+
+#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/system/Upgrade.vue:77
+msgid "Upgrading Nginx UI, please wait..."
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+msgid "Upstream Name"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:179
+msgid "Uptime:"
+msgstr ""
+
+#: src/views/environments/list/envColumns.tsx:19
+msgid "URL"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:121
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/TwoFA/Authorization.vue:117
+msgid "Use recovery code"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:158
+msgid "Use Temporary Path"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:333
+msgid "User"
+msgstr ""
+
+#: src/constants/errors/user.ts:3
+msgid "User banned"
+msgstr ""
+
+#: src/constants/errors/user.ts:8
+msgid "User not enabled otp as 2fa"
+msgstr ""
+
+#: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:9
+msgid "Username"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:88
+msgid "Username (*)"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:24
+#: src/views/certificate/ACMEUser.vue:124
+#: src/views/certificate/CertificateList/certColumns.tsx:78
+msgid "Valid"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:21
+msgid "Value"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:216
+#: src/components/SystemRestore/SystemRestoreContent.vue:293
+msgid "Verify Backup File Integrity"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:60
+msgid "Verify system requirements"
+msgstr "Перевірте системні вимоги"
+
+#: src/views/environments/list/envColumns.tsx:31
+msgid "Version"
+msgstr "Версія"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
+#: src/views/nginx_log/NginxLogList.vue:74
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
+msgid "View"
+msgstr "Переглянути"
+
+#: src/components/Notification/Notification.vue:180
+msgid "View all notifications"
+msgstr "Переглянути всі сповіщення"
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
+msgid "View Details"
+msgstr "Переглянути деталі"
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
+msgid "View Mode"
+msgstr "Режим перегляду"
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
+msgid "View Recovery Codes"
+msgstr "Переглянути коди відновлення"
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
+msgid "Viewed"
+msgstr "Переглянутий"
+
+#: src/composables/usePerformanceMetrics.ts:114
+#: src/views/dashboard/components/PerformanceTablesCard.vue:73
+msgid "Waiting processes"
+msgstr "Процеси очікування"
+
+#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
+#: src/views/notification/notificationColumns.tsx:22
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:82
+#: src/views/system/Backup/BackupCreator.vue:138
+msgid "Warning"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:178
+#: src/components/SystemRestore/SystemRestoreContent.vue:255
+msgid ""
+"Warning: Restore operation will overwrite current configurations. Make sure "
+"you have a valid backup file and security token, and carefully select what "
+"to restore."
+msgstr ""
+
+#: src/views/certificate/DNSCredential.vue:56
+msgid ""
+"We will add one or more TXT records to the DNS records of your domain for "
+"ownership verification."
+msgstr ""
+
+#: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
+msgid ""
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
+msgstr ""
+
+#: src/views/preference/tabs/AuthSettings.vue:97
+msgid "Webauthn"
+msgstr ""
+
+#: src/constants/errors/user.ts:7
+msgid "WebAuthn settings are not configured"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:54
+msgid "WebSocket connection error"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:83
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:61
+#: src/views/stream/components/RightPanel/Basic.vue:95
+msgid ""
+"When you enable/disable, delete, or save this site, the nodes set in the "
+"Node Group and the nodes selected below will be synchronized."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
+msgid ""
+"When you generate new recovery codes, you must download or print the new "
+"codes."
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:160
+msgid "Whether to use a temporary path when writing temporary files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
+msgid "Worker Connections"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:55
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:48
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:25
+#: src/views/dashboard/components/ProcessDistributionCard.vue:12
+msgid "Worker Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Workers"
+msgstr ""
+
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:56
+#: src/views/workspace/WorkSpace.vue:52
+msgid "Workspace"
+msgstr "Робоча область"
+
+#: src/views/dashboard/ServerAnalytic.vue:37
+#: src/views/dashboard/ServerAnalytic.vue:373
+msgid "Writes"
+msgstr ""
+
+#: src/language/constants.ts:17
+msgid "Writing certificate private key to disk"
+msgstr ""
+
+#: src/language/constants.ts:16
+msgid "Writing certificate to disk"
+msgstr ""
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
+#: src/components/NgxConfigEditor/LocationEditor.vue:88
+#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/CertSettings.vue:72
+msgid "Yes"
+msgstr "Так"
+
+#: src/views/terminal/Terminal.vue:135
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
+msgstr ""
+"Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
+"домені, який не є локальним. Це може призвести до витоку конфіденційної "
+"інформації."
+
+#: src/views/system/Upgrade.vue:202
+msgid "You are using the latest version"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:164
+msgid "You can check Nginx UI upgrade at this page."
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:339
+msgid "You can close this dialog in %{countdown} seconds"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:342
+msgid "You can close this dialog now"
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
+msgid ""
+"You have not configured the settings of Webauthn, so you cannot add a "
+"passkey."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
+msgid "You have not generated recovery codes yet."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:91
+msgid ""
+"Your current recovery code might be outdated and insecure. Please generate "
+"new recovery codes at your earliest convenience to ensure security."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:142
+#: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
+msgid "Your old codes won't work anymore."
+msgstr ""
+
+#: src/views/preference/components/AuthSettings/Passkey.vue:75
+msgid "Your passkeys"
+msgstr ""
+
+#~ msgid "Automatically indexed from site and stream configurations."
+#~ msgstr "\"Автоматично проіндексовано з конфігурацій сайту та потоку.\""
+
+#~ msgid ""
+#~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ msgstr ""
+#~ "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте "
+#~ "офіційний Docker-образ Nginx UI, переконайтеся, що сокет Docker "
+#~ "підключено таким чином: `-v /var/run/docker.sock:/var/run/docker.sock`."

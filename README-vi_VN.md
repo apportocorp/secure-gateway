@@ -4,7 +4,7 @@
 
 # Nginx UI
 
-Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/) và [Hintay](https://blog.kugeek.com/).
+Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) và [Akino](https://github.com/akinoccc).
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 [![GitHub license](https://img.shields.io/github/license/0xJacky/nginx-ui?label=License&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
@@ -121,6 +121,7 @@ Chúng tôi hoan nghênh bản dịch sang bất kỳ ngôn ngữ nào.
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)
 
 ## Bắt đầu
 
@@ -147,7 +148,8 @@ http {
 Giao diện người dùng Nginx có sẵn trên các nền tảng sau:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
-- Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)
+- Windows 10 and later (x86 /amd64 / arm64)
+- Linux 2.6.23 và sau đó (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
   - Bao gồm nhưng không giới hạn Debian 7/8, Ubuntu 12.04/14.04 trở lên, CentOS 6/7, Arch Linux
 - FreeBSD
 - OpenBSD
@@ -219,6 +221,7 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -246,6 +249,7 @@ services:
             - '/mnt/user/appdata/nginx:/etc/nginx'
             - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
             - '/var/www:/var/www'
+            - '/var/run/docker.sock:/var/run/docker.sock'
         ports:
             - 8080:80
             - 8443:443
@@ -289,6 +293,7 @@ pnpm build
 Vui lòng build Frontend trước, sau đó thực hiện lệnh sau trong thư mục gốc của dự án.
 
 ```shell
+go generate
 go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
@@ -299,7 +304,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **Cài đặt và nâng cấp**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 Port mặc định để truy cập UI là `9000`, port HTTP Challenge mặc định để xác thực SSL là `9180`.
 Nếu có xung đột port, vui lòng sửa đổi trong file `/usr/local/etc/nginx-ui/app.ini`,
@@ -308,19 +313,19 @@ hãy nhớ restart nginx-ui bằng lệnh `systemctl restart nginx-ui` mỗi khi
 **Gỡ bỏ Nginx UI nhưng giữ lại các tệp cấu hình và cơ sở dữ liệu**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 **Gỡ bỏ Nginx UI đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 ### Trợ giúp
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Ví dụ về cấu hình Nginx Reverse Proxy

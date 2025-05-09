@@ -1,13 +1,22 @@
 package router
 
 import (
+	"net/http"
+
+	"github.com/gin-contrib/pprof"
+
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
+	"github.com/0xJacky/Nginx-UI/api/crypto"
+	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
+	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
+	"github.com/0xJacky/Nginx-UI/api/pages"
+	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/api/streams"
@@ -17,19 +26,18 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
-	"github.com/gin-contrib/static"
+	"github.com/0xJacky/Nginx-UI/mcp"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 func InitRouter() {
 	r := cosy.GetEngine()
-	r.Use(
-		middleware.CacheJs(),
-		middleware.IPWhiteList(),
-		static.Serve("/", middleware.MustFs("")),
-	)
+
+	initEmbedRoute(r)
+
+	pages.InitRouter(r)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -37,19 +45,27 @@ func InitRouter() {
 		})
 	})
 
-	root := r.Group("/api")
+	mcp.InitRouter(r)
+
+	root := r.Group("/api", middleware.IPWhiteList())
 	{
+		public.InitRouter(root)
+		crypto.InitPublicRouter(root)
 		system.InitPublicRouter(root)
+		system.InitBackupRestoreRouter(root)
+		system.InitSelfCheckRouter(root)
 		user.InitAuthRouter(root)
 
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
+			if cSettings.ServerSettings.RunMode == gin.DebugMode {
+				pprof.Register(g)
+			}
 			user.InitUserRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
-			sites.InitCategoryRouter(g)
 			sites.InitRouter(g)
 			streams.InitRouter(g)
 			config.InitRouter(g)
@@ -62,6 +78,7 @@ func InitRouter() {
 			openai.InitRouter(g)
 			cluster.InitRouter(g)
 			notification.InitRouter(g)
+			external_notify.InitRouter(g)
 		}
 
 		// Authorization required and websocket request
@@ -73,7 +90,7 @@ func InitRouter() {
 			{
 				terminal.InitRouter(o)
 			}
-			nginx.InitNginxLogRouter(w)
+			nginxLog.InitRouter(w)
 			upstream.InitRouter(w)
 			system.InitWebSocketRouter(w)
 		}

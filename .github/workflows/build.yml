@@ -69,7 +69,7 @@ jobs:
 
       - name: Build
         run: |
-          npx browserslist@latest --update-db
+          npx update-browserslist-db@latest
           pnpm build
         working-directory: app
 
@@ -96,7 +96,7 @@ jobs:
     needs: build_app
     strategy:
       matrix:
-        goos: [ linux, darwin ]
+        goos: [ linux, darwin, windows ]
         goarch: [ amd64, 386, arm64 ]
         exclude:
           # Exclude i386 on darwin.
@@ -114,6 +114,20 @@ jobs:
             goarch: arm
             goarm: 5
           # END Linux ARM 5 6 7
+          - goos: linux
+            goarch: riscv64
+          - goos: linux
+            goarch: loong64
+          # BEGIN MIPS
+          - goos: linux
+            goarch: mips64
+          - goos: linux
+            goarch: mips64le
+          - goos: linux
+            goarch: mipsle
+          - goos: linux
+            goarch: mips
+          # END MIPS
     env:
       CGO_ENABLED: 1
       GOOS: ${{ matrix.goos }}
@@ -126,27 +140,62 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: ^1.23.0
+          go-version: ^1.24.2
+          cache: false
 
-      - name: Setup compiler environment
+      - name: Setup environment
         id: info
         run: |
-          export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
+          export _NAME=$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
           export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
           export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
           export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
-          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
+          export _BINARY=nginx-ui$(if [[ "$GOOS" == "windows" ]]; then echo ".exe"; fi)
+          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT, BINARY_NAME: $_BINARY"
+          echo "CACHE_NAME=$_NAME" >> $GITHUB_ENV
           echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
           echo "ABI=$_ABI" >> $GITHUB_ENV
-          echo "DIST=$_NAME" >> $GITHUB_ENV
+          echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
           echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+          echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
+
+      - name: Setup Go modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: go-${{ runner.os }}-${{ runner.arch }}-mod-${{ hashFiles('go.mod') }}
+          restore-keys: |
+            go-${{ runner.os }}-${{ runner.arch }}-mod-
+
+      - name: Setup Go build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.mod') }}
+          restore-keys: |
+              go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
+
+      - name: Download app artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-dist
+          path: app/dist
+
+      - name: Generate files
+        env:
+          GOOS: linux
+          GOARCH: amd64
+        run: go generate
 
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
-        uses: 0xJacky/musl-cross-compilers@v0.6.6
+        uses: nginxui/musl-cross-compilers@v1
         id: musl
         with:
           target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+          variant: ${{ env.GOARCH == 'loong64' && 'userdocs/qbt-musl-cross-make' || 'richfelker/musl-cross-make' }}
 
       - name: Post install musl cross compiler
         if: env.GOOS == 'linux'
@@ -166,26 +215,52 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w" >> $GITHUB_ENV
+          
+      - name: Setup for Windows
+        if: env.GOOS == 'windows'
+        run: |
+          echo "LD_FLAGS=-w" >> $GITHUB_ENV
+          echo "CGO_ENABLED=1" >> $GITHUB_ENV
 
-      - name: Download app artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: app-dist
-          path: app/dist
+          # Install cross compilers based on architecture
+          sudo apt-get update
+          if [[ "$GOARCH" == "amd64" ]]; then
+            echo "Installing x86_64 Windows cross compiler"
+            sudo apt-get install -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
+            echo "CC=x86_64-w64-mingw32-gcc" >> $GITHUB_ENV
+            echo "CXX=x86_64-w64-mingw32-g++" >> $GITHUB_ENV
+          elif [[ "$GOARCH" == "386" ]]; then
+            echo "Installing i686 Windows cross compiler"
+            sudo apt-get install -y gcc-mingw-w64-i686 g++-mingw-w64-i686
+            echo "CC=i686-w64-mingw32-gcc" >> $GITHUB_ENV
+            echo "CXX=i686-w64-mingw32-g++" >> $GITHUB_ENV
+          elif [[ "$GOARCH" == "arm64" ]]; then
+            echo "Installing ARM64 Windows cross compiler"
+            # Ubuntu's apt repositories don't have mingw for ARM64
+            # Use llvm-mingw project instead
+            mkdir -p $HOME/llvm-mingw
+            wget -q https://github.com/mstorsjo/llvm-mingw/releases/download/20231128/llvm-mingw-20231128-ucrt-ubuntu-20.04-x86_64.tar.xz
+            tar xf llvm-mingw-20231128-ucrt-ubuntu-20.04-x86_64.tar.xz -C $HOME/llvm-mingw --strip-components=1
+            echo "PATH=$HOME/llvm-mingw/bin:$PATH" >> $GITHUB_ENV
+            echo "CC=aarch64-w64-mingw32-clang" >> $GITHUB_ENV
+            echo "CXX=aarch64-w64-mingw32-clang++" >> $GITHUB_ENV
+          else
+            echo "Unsupported Windows architecture: $GOARCH"
+            exit 1
+          fi
 
       - name: Build
         run: |
           mkdir -p dist
-          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
+          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT }}
-          path: dist/nginx-ui
+          path: dist/${{ env.BINARY_NAME }}
 
       - name: Prepare publish
-        if: github.event_name == 'release'
         run: |
           cp README*.md ./dist
           find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
@@ -199,6 +274,16 @@ jobs:
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
 
+      - name: Upload to R2
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CF_R2_API_TOKEN }}
+          command: |
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest
+
   docker-build:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
@@ -209,9 +294,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get the version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            uozi/nginx-ui
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -219,7 +313,7 @@ jobs:
           path: ./dist
 
       - name: Prepare Artifacts
-        run: chmod +x ./dist/nginx-ui-*/nginx-ui
+        run: chmod +x ./dist/nginx-ui-*/nginx-ui*
 
       - name: Set up Docker Buildx
         id: buildx
@@ -232,22 +326,19 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Prepare Dockerfile
-        if: github.event_name == 'release'
         run: |
           cp ./Dockerfile ./dist
           cp -rp ./resources ./dist
 
       - name: Build and push
-        if: github.event_name == 'release'
         uses: docker/build-push-action@v6
         with:
           context: ./dist
           file: ./dist/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            uozi/nginx-ui:latest
-            uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Prepare Demo Dockerfile
         run: |
@@ -256,10 +347,11 @@ jobs:
 
       - name: Build and push demo
         uses: docker/build-push-action@v6
+        if: github.ref == 'refs/heads/dev'
         with:
           context: ./dist
           file: ./dist/demo.Dockerfile
           platforms: ${{ env.PLATFORMS }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: 'true'
           tags: |
             uozi/nginx-ui-demo:latest

@@ -15,6 +15,7 @@ const data = ref({
   sync_node_ids: [] as number[],
 })
 
+// eslint-disable-next-line vue/require-typed-ref
 const refForm = ref()
 
 function open(basePath: string, origName: string, isDir: boolean) {
@@ -36,12 +37,12 @@ function ok() {
     const otpModal = use2FAModal()
 
     otpModal.open().then(() => {
+      // Note: API will handle URL encoding of path segments
       config.rename(basePath, orig_name, new_name, sync_node_ids).then(() => {
         visible.value = false
         message.success($gettext('Rename successfully'))
+
         emit('renamed')
-      }).catch(e => {
-        message.error(`${$gettext('Server error')} ${e?.message}`)
       })
     })
   })

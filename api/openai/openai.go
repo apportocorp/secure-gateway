@@ -2,16 +2,18 @@ package openai
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/chatbot"
-	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"io"
+	"strings"
+	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/llm"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
 	"github.com/sashabaranov/go-openai"
-	"io"
-	"net/http"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 const ChatGPTInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
@@ -26,7 +28,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -40,7 +42,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	messages = append(messages, json.Messages...)
 
 	if json.Filepath != "" {
-		messages = chatbot.ChatCompletionWithContext(json.Filepath, messages)
+		messages = llm.ChatCompletionWithContext(json.Filepath, messages)
 	}
 
 	// SSE server
@@ -49,30 +51,18 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
-	config := openai.DefaultConfig(settings.OpenAISettings.Token)
-
-	if settings.OpenAISettings.Proxy != "" {
-		t, err := transport.NewTransport(transport.WithProxy(settings.OpenAISettings.Proxy))
-		if err != nil {
-			c.Stream(func(w io.Writer) bool {
-				c.SSEvent("message", gin.H{
-					"type":    "error",
-					"content": err.Error(),
-				})
-				return false
+	openaiClient, err := llm.GetClient()
+	if err != nil {
+		c.Stream(func(w io.Writer) bool {
+			c.SSEvent("message", gin.H{
+				"type":    "error",
+				"content": err.Error(),
 			})
-			return
-		}
-		config.HTTPClient = &http.Client{
-			Transport: t,
-		}
+			return false
+		})
+		return
 	}
 
-	if settings.OpenAISettings.BaseUrl != "" {
-		config.BaseURL = settings.OpenAISettings.BaseUrl
-	}
-
-	openaiClient := openai.NewClientWithConfig(config)
 	ctx := context.Background()
 
 	req := openai.ChatCompletionRequest{
@@ -82,7 +72,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	}
 	stream, err := openaiClient.CreateChatCompletionStream(ctx, req)
 	if err != nil {
-		fmt.Printf("CompletionStream error: %v\n", err)
+		logger.Errorf("CompletionStream error: %v\n", err)
 		c.Stream(func(w io.Writer) bool {
 			c.SSEvent("message", gin.H{
 				"type":    "error",
@@ -96,32 +86,69 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	msgChan := make(chan string)
 	go func() {
 		defer close(msgChan)
+		messageCh := make(chan string)
+
+		// 消息接收协程
+		go func() {
+			defer close(messageCh)
+			for {
+				response, err := stream.Recv()
+				if errors.Is(err, io.EOF) {
+					return
+				}
+				if err != nil {
+					messageCh <- fmt.Sprintf("error: %v", err)
+					logger.Errorf("Stream error: %v\n", err)
+					return
+				}
+				messageCh <- response.Choices[0].Delta.Content
+			}
+		}()
+
+		ticker := time.NewTicker(500 * time.Millisecond)
+		defer ticker.Stop()
+
+		var buffer strings.Builder
+
 		for {
-			response, err := stream.Recv()
-			if errors.Is(err, io.EOF) {
-				fmt.Println()
-				return
+			select {
+			case msg, ok := <-messageCh:
+				if !ok {
+					if buffer.Len() > 0 {
+						msgChan <- buffer.String()
+					}
+					return
+				}
+				if strings.HasPrefix(msg, "error: ") {
+					msgChan <- msg
+					return
+				}
+				buffer.WriteString(msg)
+			case <-ticker.C:
+				if buffer.Len() > 0 {
+					msgChan <- buffer.String()
+					buffer.Reset()
+				}
 			}
-
-			if err != nil {
-				fmt.Printf("Stream error: %v\n", err)
-				return
-			}
-
-			message := fmt.Sprintf("%s", response.Choices[0].Delta.Content)
-
-			msgChan <- message
 		}
 	}()
 
 	c.Stream(func(w io.Writer) bool {
-		if m, ok := <-msgChan; ok {
-			c.SSEvent("message", gin.H{
-				"type":    "message",
-				"content": m,
-			})
-			return true
+		m, ok := <-msgChan
+		if !ok {
+			return false
 		}
-		return false
+		if strings.HasPrefix(m, "error: ") {
+			c.SSEvent("message", gin.H{
+				"type":    "error",
+				"content": strings.TrimPrefix(m, "error: "),
+			})
+			return false
+		}
+		c.SSEvent("message", gin.H{
+			"type":    "message",
+			"content": m,
+		})
+		return true
 	})
 }

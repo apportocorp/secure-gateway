@@ -47,6 +47,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
+	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -87,6 +88,7 @@ type cert struct {
 	SyncNodeIds             field.Field
 	MustStaple              field.Bool
 	LegoDisableCNAMESupport field.Bool
+	RevokeOld               field.Bool
 	DnsCredential           certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
@@ -125,6 +127,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
+	c.RevokeOld = field.NewBool(table, "revoke_old")
 
 	c.fillFieldMap()
 
@@ -141,7 +144,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 21)
+	c.fieldMap = make(map[string]field.Expr, 22)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -161,16 +164,23 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
+	c.fieldMap["revoke_old"] = c.RevokeOld
 
 }
 
 func (c cert) clone(db *gorm.DB) cert {
 	c.certDo.ReplaceConnPool(db.Statement.ConnPool)
+	c.DnsCredential.db = db.Session(&gorm.Session{Initialized: true})
+	c.DnsCredential.db.Statement.ConnPool = db.Statement.ConnPool
+	c.ACMEUser.db = db.Session(&gorm.Session{Initialized: true})
+	c.ACMEUser.db.Statement.ConnPool = db.Statement.ConnPool
 	return c
 }
 
 func (c cert) replaceDB(db *gorm.DB) cert {
 	c.certDo.ReplaceDB(db)
+	c.DnsCredential.db = db.Session(&gorm.Session{})
+	c.ACMEUser.db = db.Session(&gorm.Session{})
 	return c
 }
 
@@ -205,6 +215,11 @@ func (a certBelongsToDnsCredential) Session(session *gorm.Session) *certBelongsT
 
 func (a certBelongsToDnsCredential) Model(m *model.Cert) *certBelongsToDnsCredentialTx {
 	return &certBelongsToDnsCredentialTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a certBelongsToDnsCredential) Unscoped() *certBelongsToDnsCredential {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type certBelongsToDnsCredentialTx struct{ tx *gorm.Association }
@@ -245,6 +260,11 @@ func (a certBelongsToDnsCredentialTx) Count() int64 {
 	return a.tx.Count()
 }
 
+func (a certBelongsToDnsCredentialTx) Unscoped() *certBelongsToDnsCredentialTx {
+	a.tx = a.tx.Unscoped()
+	return &a
+}
+
 type certBelongsToACMEUser struct {
 	db *gorm.DB
 
@@ -276,6 +296,11 @@ func (a certBelongsToACMEUser) Session(session *gorm.Session) *certBelongsToACME
 
 func (a certBelongsToACMEUser) Model(m *model.Cert) *certBelongsToACMEUserTx {
 	return &certBelongsToACMEUserTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a certBelongsToACMEUser) Unscoped() *certBelongsToACMEUser {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type certBelongsToACMEUserTx struct{ tx *gorm.Association }
@@ -314,6 +339,11 @@ func (a certBelongsToACMEUserTx) Clear() error {
 
 func (a certBelongsToACMEUserTx) Count() int64 {
 	return a.tx.Count()
+}
+
+func (a certBelongsToACMEUserTx) Unscoped() *certBelongsToACMEUserTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type certDo struct{ gen.DO }

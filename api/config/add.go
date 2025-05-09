@@ -1,7 +1,12 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"net/url"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -9,31 +14,40 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
-	"net/http"
-	"os"
-	"path/filepath"
-	"time"
+	"github.com/uozi-tech/cosy"
 )
 
 func AddConfig(c *gin.Context) {
 	var json struct {
-		Name        string   `json:"name" binding:"required"`
-		NewFilepath string   `json:"new_filepath" binding:"required"`
-		Content     string   `json:"content"`
-		Overwrite   bool     `json:"overwrite"`
+		config.SyncConfigPayload
 		SyncNodeIds []uint64 `json:"sync_node_ids"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
 	name := json.Name
 	content := json.Content
-	path := json.NewFilepath
+
+	// Decode paths from URL encoding
+	decodedBaseDir, err := url.QueryUnescape(json.BaseDir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedName, err := url.QueryUnescape(name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	dir := nginx.GetConfPath(decodedBaseDir)
+	path := filepath.Join(dir, decodedName)
 	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
-			"message": "new filepath is not under the nginx conf path",
+			"message": "filepath is not under the nginx conf path",
 		})
 		return
 	}
@@ -46,33 +60,35 @@ func AddConfig(c *gin.Context) {
 	}
 
 	// check if the dir exists, if not, use mkdirAll to create the dir
-	dir := filepath.Dir(path)
 	if !helper.FileExists(dir) {
 		err := os.MkdirAll(dir, 0755)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
-	err := os.WriteFile(path, []byte(content), 0644)
+	err = os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
-	output := nginx.Reload()
+	output, err := nginx.Reload()
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if nginx.GetLogLevel(output) >= nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(config.ErrNginxReloadFailed, output))
 		return
 	}
 
 	q := query.Config
 	_, err = q.Where(q.Filepath.Eq(path)).Delete()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -85,13 +101,13 @@ func AddConfig(c *gin.Context) {
 
 	err = q.Create(cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
-	err = config.SyncToRemoteServer(cfg, json.NewFilepath)
+	err = config.SyncToRemoteServer(cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

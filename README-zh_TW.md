@@ -6,7 +6,7 @@
 
 Yet another Nginx Web UI
 
-Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https://blog.kugeek.com/) 開發。
+Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://blog.kugeek.com/) 和 [Akino](https://github.com/akinoccc) 開發。
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
@@ -75,9 +75,12 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https:
 ### 特色
 
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
-- 線上 ChatGPT 助理
+- 設定修改後會自動備份，可以對比任意版本或恢復到任意版本
+- 支援鏡像操作到多個叢集節點，輕鬆管理多伺服器環境
+- 匯出加密的 Nginx/NginxUI 設定，方便快速部署和恢復到新環境
+- 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定
 - 一鍵申請和自動續簽 Let's encrypt 憑證
-- 線上編輯 Nginx 設定檔，編輯器支援 Nginx 設定語法醒目提示
+- 線上編輯 Nginx 設定檔，編輯器支援**大模型代碼補全**和 Nginx 設定語法醒目提示
 - 線上檢視 Nginx 日誌
 - 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
 - 儲存設定後自動測試設定檔並重新載入 Nginx
@@ -105,12 +108,13 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https:
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)
 
 ## 入門指南
 
 ### 使用前注意
 
-Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
+Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動偵測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
 
 對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 設定檔中的內容修改為如下所示的 Debian 風格。
 
@@ -129,7 +133,8 @@ http {
 Nginx UI 可在以下作業系統中使用：
 
 - macOS 11 Big Sur 及之後版本（amd64 / arm64）
-- Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
+- Windows 10 及之後版本（x86 /amd64 / arm64）
+- Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64）
   - 包括但不限於 Debian 7 / 8、Ubuntu 12.04 / 14.04 及後續版本、CentOS 6 / 7、Arch Linux
 - FreeBSD
 - OpenBSD
@@ -140,7 +145,7 @@ Nginx UI 可在以下作業系統中使用：
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續設定。
+第一次執行 Nginx UI 時，請在網頁瀏覽器中存取 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
 #### 透過執行檔案執行
 
@@ -149,7 +154,7 @@ Nginx UI 可在以下作業系統中使用：
 ```shell
 nginx-ui -config app.ini
 ```
-在終端使用 `Control+C` 退出 Nginx UI。
+在終端使用 `Control+C` 結束 Nginx UI。
 
 **在背景執行 Nginx UI**
 
@@ -200,6 +205,7 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -234,6 +240,7 @@ pnpm build
 請先完成前端編譯，再回到專案的根目錄執行以下命令。
 
 ```shell
+go generate
 go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
@@ -244,7 +251,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **安裝或升級**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 
 一鍵安裝指令預設的監聽連接埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現連接埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。
@@ -252,13 +259,13 @@ bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/inst
 **解除安裝 Nginx UI 但保留設定和資料庫檔案**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 ### 更多用法
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Nginx 反向代理設定範例

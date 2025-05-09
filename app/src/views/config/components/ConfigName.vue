@@ -25,14 +25,15 @@ function save() {
   const otpModal = use2FAModal()
 
   otpModal.open().then(() => {
-    config.rename(props.dir!, name.value, buffer.value).then(r => {
+    config.rename(props.dir!, name.value, buffer.value).then(() => {
       modify.value = false
       message.success($gettext('Renamed successfully'))
       router.push({
-        path: `/config/${r.path}/edit`,
+        path: `/config/${encodeURIComponent(buffer.value)}/edit`,
+        query: {
+          basePath: encodeURIComponent(props.dir!),
+        },
       })
-    }).catch(e => {
-      message.error($gettext(e?.message ?? 'Server error'))
     }).finally(() => {
       loading.value = false
     })

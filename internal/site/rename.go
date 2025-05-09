@@ -2,16 +2,17 @@ package site
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"runtime"
+	"sync"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"os"
-	"runtime"
-	"sync"
 )
 
 func Rename(oldName string, newName string) (err error) {
@@ -24,7 +25,7 @@ func Rename(oldName string, newName string) (err error) {
 
 	// check if dst file exists, do not rename
 	if helper.FileExists(newPath) {
-		return fmt.Errorf("file exists")
+		return ErrDstFileExists
 	}
 
 	s := query.Site
@@ -47,16 +48,33 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// test nginx configuration
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	// reload nginx
-	output = nginx.Reload()
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+	output, err = nginx.Reload()
+	if err != nil {
+		return
 	}
+	if nginx.GetLogLevel(output) > nginx.Warn {
+		return fmt.Errorf("%s", output)
+	}
+
+	// update ChatGPT history
+	g := query.ChatGPTLog
+	_, _ = g.Where(g.Name.Eq(oldName)).Update(g.Name, newName)
+
+	// update config history
+	b := query.ConfigBackup
+	_, _ = b.Where(b.FilePath.Eq(oldPath)).Updates(map[string]interface{}{
+		"filepath": newPath,
+		"name":     newName,
+	})
 
 	go syncRename(oldName, newName)
 
@@ -84,23 +102,23 @@ func syncRename(oldName, newName string) {
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
 				SetHeader("X-Node-Secret", node.Token).
-					SetBody(map[string]string{
-						"new_name": newName,
-					}).
+				SetBody(map[string]string{
+					"new_name": newName,
+				}).
 				Post(fmt.Sprintf("/api/sites/%s/rename", oldName))
 			if err != nil {
-				notification.Error("Rename Remote Site Error", err.Error())
+				notification.Error("Rename Remote Site Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Rename Remote Site Error",
+				notification.Error("Rename Remote Site Error", "Rename site %{name} to %{new_name} on %{node} failed",
 					NewSyncResult(node.Name, oldName, resp).
-						SetNewName(newName).String())
+						SetNewName(newName))
 				return
 			}
-			notification.Success("Rename Remote Site Success",
+			notification.Success("Rename Remote Site Success", "Rename site %{name} to %{new_name} on %{node} successfully",
 				NewSyncResult(node.Name, oldName, resp).
-					SetNewName(newName).String())
+					SetNewName(newName))
 		}()
 	}
 

@@ -4,7 +4,7 @@
 
 # Interfaz de usuario (UI) de Nginx
 
-Otra UI web de Nginx, desarrollada por [0xJacky](https://jackyu.cn/) y [Hintay](https://blog.kugeek.com/).
+Otra UI web de Nginx, desarrollada por [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) y [Akino](https://github.com/akinoccc).
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
@@ -109,6 +109,7 @@ Aceptamos traducciones a cualquier idioma.
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)
 
 ## Cómo empezar
 
@@ -133,8 +134,9 @@ Para más información: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-
 La UI de Nginx está disponible en las siguientes plataformas:
 
 - macOS 11 Big Sur y posterior (amd64 / arm64)
-- Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)
-  - Incluyendo pero no limitado a Debian 7 / 8, Ubuntu 12.04 / 14.04 and later, CentOS 6 / 7, Arch Linux
+- Windows 10 y posterior (x86 /amd64 / arm64)
+- Linux 2.6.23 y posterior (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
+  - Incluyendo pero no limitado a Debian 7 / 8, Ubuntu 12.04 / 14.04 y posterior, CentOS 6 / 7, Arch Linux
 - FreeBSD
 - OpenBSD
 - Dragonfly BSD
@@ -201,6 +203,7 @@ docker run -dit \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
   -v /var/www:/var/www \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -235,6 +238,7 @@ pnpm build
 Primero compile la interfaz y luego ejecute el siguiente comando en el directorio raíz del proyecto.
 
 ```shell
+go generate
 go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
@@ -245,7 +249,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **Instalar and Actualizar**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 El puerto de escucha predeterminado es `9000` y el puerto de Desafío HTTP predeterminado es `9180`.
 Si hay un conflicto de puertos, modifique manualmente `/usr/local/etc/nginx-ui/app.ini`,
@@ -254,13 +258,13 @@ luego use `systemctl restart nginx-ui` para recargar el servicio de UI de Nginx.
 **Eliminar UI Nginx UI, excepto los archivos de configuración y la base de datos**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 ### Uso avanzado
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Ejemplo de configuración de proxy reverso de Nginx

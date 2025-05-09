@@ -1,12 +1,13 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
-	"net/http"
+	"github.com/uozi-tech/cosy"
 )
 
 func AddDomainToAutoCert(c *gin.Context) {
@@ -19,14 +20,14 @@ func AddDomainToAutoCert(c *gin.Context) {
 		KeyType         certcrypto.KeyType `json:"key_type"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
 	certModel, err := model.FirstOrCreateCert(name, helper.GetKeyType(json.KeyType))
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -39,7 +40,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -51,7 +52,7 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 	certModel, err := model.FirstCert(name)
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -60,7 +61,7 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, nil)

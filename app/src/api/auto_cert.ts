@@ -1,5 +1,10 @@
 import http from '@/lib/http'
 
+export const AutoCertChallengeMethod = {
+  http01: 'http01',
+  dns01: 'dns01',
+} as const
+
 export interface DNSProvider {
   name?: string
   code?: string
@@ -19,13 +24,14 @@ export interface AutoCertOptions {
   domains: string[]
   code?: string
   dns_credential_id?: number | null
-  challenge_method?: string
+  challenge_method: keyof typeof AutoCertChallengeMethod
   configuration?: DNSProvider['configuration']
   key_type: string
   acme_user_id?: number
   provider?: string
   must_staple?: boolean
   lego_disable_cname_support?: boolean
+  revoke_old?: boolean
 }
 
 const auto_cert = {

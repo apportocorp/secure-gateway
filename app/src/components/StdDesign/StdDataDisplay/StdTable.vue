@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T=any">
-import type { Pagination } from '@/api/curd'
-import type Curd from '@/api/curd'
+import type { GetListResponse, Pagination } from '@/api/curd'
+import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Column } from '@/components/StdDesign/types'
 import type { TableProps } from 'ant-design-vue'
 import type { Key } from 'ant-design-vue/es/_util/type'
@@ -10,42 +10,12 @@ import type { ComputedRef, Ref } from 'vue'
 import type { RouteParams } from 'vue-router'
 import { getPithyColumns } from '@/components/StdDesign/StdDataDisplay/methods/columns'
 import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
-import StdDataEntry from '@/components/StdDesign/StdDataEntry'
+import StdBulkActions from '@/components/StdDesign/StdDataDisplay/StdBulkActions.vue'
+import StdDataEntry, { labelRender } from '@/components/StdDesign/StdDataEntry'
 import { HolderOutlined } from '@ant-design/icons-vue'
-import { watchPausable } from '@vueuse/core'
 import { message } from 'ant-design-vue'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import StdPagination from './StdPagination.vue'
-
-// eslint-disable-next-line ts/no-explicit-any
-export interface StdTableProps<T = any> {
-  title?: string
-  mode?: string
-  rowKey?: string
-
-  api: Curd<T>
-  columns: Column[]
-  // eslint-disable-next-line ts/no-explicit-any
-  getParams?: Record<string, any>
-  size?: string
-  disableQueryParams?: boolean
-  disableSearch?: boolean
-  pithy?: boolean
-  exportExcel?: boolean
-  exportMaterial?: boolean
-  // eslint-disable-next-line ts/no-explicit-any
-  overwriteParams?: Record<string, any>
-  disableView?: boolean
-  disableModify?: boolean
-  selectionType?: string
-  sortable?: boolean
-  disableDelete?: boolean
-  disablePagination?: boolean
-  sortableMoveHook?: (oldRow: number[], newRow: number[]) => boolean
-  scrollX?: string | number
-  // eslint-disable-next-line ts/no-explicit-any
-  getCheckboxProps?: (record: any) => any
-}
 
 const props = withDefaults(defineProps<StdTableProps<T>>(), {
   rowKey: 'id',
@@ -71,6 +41,9 @@ const dataSource: Ref<T[]> = ref([])
 const expandKeysList: Ref<Key[]> = ref([])
 
 watch(dataSource, () => {
+  if (!props.expandAll)
+    return
+
   const res: Key[] = []
 
   function buildKeysList(record) {
@@ -94,6 +67,7 @@ const loading = ref(true)
 const selectedRecords: Ref<Record<any, any>> = ref({})
 
 // This can be useful if there are more than one StdTable in the same page.
+// eslint-disable-next-line sonarjs/pseudo-random
 const randomId = ref(Math.random().toString(36).substring(2, 8))
 const updateFilter = ref(0)
 const init = ref(false)
@@ -105,8 +79,26 @@ const pagination: Pagination = reactive({
   total_pages: 1,
 })
 
-const params = reactive({
-  ...props.getParams,
+const filterParams = ref({})
+
+const paginationParams = ref({
+  page: 1,
+  page_size: 20,
+})
+
+const sortParams = ref({
+  order: 'desc' as 'desc' | 'asc' | undefined,
+  sort_by: '' as Key | readonly Key[] | undefined,
+})
+
+const params = computed(() => {
+  return {
+    ...filterParams.value,
+    ...sortParams.value,
+    ...props.getParams,
+    ...props.overwriteParams,
+    trash: props.inTrash,
+  }
 })
 
 onMounted(() => {
@@ -149,32 +141,26 @@ const batchColumns = computed(() => {
   return props.columns?.filter(column => column.batch) || []
 })
 
-const get_list = _.debounce(_get_list, 100, {
-  leading: true,
-  trailing: false,
+const radioColumns = computed(() => {
+  return props.columns?.filter(column => column.radio) || []
 })
 
-const filterParams = reactive({})
-
-watch(filterParams, () => {
-  Object.assign(params, {
-    ...filterParams,
-    page: 1,
-    trash: route.query.trash === 'true',
-  })
+const get_list = debounce(_get_list, 100, {
+  leading: false,
+  trailing: true,
 })
 
-onMounted(() => {
+onMounted(async () => {
   if (!props.disableQueryParams) {
-    Object.assign(params, {
+    filterParams.value = {
       ...route.query,
-      trash: route.query.trash === 'true',
-    })
-
-    Object.assign(filterParams, {
-      ...route.query,
-    })
+      ...props.getParams,
+    }
+    paginationParams.value.page = Number(route.query.page) || 1
+    paginationParams.value.page_size = Number(route.query.page_size) || 20
   }
+
+  await nextTick()
 
   get_list()
 
@@ -188,14 +174,13 @@ defineExpose({
   get_list,
   pagination,
   resetSelection,
+  loading,
 })
 
 function destroy(id: number | string) {
-  props.api!.destroy(id, { permanent: params.trash }).then(() => {
+  props.api!.destroy(id, { permanent: props.inTrash }).then(() => {
     get_list()
     message.success($gettext('Deleted successfully'))
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 
@@ -203,15 +188,13 @@ function recover(id: number | string) {
   props.api.recover(id).then(() => {
     message.success($gettext('Recovered Successfully'))
     get_list()
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 
 // eslint-disable-next-line ts/no-explicit-any
 function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
   if (data && data.length > 0) {
-    // eslint-disable-next-line ts/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
     data.forEach((v: any) => {
       v.level = level
 
@@ -224,18 +207,12 @@ function buildIndexMap(data: any, level: number = 0, index: number = 0, total: n
   }
 }
 
-async function _get_list(page_num: number | null = null, page_size = 20) {
+async function _get_list() {
   dataSource.value = []
   loading.value = true
-  if (page_num) {
-    params.page = page_num
-    params.page_size = page_size
-  }
-  else {
-    params.page = 1
-    params.page_size = page_size
-  }
-  props.api?.get_list({ ...params, ...props.overwriteParams }).then(async r => {
+
+  // eslint-disable-next-line ts/no-explicit-any
+  await props.api?.get_list({ ...params.value, ...paginationParams.value }).then(async (r: GetListResponse<any>) => {
     dataSource.value = r.data
     rowsKeyIndexMap.value = {}
     if (props.sortable)
@@ -243,11 +220,9 @@ async function _get_list(page_num: number | null = null, page_size = 20) {
 
     if (r.pagination)
       Object.assign(pagination, r.pagination)
-
-    loading.value = false
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
+
+  loading.value = false
 }
 
 // eslint-disable-next-line ts/no-explicit-any
@@ -255,17 +230,16 @@ function onTableChange(_pagination: TablePaginationConfig, filters: Record<strin
   if (sorter) {
     sorter = sorter as SorterResult
     selectedRowKeys.value = []
-    params.sort_by = sorter.field
-    params.order = sorter.order === 'ascend' ? 'asc' : 'desc'
+    sortParams.value.sort_by = sorter.field
     switch (sorter.order) {
       case 'ascend':
-        params.sort = 'asc'
+        sortParams.value.order = 'asc'
         break
       case 'descend':
-        params.sort = 'desc'
+        sortParams.value.order = 'desc'
         break
       default:
-        params.sort = null
+        sortParams.value.order = undefined
         break
     }
   }
@@ -286,7 +260,7 @@ function expandedTable(keys: Key[]) {
 // eslint-disable-next-line ts/no-explicit-any
 async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
   // console.log('onSelect', record, selected, _selectedRows)
-  if (props.selectionType === 'checkbox' || batchColumns.value.length > 0 || props.exportExcel) {
+  if (props.selectionType === 'checkbox' || props.exportExcel || batchColumns.value.length > 0 || props.bulkActions) {
     if (selected) {
       _selectedRows.forEach(v => {
         if (v) {
@@ -349,72 +323,40 @@ function resetSelection() {
 const router = useRouter()
 
 async function resetSearch() {
-  Object.keys(params).forEach(v => {
-    delete params[v]
-  })
-
-  Object.assign(params, {
-    ...props.getParams,
-  })
-
-  router.push({ query: {} }).catch(() => {
-  })
-
-  Object.keys(filterParams).forEach(v => {
-    delete filterParams[v]
-  })
-
+  filterParams.value = {}
   updateFilter.value++
 }
 
-const { stop: stopWatchParams, resume: resumeWatchParams } = watchPausable(params, v => {
+watch(params, async v => {
   if (!init.value)
     return
 
+  paginationParams.value = {
+    page: 1,
+    page_size: paginationParams.value.page_size,
+  }
+
+  await nextTick()
+
   if (!props.disableQueryParams)
-    router.push({ query: { ...v as RouteParams } })
+    await router.push({ query: { ...v as unknown as RouteParams, ...paginationParams.value } })
   else
+    get_list()
+}, { deep: true })
+
+watch(() => route.query, () => {
+  if (init.value)
     get_list()
 })
 
-watch(() => route.query, async () => {
-  params.trash = route.query.trash === 'true'
-
-  if (init.value)
-    await get_list()
-})
-
-if (props.getParams) {
-  const getParams = computed(() => props.getParams)
-
-  watch(getParams, () => {
-    Object.assign(params, {
-      ...props.getParams,
-      page: 1,
-    })
-  }, { deep: true })
-}
-
-if (props.overwriteParams) {
-  const overwriteParams = computed(() => props.overwriteParams)
-
-  watch(overwriteParams, () => {
-    Object.assign(params, {
-      page: 1,
-    })
-    if (params.page === 1)
-      get_list()
-  }, { deep: true })
-}
-
 const rowSelection = computed(() => {
-  if (batchColumns.value.length > 0 || props.selectionType || props.exportExcel) {
+  if (batchColumns.value.length > 0 || props.selectionType || props.exportExcel || props.bulkActions) {
     return {
       selectedRowKeys: unref(selectedRowKeys),
       onSelect,
       onSelectAll,
       getCheckboxProps: props?.getCheckboxProps,
-      type: (batchColumns.value.length > 0 || props.exportExcel) ? 'checkbox' : props.selectionType,
+      type: (batchColumns.value.length > 0 || props.exportExcel || props.bulkActions) ? 'checkbox' : props.selectionType,
     }
   }
   else {
@@ -435,13 +377,25 @@ function initSortable() {
 }
 
 async function changePage(page: number, page_size: number) {
-  stopWatchParams()
-  Object.assign(params, {
-    page,
-    page_size,
-  })
-  resumeWatchParams()
-  await get_list(page, page_size)
+  if (page) {
+    paginationParams.value = {
+      page,
+      page_size,
+    }
+  }
+  else {
+    paginationParams.value = {
+      page: 1,
+      page_size,
+    }
+  }
+
+  await nextTick()
+
+  if (!props.disableQueryParams)
+    await router.push({ query: { ...route.query, ...paginationParams.value } })
+
+  get_list()
 }
 
 const paginationSize = computed(() => {
@@ -454,6 +408,26 @@ const paginationSize = computed(() => {
 
 <template>
   <div class="std-table">
+    <div v-if="radioColumns.length">
+      <AFormItem
+        v-for="column in radioColumns"
+        :key="column.dataIndex as PropertyKey"
+        :label="labelRender(column.title)"
+      >
+        <ARadioGroup v-model:value="params[column.dataIndex as string]">
+          <ARadioButton :value="undefined">
+            {{ $gettext('All') }}
+          </ARadioButton>
+          <ARadioButton
+            v-for="(value, key) in column.mask"
+            :key
+            :value="key"
+          >
+            {{ labelRender(value) }}
+          </ARadioButton>
+        </ARadioGroup>
+      </AFormItem>
+    </div>
     <StdDataEntry
       v-if="!disableSearch && searchColumns.length"
       :key="updateFilter"
@@ -477,6 +451,14 @@ const paginationSize = computed(() => {
         </ASpace>
       </template>
     </StdDataEntry>
+    <StdBulkActions
+      v-if="bulkActions"
+      v-model:selected-row-keys="selectedRowKeys"
+      :api
+      :in-trash="inTrash"
+      :actions="bulkActions"
+      @on-success="() => { resetSelection(); get_list() }"
+    />
     <ATable
       :id="`std-table-${randomId}`"
       :columns="pithyColumns"
@@ -485,7 +467,7 @@ const paginationSize = computed(() => {
       :pagination="false"
       :row-key="rowKey"
       :row-selection="rowSelection"
-      :scroll="{ x: scrollX }"
+      :scroll="{ x: scrollX ?? true }"
       :size="size as any"
       :expanded-row-keys="expandKeysList"
       @change="onTableChange"
@@ -496,8 +478,8 @@ const paginationSize = computed(() => {
           <span class="ant-table-drag-icon"><HolderOutlined /></span>
           {{ text }}
         </template>
-        <template v-if="column.dataIndex === 'action'">
-          <template v-if="!props.disableView && !params.trash">
+        <div v-if="column.dataIndex === 'action'" class="action">
+          <template v-if="!props.disableView && !inTrash">
             <AButton
               type="link"
               size="small"
@@ -505,13 +487,9 @@ const paginationSize = computed(() => {
             >
               {{ $gettext('View') }}
             </AButton>
-            <ADivider
-              v-if="!props.disableModify"
-              type="vertical"
-            />
           </template>
 
-          <template v-if="!props.disableModify && !params.trash">
+          <template v-if="!props.disableModify && !inTrash">
             <AButton
               type="link"
               size="small"
@@ -519,7 +497,6 @@ const paginationSize = computed(() => {
             >
               {{ $gettext('Modify') }}
             </AButton>
-            <ADivider type="vertical" />
           </template>
 
           <slot
@@ -529,9 +506,9 @@ const paginationSize = computed(() => {
 
           <template v-if="!props.disableDelete">
             <APopconfirm
-              v-if="!params.trash"
+              v-if="!inTrash"
               :cancel-text="$gettext('No')"
-              :ok-text="$gettext('OK')"
+              :ok-text="$gettext('Ok')"
               :title="$gettext('Are you sure you want to delete this item?')"
               @confirm="destroy(record[rowKey])"
             >
@@ -545,7 +522,7 @@ const paginationSize = computed(() => {
             <APopconfirm
               v-else
               :cancel-text="$gettext('No')"
-              :ok-text="$gettext('OK')"
+              :ok-text="$gettext('Ok')"
               :title="$gettext('Are you sure you want to recover this item?')"
               @confirm="recover(record[rowKey])"
             >
@@ -556,11 +533,10 @@ const paginationSize = computed(() => {
                 {{ $gettext('Recover') }}
               </AButton>
             </APopconfirm>
-            <ADivider type="vertical" />
             <APopconfirm
-              v-if="params.trash"
+              v-if="inTrash"
               :cancel-text="$gettext('No')"
-              :ok-text="$gettext('OK')"
+              :ok-text="$gettext('Ok')"
               :title="$gettext('Are you sure you want to delete this item permanently?')"
               @confirm="destroy(record[rowKey])"
             >
@@ -572,7 +548,7 @@ const paginationSize = computed(() => {
               </AButton>
             </APopconfirm>
           </template>
-        </template>
+        </div>
       </template>
     </ATable>
     <StdPagination
@@ -622,6 +598,14 @@ const paginationSize = computed(() => {
 .ant-divider {
   &:last-child {
     display: none;
+  }
+}
+
+.action {
+  @media (max-width: 768px) {
+    .ant-divider-vertical {
+      display: none;
+    }
   }
 }
 </style>

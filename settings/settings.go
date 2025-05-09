@@ -1,14 +1,15 @@
 package settings
 
 import (
-	"github.com/caarlos0/env/v11"
-	"github.com/elliotchance/orderedmap/v2"
-	"github.com/spf13/cast"
-	"github.com/uozi-tech/cosy/settings"
 	"log"
-	"os"
 	"strings"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/caarlos0/env/v11"
+	"github.com/elliotchance/orderedmap/v3"
+	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy/settings"
 )
 
 var (
@@ -57,7 +58,7 @@ func init() {
 	sections.Set("terminal", TerminalSettings)
 	sections.Set("webauthn", WebAuthnSettings)
 
-	for k, v := range sections.Iterator() {
+	for k, v := range sections.AllFromFront() {
 		settings.Register(k, v)
 	}
 	settings.WithoutRedis()
@@ -80,7 +81,7 @@ func Init(confPath string) {
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.
-	if cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) {
+	if helper.InNginxUIOfficialDocker() {
 		NginxSettings.RestartCmd = "nginx -s stop"
 	}
 

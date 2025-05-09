@@ -1,11 +1,12 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/uozi-tech/cosy"
 )
 
 func DomainEditByAdvancedMode(c *gin.Context) {
@@ -13,7 +14,7 @@ func DomainEditByAdvancedMode(c *gin.Context) {
 		Advanced bool `json:"advanced"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -24,14 +25,14 @@ func DomainEditByAdvancedMode(c *gin.Context) {
 
 	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	_, err = s.Where(s.Path.Eq(path)).Update(s.Advanced, json.Advanced)
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

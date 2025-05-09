@@ -1,17 +1,19 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"net/url"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"os"
-	"strings"
+	"github.com/uozi-tech/cosy"
 )
 
 func Rename(c *gin.Context) {
@@ -21,18 +23,38 @@ func Rename(c *gin.Context) {
 		NewName     string   `json:"new_name"`
 		SyncNodeIds []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
-	logger.Debug(json)
+
 	if json.OrigName == json.NewName {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "ok",
 		})
 		return
 	}
-	origFullPath := nginx.GetConfPath(json.BasePath, json.OrigName)
-	newFullPath := nginx.GetConfPath(json.BasePath, json.NewName)
+
+	// Decode paths from URL encoding
+	decodedBasePath, err := url.QueryUnescape(json.BasePath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedOrigName, err := url.QueryUnescape(json.OrigName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedNewName, err := url.QueryUnescape(json.NewName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	origFullPath := nginx.GetConfPath(decodedBasePath, decodedOrigName)
+	newFullPath := nginx.GetConfPath(decodedBasePath, decodedNewName)
 	if !helper.IsUnderDirectory(origFullPath, nginx.GetConfPath()) ||
 		!helper.IsUnderDirectory(newFullPath, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
@@ -44,7 +66,7 @@ func Rename(c *gin.Context) {
 
 	stat, err := os.Stat(origFullPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -57,7 +79,7 @@ func Rename(c *gin.Context) {
 
 	err = os.Rename(origFullPath, newFullPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -66,7 +88,7 @@ func Rename(c *gin.Context) {
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(origFullPath)).FirstOrInit()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	if !stat.IsDir() {
@@ -84,19 +106,25 @@ func Rename(c *gin.Context) {
 		Name:     json.NewName,
 	})
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
+
+	b := query.ConfigBackup
+	_, _ = b.Where(b.FilePath.Eq(origFullPath)).Updates(map[string]interface{}{
+		"filepath": newFullPath,
+		"name":     json.NewName,
+	})
 
 	if len(json.SyncNodeIds) > 0 {
 		err = config.SyncRenameOnRemoteServer(origFullPath, newFullPath, json.SyncNodeIds)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"path": strings.TrimLeft(newFullPath, nginx.GetConfPath()),
+		"path": strings.TrimLeft(filepath.Join(json.BasePath, json.NewName), "/"),
 	})
 }

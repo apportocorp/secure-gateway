@@ -1,12 +1,13 @@
 package openai
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
-	"net/http"
+	"github.com/uozi-tech/cosy"
 )
 
 func StoreChatGPTRecord(c *gin.Context) {
@@ -15,7 +16,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -24,7 +25,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 	_, err := g.Where(g.Name.Eq(name)).FirstOrCreate()
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -34,7 +35,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 	})
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

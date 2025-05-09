@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import config from '@/api/config'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import FooterToolBar from '@/components/FooterToolbar'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
-import Mkdir from '@/views/config/components/Mkdir.vue'
-import Rename from '@/views/config/components/Rename.vue'
-import configColumns from '@/views/config/configColumns'
-import InspectConfig from '@/views/config/InspectConfig.vue'
+import Mkdir from './components/Mkdir.vue'
+import Rename from './components/Rename.vue'
+import configColumns from './configColumns'
+import InspectConfig from './InspectConfig.vue'
 
-const table = ref()
+const table = useTemplateRef('table')
 const route = useRoute()
 const router = useRouter()
 
@@ -32,7 +32,7 @@ watch(getParams, () => {
   update.value++
 })
 
-const refInspectConfig = ref()
+const refInspectConfig = useTemplateRef('refInspectConfig')
 const breadcrumbs = useBreadcrumbs()
 
 function updateBreadcrumbs() {
@@ -40,20 +40,23 @@ function updateBreadcrumbs() {
     .split('/')
     .filter(v => v)
 
-  const path = filteredPath.map((v, k) => {
-    let dir = v
+  let accumulatedPath = ''
+  const path = filteredPath.map((segment, index) => {
+    const decodedSegment = decodeURIComponent(segment)
 
-    if (k > 0) {
-      dir = filteredPath.slice(0, k).join('/')
-      dir += `/${v}`
+    if (index === 0) {
+      accumulatedPath = segment
+    }
+    else {
+      accumulatedPath = `${accumulatedPath}/${segment}`
     }
 
     return {
       name: 'Manage Configs',
-      translatedName: () => v,
+      translatedName: () => decodedSegment,
       path: '/config',
       query: {
-        dir,
+        dir: accumulatedPath,
       },
       hasChildren: false,
     }
@@ -82,16 +85,19 @@ watch(route, () => {
 })
 
 function goBack() {
+  const pathSegments = basePath.value.split('/').slice(0, -2)
+  const encodedPath = pathSegments.length > 0 ? pathSegments.join('/') : ''
+
   router.push({
     path: '/config',
     query: {
-      dir: `${basePath.value.split('/').slice(0, -2).join('/')}` || undefined,
+      dir: encodedPath || undefined,
     },
   })
 }
 
-const refMkdir = ref()
-const refRename = ref()
+const refMkdir = useTemplateRef('refMkdir')
+const refRename = useTemplateRef('refRename')
 </script>
 
 <template>
@@ -118,7 +124,7 @@ const refRename = ref()
       <AButton
         type="link"
         size="small"
-        @click="() => refMkdir.open(basePath)"
+        @click="() => refMkdir?.open(basePath)"
       >
         {{ $gettext('Create Folder') }}
       </AButton>
@@ -135,6 +141,7 @@ const refRename = ref()
       :get-params="getParams"
       disable-query-params
       disable-modify
+      :scroll-x="880"
     >
       <template #actions="{ record }">
         <AButton
@@ -143,13 +150,22 @@ const refRename = ref()
           @click="() => {
             if (!record.is_dir) {
               router.push({
-                path: `/config/${basePath}${record.name}/edit`,
+                path: `/config/${encodeURIComponent(record.name)}/edit`,
+                query: {
+                  basePath,
+                },
               })
             }
             else {
+              let encodedPath = '';
+              if (basePath) {
+                encodedPath = basePath;
+              }
+              encodedPath += encodeURIComponent(record.name);
+
               router.push({
                 query: {
-                  dir: basePath + record.name,
+                  dir: encodedPath,
                 },
               })
             }
@@ -157,11 +173,10 @@ const refRename = ref()
         >
           {{ $gettext('Modify') }}
         </AButton>
-        <ADivider type="vertical" />
         <AButton
           type="link"
           size="small"
-          @click="() => refRename.open(basePath, record.name, record.is_dir)"
+          @click="() => refRename?.open(basePath, record.name, record.is_dir)"
         >
           {{ $gettext('Rename') }}
         </AButton>
@@ -169,11 +184,11 @@ const refRename = ref()
     </StdTable>
     <Mkdir
       ref="refMkdir"
-      @created="() => table.get_list()"
+      @created="() => table?.get_list()"
     />
     <Rename
       ref="refRename"
-      @renamed="() => table.get_list()"
+      @renamed="() => table?.get_list()"
     />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">

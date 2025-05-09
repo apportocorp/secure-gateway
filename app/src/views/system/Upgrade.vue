@@ -5,7 +5,6 @@ import upgrade from '@/api/upgrade'
 
 import websocket from '@/lib/websocket'
 import version from '@/version.json'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { marked } from 'marked'
 import { useRoute } from 'vue-router'
@@ -39,7 +38,6 @@ function getLatestRelease() {
     lastCheck.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
   }).catch(e => {
     getReleaseError.value = e?.message
-    message.error(e?.message ?? $gettext('Server error'))
   }).finally(() => {
     loading.value = false
   })
@@ -53,16 +51,16 @@ const isLatestVer = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
-const logContainer = ref()
+const logContainer = useTemplateRef('logContainer')
 
 function log(msg: string) {
   const para = document.createElement('p')
 
   para.appendChild(document.createTextNode($gettext(msg)))
 
-  logContainer.value.appendChild(para)
+  logContainer.value!.appendChild(para)
 
-  logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
+  logContainer.value!.scroll({ top: 320, left: 0, behavior: 'smooth' })
 }
 
 const dryRun = computed(() => {
@@ -74,7 +72,7 @@ async function performUpgrade() {
   modalClosable.value = false
   modalVisible.value = true
   progressPercent.value = 0
-  logContainer.value.innerHTML = ''
+  logContainer.value!.innerHTML = ''
 
   log($gettext('Upgrading Nginx UI, please wait...'))
 
@@ -194,6 +192,9 @@ async function performUpgrade() {
             </ASelectOption>
             <ASelectOption key="prerelease">
               {{ $gettext('Pre-release') }}
+            </ASelectOption>
+            <ASelectOption key="dev">
+              {{ $gettext('Dev') }}
             </ASelectOption>
           </ASelect>
         </AFormItem>

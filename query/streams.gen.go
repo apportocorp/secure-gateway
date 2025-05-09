@@ -34,6 +34,13 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 	_stream.DeletedAt = field.NewField(tableName, "deleted_at")
 	_stream.Path = field.NewString(tableName, "path")
 	_stream.Advanced = field.NewBool(tableName, "advanced")
+	_stream.EnvGroupID = field.NewUint64(tableName, "env_group_id")
+	_stream.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
+	_stream.EnvGroup = streamBelongsToEnvGroup{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("EnvGroup", "model.EnvGroup"),
+	}
 
 	_stream.fillFieldMap()
 
@@ -43,13 +50,16 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 type stream struct {
 	streamDo
 
-	ALL       field.Asterisk
-	ID        field.Uint64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Path      field.String
-	Advanced  field.Bool
+	ALL         field.Asterisk
+	ID          field.Uint64
+	CreatedAt   field.Time
+	UpdatedAt   field.Time
+	DeletedAt   field.Field
+	Path        field.String
+	Advanced    field.Bool
+	EnvGroupID  field.Uint64
+	SyncNodeIDs field.Field
+	EnvGroup    streamBelongsToEnvGroup
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +82,8 @@ func (s *stream) updateTableName(table string) *stream {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
+	s.EnvGroupID = field.NewUint64(table, "env_group_id")
+	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
 
@@ -88,23 +100,110 @@ func (s *stream) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *stream) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 9)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
+	s.fieldMap["env_group_id"] = s.EnvGroupID
+	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
+
 }
 
 func (s stream) clone(db *gorm.DB) stream {
 	s.streamDo.ReplaceConnPool(db.Statement.ConnPool)
+	s.EnvGroup.db = db.Session(&gorm.Session{Initialized: true})
+	s.EnvGroup.db.Statement.ConnPool = db.Statement.ConnPool
 	return s
 }
 
 func (s stream) replaceDB(db *gorm.DB) stream {
 	s.streamDo.ReplaceDB(db)
+	s.EnvGroup.db = db.Session(&gorm.Session{})
 	return s
+}
+
+type streamBelongsToEnvGroup struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a streamBelongsToEnvGroup) Where(conds ...field.Expr) *streamBelongsToEnvGroup {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a streamBelongsToEnvGroup) WithContext(ctx context.Context) *streamBelongsToEnvGroup {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a streamBelongsToEnvGroup) Session(session *gorm.Session) *streamBelongsToEnvGroup {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a streamBelongsToEnvGroup) Model(m *model.Stream) *streamBelongsToEnvGroupTx {
+	return &streamBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a streamBelongsToEnvGroup) Unscoped() *streamBelongsToEnvGroup {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type streamBelongsToEnvGroupTx struct{ tx *gorm.Association }
+
+func (a streamBelongsToEnvGroupTx) Find() (result *model.EnvGroup, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a streamBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a streamBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a streamBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a streamBelongsToEnvGroupTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a streamBelongsToEnvGroupTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a streamBelongsToEnvGroupTx) Unscoped() *streamBelongsToEnvGroupTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type streamDo struct{ gen.DO }

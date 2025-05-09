@@ -1,317 +1,44 @@
 <script setup lang="ts">
-import type { CertificateInfo } from '@/api/cert'
-import type { NgxConfig } from '@/api/ngx'
-import type { ChatComplicationMessage } from '@/api/openai'
-
-import type { Site } from '@/api/site'
-import type { CheckedType } from '@/types'
-import config from '@/api/config'
-import ngx from '@/api/ngx'
-import site from '@/api/site'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
-import RightSettings from '@/views/site/site_edit/RightSettings.vue'
-import { message } from 'ant-design-vue'
-
-const route = useRoute()
-const router = useRouter()
-
-const name = computed(() => route.params?.name?.toString() ?? '')
-
-const ngx_config: NgxConfig = reactive({
-  name: '',
-  upstreams: [],
-  servers: [],
-})
-
-const certInfoMap: Ref<Record<number, CertificateInfo[]>> = ref({})
-
-const auto_cert = ref(false)
-const enabled = ref(false)
-const filepath = ref('')
-const configText = ref('')
-const advance_mode_ref = ref(false)
-const saving = ref(false)
-const filename = ref('')
-const parse_error_status = ref(false)
-const parse_error_message = ref('')
-const data = ref({}) as Ref<Site>
-
-init()
-
-const advanceMode = computed({
-  get() {
-    return advance_mode_ref.value || parse_error_status.value
-  },
-  set(v: boolean) {
-    advance_mode_ref.value = v
-  },
-})
-
-const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
-
-function handle_response(r: Site) {
-  if (r.advanced)
-    advanceMode.value = true
-
-  if (r.advanced)
-    advanceMode.value = true
-
-  parse_error_status.value = false
-  parse_error_message.value = ''
-  filename.value = r.name
-  filepath.value = r.filepath
-  configText.value = r.config
-  enabled.value = r.enabled
-  auto_cert.value = r.auto_cert
-  history_chatgpt_record.value = r.chatgpt_messages
-  data.value = r
-  certInfoMap.value = r.cert_info || {}
-  Object.assign(ngx_config, r.tokenized)
-}
-
-function init() {
-  if (name.value) {
-    site.get(name.value).then(r => {
-      handle_response(r)
-    }).catch(handle_parse_error)
-  }
-  else {
-    history_chatgpt_record.value = []
-  }
-}
-
-function handle_parse_error(e: { error?: string, message: string }) {
-  console.error(e)
-  parse_error_status.value = true
-  parse_error_message.value = e.message
-  config.get(`sites-available/${name.value}`).then(r => {
-    configText.value = r.content
-  })
-}
-
-function on_mode_change(advanced: CheckedType) {
-  site.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
-    advanceMode.value = advanced as boolean
-    if (advanced) {
-      build_config()
-    }
-    else {
-      return ngx.tokenize_config(configText.value).then(r => {
-        Object.assign(ngx_config, r)
-      }).catch(handle_parse_error)
-    }
-  })
-}
-
-async function build_config() {
-  return ngx.build_config(ngx_config).then(r => {
-    configText.value = r.content
-  })
-}
-
-async function save() {
-  saving.value = true
-
-  if (!advanceMode.value) {
-    try {
-      await build_config()
-    }
-    catch {
-      saving.value = false
-      message.error($gettext('Failed to save, syntax error(s) was detected in the configuration.'))
-
-      return
-    }
-  }
-
-  return site.save(name.value, {
-    content: configText.value,
-    overwrite: true,
-    site_category_id: data.value.site_category_id,
-    sync_node_ids: data.value.sync_node_ids,
-  }).then(r => {
-    handle_response(r)
-    router.push({
-      path: `/sites/${filename.value}`,
-      query: route.query,
-    })
-    message.success($gettext('Saved successfully'))
-  }).catch(handle_parse_error).finally(() => {
-    saving.value = false
-  })
-}
-
-provide('save_config', save)
-provide('configText', configText)
-provide('ngx_config', ngx_config)
-provide('history_chatgpt_record', history_chatgpt_record)
-provide('enabled', enabled)
-provide('name', name)
-provide('filepath', filepath)
-provide('data', data)
+import RightSettings from '@/views/site/site_edit/components/RightPanel/RightPanel.vue'
+import SiteEditor from '@/views/site/site_edit/components/SiteEditor'
 </script>
 
 <template>
-  <ARow :gutter="16">
-    <ACol
-      :xs="24"
-      :sm="24"
-      :md="16"
-      :lg="18"
-    >
-      <ACard :bordered="false">
-        <template #title>
-          <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
-          <ATag
-            v-if="enabled"
-            color="blue"
-          >
-            {{ $gettext('Enabled') }}
-          </ATag>
-          <ATag
-            v-else
-            color="orange"
-          >
-            {{ $gettext('Disabled') }}
-          </ATag>
-        </template>
-        <template #extra>
-          <div class="mode-switch">
-            <div class="switch">
-              <ASwitch
-                size="small"
-                :disabled="parse_error_status"
-                :checked="advanceMode"
-                @change="on_mode_change"
-              />
-            </div>
-            <template v-if="advanceMode">
-              <div>{{ $gettext('Advance Mode') }}</div>
-            </template>
-            <template v-else>
-              <div>{{ $gettext('Basic Mode') }}</div>
-            </template>
-          </div>
-        </template>
+  <div class="site-container">
+    <ARow :gutter="{ xs: 0, sm: 16 }">
+      <ACol
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :lg="16"
+        :xl="17"
+      >
+        <div>
+          <SiteEditor />
+        </div>
+      </ACol>
 
-        <Transition name="slide-fade">
-          <div
-            v-if="advanceMode"
-            key="advance"
-          >
-            <div
-              v-if="parse_error_status"
-              class="parse-error-alert-wrapper"
-            >
-              <AAlert
-                :message="$gettext('Nginx Configuration Parse Error')"
-                :description="parse_error_message"
-                type="error"
-                show-icon
-              />
-            </div>
-            <div>
-              <CodeEditor v-model:content="configText" />
-            </div>
-          </div>
-
-          <div
-            v-else
-            key="basic"
-            class="domain-edit-container"
-          >
-            <NgxConfigEditor
-              v-model:auto-cert="auto_cert"
-              :cert-info="certInfoMap"
-              :enabled="enabled"
-              @callback="save"
-            />
-          </div>
-        </Transition>
-      </ACard>
-    </ACol>
-
-    <ACol
-      class="col-right"
-      :xs="24"
-      :sm="24"
-      :md="8"
-      :lg="6"
-    >
-      <RightSettings />
-    </ACol>
-
-    <FooterToolBar>
-      <ASpace>
-        <AButton @click="$router.push('/sites/list')">
-          {{ $gettext('Back') }}
-        </AButton>
-        <AButton
-          type="primary"
-          :loading="saving"
-          @click="save"
-        >
-          {{ $gettext('Save') }}
-        </AButton>
-      </ASpace>
-    </FooterToolBar>
-  </ARow>
+      <ACol
+        class="col-right"
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :lg="8"
+        :xl="7"
+      >
+        <RightSettings />
+      </ACol>
+    </ARow>
+  </div>
 </template>
 
-<style lang="less">
-
-</style>
-
 <style lang="less" scoped>
-.col-right {
-  position: relative;
+.site-container {
+  max-height: calc(100vh - 267px);
+  overflow-y: auto;
 }
 
-.ant-card {
-  margin: 10px 0;
+:deep(.ant-card) {
   box-shadow: unset;
-}
-
-.mode-switch {
-  display: flex;
-
-  .switch {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-  }
-}
-
-.parse-error-alert-wrapper {
-  margin-bottom: 20px;
-}
-
-.domain-edit-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.slide-fade-enter-active {
-  transition: all .3s ease-in-out;
-}
-
-.slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-
-.slide-fade-enter-from, .slide-fade-enter-to, .slide-fade-leave-to
-  /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
-
-.directive-params-wrapper {
-  margin: 10px 0;
-}
-
-.tab-content {
-  padding: 10px;
 }
 </style>

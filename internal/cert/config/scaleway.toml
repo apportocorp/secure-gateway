@@ -6,7 +6,7 @@ Since = "v3.4.0"
 
 Example = '''
 SCW_SECRET_KEY=xxxxxxx-xxxxx-xxxx-xxx-xxxxxx \
-lego --email you@example.com --dns scaleway --domains my.example.org run
+lego --email you@example.com --dns scaleway -d '*.example.com' -d example.com run
 '''
 
 [Configuration]
@@ -15,9 +15,9 @@ lego --email you@example.com --dns scaleway --domains my.example.org run
     SCW_PROJECT_ID = "Project to use (optional)"
   [Configuration.Additional]
     SCW_ACCESS_KEY = "Access key"
-    SCW_POLLING_INTERVAL = "Time between DNS propagation check"
-    SCW_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    SCW_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SCW_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 10)"
+    SCW_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    SCW_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 60)"
 
 [Links]
   API = "https://developers.scaleway.com/en/products/domain/dns/api/"

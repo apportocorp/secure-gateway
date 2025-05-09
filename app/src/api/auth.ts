@@ -1,4 +1,4 @@
-import type { AuthenticationResponseJSON } from '@simplewebauthn/types'
+import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
 import http from '@/lib/http'
 import { useUserStore } from '@/pinia'
 
@@ -19,7 +19,7 @@ const auth = {
       password,
       otp,
       recovery_code: recoveryCode,
-    })
+    }, { crypto: true })
   },
   async casdoor_login(code?: string, state?: string) {
     await http.post('/casdoor_callback', {

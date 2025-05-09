@@ -8,7 +8,7 @@ titleTemplate: Yet another Nginx Web UI
 hero:
     name: "Nginx UI"
     text: "Yet another Nginx Web UI"
-    tagline: Simple, powerful, and fast.
+    tagline: Intelligent, powerful, and fast.
     image:
         src: /assets/icon.svg
         alt: Nginx UI
@@ -24,9 +24,21 @@ features:
     -   icon: 📊
         title: Online Statistics for Server Indicators
         details: Monitor CPU usage, memory usage, load average, and disk usage in real-time.
+    -   icon: 💾
+        title: Automatic Configuration Backup
+        details: Configurations are automatically backed up after modifications, allowing you to compare any versions or restore to any previous version.
+    -   icon: 🔄
+        title: Cluster Management
+        details: Support for mirroring operations to multiple cluster nodes, easily manage multi-server environments.
+    -   icon: 📤
+        title: Encrypted Configuration Export
+        details: Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments.
     -   icon: 💬
-        title: Online ChatGPT Assistant
-        details: Get assistance from an AI-powered ChatGPT directly within the platform.
+        title: Enhanced Online ChatGPT Assistant
+        details: Support for multiple models, including displaying Deepseek-R1's chain of thought to help you better understand and optimize configurations.
+    -   icon: 🔍
+        title: Code Completion
+        details: Code editor supports code completion, help you write configuration faster.
     -   icon: 🖱️
         title: One-Click Deployment and Automatic Renewal
         details: Easily deploy and auto-renew Let's Encrypt certificates with just one click.

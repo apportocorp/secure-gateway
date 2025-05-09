@@ -22,6 +22,14 @@ const members = [
       { icon: { svg: blogIcon }, link: 'https://blog.kugeek.com' }
     ]
   },
+{
+    avatar: 'https://www.github.com/akinoccc.png',
+    name: 'Akino',
+    title: 'Developer',
+    links: [
+      { icon: 'github', link: 'https://github.com/akinoccc' }
+    ]
+  },
 ]
 </script>
 
@@ -35,9 +43,10 @@ Just want to try it out? Skip to the [Quickstart](./getting-started).
 
 </div>
 
-Nginx UI is a comprehensive web-based interface designed to simplify the management and configuration of Nginx servers.
-It offers real-time server statistics, AI-powered ChatGPT assistance, one-click deployment, automatic renewal of Let's
-Encrypt certificates, and user-friendly editing tools for website configurations. Additionally, Nginx UI provides
+Nginx UI is a comprehensive web-based interface designed to simplify the management and configuration of Nginx single-node and cluster nodes.
+It offers real-time server statistics, Nginx performance monitoring, AI-powered ChatGPT assistance,
+the code editor that supports LLM Code Completion,
+one-click deployment, automatic renewal of Let's Encrypt certificates, and user-friendly editing tools for website configurations. Additionally, Nginx UI provides
 features such as online access to Nginx logs, automatic testing and reloading of configuration files, a web terminal,
 dark mode, and responsive web design. Built with Go and Vue, Nginx UI ensures a seamless and efficient experience for
 managing your Nginx server.
@@ -49,10 +58,13 @@ managing your Nginx server.
 ## Features
 
 - Online statistics for server indicators such as CPU usage, memory usage, load average, and disk usage.
-- Online ChatGPT Assistant.
+- Configurations are automatically backed up after modifications, allowing you to compare any versions or restore to any previous version.
+- Support for mirroring operations to multiple cluster nodes, easily manage multi-server environments.
+- Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments.
+- Enhanced Online ChatGPT Assistant with support for multiple models, including displaying Deepseek-R1's chain of thought to help you better understand and optimize configurations.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block
-  editor for nginx configurations, or **Ace Code Editor** which supports highlighting nginx configuration syntax.
+  editor for nginx configurations, or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
 - Online view Nginx logs.
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
@@ -74,11 +86,15 @@ Nginx UI is available on the following platforms:
 
 ## Internationalization
 
+We proudly offer official support for:
+
 - English
 - Simplified Chinese
 - Traditional Chinese
 
-We welcome translations into any language.
+As non-native English speakers, we strive for accuracy, but we know there's always room for improvement. If you spot any issues, we'd love your feedback!
+
+Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
 
 ## Built With
 
@@ -92,3 +108,4 @@ We welcome translations into any language.
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)

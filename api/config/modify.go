@@ -1,7 +1,11 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"net/url"
+	"path/filepath"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -9,10 +13,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
-	"net/http"
-	"os"
-	"path/filepath"
-	"time"
+	"github.com/uozi-tech/cosy"
+	"gorm.io/gen/field"
 )
 
 type EditConfigJson struct {
@@ -21,13 +23,26 @@ type EditConfigJson struct {
 
 func EditConfig(c *gin.Context) {
 	relativePath := c.Param("path")
+
+	// Ensure the path is correctly decoded - handle cases where it might be encoded multiple times
+	decodedPath := relativePath
+	var err error
+	// Try decoding until the path no longer changes
+	for {
+		newDecodedPath, decodeErr := url.PathUnescape(decodedPath)
+		if decodeErr != nil || newDecodedPath == decodedPath {
+			break
+		}
+		decodedPath = newDecodedPath
+	}
+	relativePath = decodedPath
+
 	var json struct {
-		Name          string   `json:"name" binding:"required"`
 		Content       string   `json:"content"`
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -39,28 +54,15 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	content := json.Content
-	origContent, err := os.ReadFile(absPath)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	if content != "" && content != string(origContent) {
-		err = os.WriteFile(absPath, []byte(content), 0644)
-		if err != nil {
-			api.ErrHandler(c, err)
-			return
-		}
-	}
-
 	q := query.Config
-	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrCreate()
+	cfg, err := q.Assign(field.Attrs(&model.Config{
+		Filepath: absPath,
+	})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
 		return
 	}
 
+	// Update database record
 	_, err = q.Where(q.Filepath.Eq(absPath)).
 		Select(q.SyncNodeIds, q.SyncOverwrite).
 		Updates(&model.Config{
@@ -68,32 +70,23 @@ func EditConfig(c *gin.Context) {
 			SyncOverwrite: json.SyncOverwrite,
 		})
 	if err != nil {
-		api.ErrHandler(c, err)
 		return
 	}
 
-	// use the new values
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	g := query.ChatGPTLog
-	err = config.SyncToRemoteServer(cfg, absPath)
+	content := json.Content
+	err = config.Save(absPath, content, cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
-	output := nginx.Reload()
-	if nginx.GetLogLevel(output) >= nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
-		return
-	}
-
+	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -108,5 +101,7 @@ func EditConfig(c *gin.Context) {
 		FilePath:        absPath,
 		ModifiedAt:      time.Now(),
 		Dir:             filepath.Dir(relativePath),
+		SyncNodeIds:     cfg.SyncNodeIds,
+		SyncOverwrite:   cfg.SyncOverwrite,
 	})
 }

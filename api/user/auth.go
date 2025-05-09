@@ -1,17 +1,18 @@
 package user
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
-	"github.com/uozi-tech/cosy/logger"
+	"errors"
 	"math/rand/v2"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 var mutex = &sync.Mutex{}
@@ -24,12 +25,10 @@ type LoginUser struct {
 }
 
 const (
-	ErrPasswordIncorrect = 4031
-	ErrMaxAttempts       = 4291
-	ErrUserBanned        = 4033
-	Enabled2FA           = 199
-	Error2FACode         = 4034
-	LoginSuccess         = 200
+	ErrMaxAttempts = 4291
+	Enabled2FA     = 199
+	Error2FACode   = 4034
+	LoginSuccess   = 200
 )
 
 type LoginResponse struct {
@@ -61,7 +60,7 @@ func Login(c *gin.Context) {
 	}
 
 	var json LoginUser
-	ok := api.BindAndValid(c, &json)
+	ok := cosy.BindAndValid(c, &json)
 	if !ok {
 		return
 	}
@@ -72,17 +71,11 @@ func Login(c *gin.Context) {
 		time.Sleep(random * time.Second)
 		switch {
 		case errors.Is(err, user.ErrPasswordIncorrect):
-			c.JSON(http.StatusForbidden, LoginResponse{
-				Message: "Password incorrect",
-				Code:    ErrPasswordIncorrect,
-			})
+			c.JSON(http.StatusForbidden, user.ErrPasswordIncorrect)
 		case errors.Is(err, user.ErrUserBanned):
-			c.JSON(http.StatusForbidden, LoginResponse{
-				Message: "The user is banned",
-				Code:    ErrUserBanned,
-			})
+			c.JSON(http.StatusForbidden, user.ErrUserBanned)
 		default:
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 		}
 		user.BanIP(clientIP)
 		return

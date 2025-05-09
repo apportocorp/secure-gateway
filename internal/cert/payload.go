@@ -1,18 +1,19 @@
 package cert
 
 import (
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 type ConfigPayload struct {
@@ -29,6 +30,7 @@ type ConfigPayload struct {
 	CertificateDir          string                     `json:"-"`
 	SSLCertificatePath      string                     `json:"-"`
 	SSLCertificateKeyPath   string                     `json:"-"`
+	RevokeOld               bool                       `json:"revoke_old"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
@@ -62,15 +64,6 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 		return nil
 	}
 
-	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
-		err = os.MkdirAll(c.CertificateDir, 0755)
-		if err == nil {
-			return nil
-		}
-	} else {
-		return nil
-	}
-
 	// For windows, replace * with # (issue #403)
 	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "*", "#")
 	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
@@ -83,7 +76,7 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 	return
 }
 
-func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
+func (c *ConfigPayload) WriteFile(l *Logger, errChan chan error) {
 	err := c.mkCertificateDir()
 	if err != nil {
 		errChan <- errors.Wrap(err, "make certificate dir error")
@@ -92,7 +85,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 
 	// Each certificate comes back with the cert bytes, the bytes of the client's
 	// private key, and a certificate URL. SAVE THESE TO DISK.
-	l.Println("[INFO] [Nginx UI] Writing certificate to disk")
+	l.Info(translation.C("[Nginx UI] Writing certificate to disk"))
 	err = os.WriteFile(c.GetCertificatePath(),
 		c.Resource.Certificate, 0644)
 
@@ -101,7 +94,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 		return
 	}
 
-	l.Println("[INFO] [Nginx UI] Writing certificate private key to disk")
+	l.Info(translation.C("[Nginx UI] Writing certificate private key to disk"))
 	err = os.WriteFile(c.GetCertificateKeyPath(),
 		c.Resource.PrivateKey, 0644)
 
@@ -119,6 +112,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 	db.Where("id = ?", c.CertID).Updates(&model.Cert{
 		SSLCertificatePath:    c.GetCertificatePath(),
 		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
+		Resource:              c.Resource,
 	})
 }
 

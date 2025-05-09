@@ -11,7 +11,9 @@ const data = ref({
   name: '',
 })
 
+// eslint-disable-next-line vue/require-typed-ref
 const refForm = ref()
+
 function open(basePath: string) {
   visible.value = true
   data.value.name = ''
@@ -32,8 +34,6 @@ function ok() {
 
         message.success($gettext('Created successfully'))
         emit('created')
-      }).catch(e => {
-        message.error(`${$gettext('Server error')} ${e?.message}`)
       })
     })
   })

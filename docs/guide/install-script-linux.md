@@ -21,13 +21,13 @@ install.sh install [OPTIONS]
 |-----------------------|-----------------------------------------------------------------------------------------------------------------|
 | `-l, --local <file>`  | Install Nginx UI from a local file (`string`)                                                                   |
 | `-p, --proxy <url>`   | Download through a proxy server (`string`)<br/>e.g., `-p http://127.0.0.1:8118` or `-p socks5://127.0.0.1:1080` |
-| `-r, --reverse-proxy` | Download through a reverse proxy server (`string`)<br/>e.g., `-r https://mirror.ghproxy.com/`                          |
+| `-r, --reverse-proxy` | Download through a reverse proxy server (`string`)<br/>e.g., `-r https://cloud.nginxui.com/`                          |
 
 
 ### Quick Usage
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 
 The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
@@ -60,12 +60,12 @@ install.sh remove [OPTIONS]
 
 ```shell [Remove]
 # Remove Nginx UI, except configuration and database files
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 ```shell [Purge]
 # Remove all the Nginx UI file, include configuration and database files
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 :::
@@ -85,7 +85,7 @@ install.sh help
 ### Quick Usage
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ```
 
 ## Control Service
