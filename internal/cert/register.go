@@ -1,6 +1,8 @@
 package cert
 
 import (
+	"context"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -10,7 +12,9 @@ import (
 )
 
 // InitRegister init the default user for acme
-func InitRegister() {
+func InitRegister(ctx context.Context) {
+	initBroadcastStatus(ctx)
+
 	email := settings.CertSettings.Email
 	if settings.CertSettings.Email == "" {
 		return

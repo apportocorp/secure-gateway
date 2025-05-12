@@ -143,18 +143,18 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	tempContainerName := getTimestampedTempName()
 
 	// Get current container name
-	hostname, err := os.Hostname()
+	containerID, err := GetContainerID()
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrFailedToGetHostname, err.Error())
+		return cosy.WrapErrorWithParams(ErrFailedToGetContainerID, err.Error())
 	}
-	containerInfo, err := cli.ContainerInspect(ctx, hostname)
+	containerInfo, err := cli.ContainerInspect(ctx, containerID)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrFailedToInspectCurrentContainer, err.Error())
 	}
 	currentContainerName := strings.TrimPrefix(containerInfo.Name, "/")
 
 	// Set up the command for the temp container to execute step 2
-	upgradeCmd := []string{"./nginx-ui", "upgrade-docker-step2"}
+	upgradeCmd := []string{"nginx-ui", "upgrade-docker-step2"}
 
 	// Add old container name as environment variable
 	containerEnv := containerInfo.Config.Env
@@ -164,14 +164,12 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	_, err = cli.ContainerCreate(
 		ctx,
 		&container.Config{
-			Image: fmt.Sprintf("%s:%s", ImageName, tag),
-			Cmd:   upgradeCmd, // Use upgrade command instead of original command
-			Env:   containerEnv,
+			Image:      fmt.Sprintf("%s:%s", ImageName, tag),
+			Entrypoint: upgradeCmd,
+			Env:        containerEnv,
 		},
 		&container.HostConfig{
-			Binds:         containerInfo.HostConfig.Binds,
-			PortBindings:  containerInfo.HostConfig.PortBindings,
-			RestartPolicy: containerInfo.HostConfig.RestartPolicy,
+			Binds: containerInfo.HostConfig.Binds,
 		},
 		nil,
 		nil,
@@ -258,6 +256,12 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 		return errors.Wrap(err, "failed to rename old container")
 	}
 
+	// Stop the old container
+	err = cli.ContainerStop(ctx, currentContainerName+OldSuffix, container.StopOptions{})
+	if err != nil {
+		return errors.Wrap(err, "failed to stop old container")
+	}
+
 	// 3. Use the old config to create and start a new container with the updated image
 	// Create new container with original config but using the new image
 	newContainerEnv := oldContainerInfo.Config.Env
@@ -304,6 +308,7 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 	// Start the new container
 	err = cli.ContainerStart(ctx, currentContainerName, container.StartOptions{})
 	if err != nil {
+		logger.Error("Failed to start new container:", err)
 		// If startup fails, try to recover
 		// First remove the failed new container
 		removeErr := cli.ContainerRemove(ctx, currentContainerName, container.RemoveOptions{Force: true})

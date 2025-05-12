@@ -5,19 +5,16 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/pkg/errors"
 )
 
 type RuntimeInfo struct {
-	OS     string `json:"os"`
-	Arch   string `json:"arch"`
-	ExPath string `json:"ex_path"`
-}
-
-type CurVersion struct {
-	Version    string `json:"version"`
-	BuildID    int    `json:"build_id"`
-	TotalBuild int    `json:"total_build"`
+	OS         string `json:"os"`
+	Arch       string `json:"arch"`
+	ExPath     string `json:"ex_path"`
+	CurVersion *Info  `json:"cur_version"`
+	InDocker   bool   `json:"in_docker"`
 }
 
 func GetRuntimeInfo() (r RuntimeInfo, err error) {
@@ -33,9 +30,11 @@ func GetRuntimeInfo() (r RuntimeInfo, err error) {
 	}
 
 	r = RuntimeInfo{
-		OS:     runtime.GOOS,
-		Arch:   runtime.GOARCH,
-		ExPath: realPath,
+		OS:         runtime.GOOS,
+		Arch:       runtime.GOARCH,
+		ExPath:     realPath,
+		CurVersion: GetVersionInfo(),
+		InDocker:   helper.InNginxUIOfficialDocker(),
 	}
 
 	return

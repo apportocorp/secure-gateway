@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -25,7 +24,7 @@ func init() {
 }
 
 func installLockStatus() bool {
-	return settings.NodeSettings.SkipInstallation || "" != cSettings.AppSettings.JwtSecret
+	return settings.NodeSettings.SkipInstallation || cSettings.AppSettings.JwtSecret != ""
 }
 
 // Check if installation time limit (10 minutes) is exceeded
@@ -50,8 +49,7 @@ func InstallLockCheck(c *gin.Context) {
 type InstallJson struct {
 	Email    string `json:"email" binding:"required,email"`
 	Username string `json:"username" binding:"required,max=255"`
-	Password string `json:"password" binding:"required,max=255"`
-	Database string `json:"database"`
+	Password string `json:"password" binding:"required,max=20"`
 }
 
 func InstallNginxUI(c *gin.Context) {
@@ -78,9 +76,6 @@ func InstallNginxUI(c *gin.Context) {
 	cSettings.AppSettings.JwtSecret = uuid.New().String()
 	settings.NodeSettings.Secret = uuid.New().String()
 	settings.CertSettings.Email = json.Email
-	if "" != json.Database {
-		settings.DatabaseSettings.Name = json.Database
-	}
 
 	err := settings.Save()
 	if err != nil {
@@ -88,10 +83,11 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 
-	// Init model
-	kernel.InitDatabase()
-
-	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
+	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 
 	u := query.User
 	err = u.Create(&model.User{

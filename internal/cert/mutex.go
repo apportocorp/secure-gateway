@@ -1,6 +1,7 @@
 package cert
 
 import (
+	"context"
 	"sync"
 )
 
@@ -9,10 +10,10 @@ var (
 	mutex sync.Mutex
 
 	// statusChan is the channel to broadcast certificate status changes
-	statusChan chan bool
+	statusChan = make(chan bool, 10)
 
 	// subscribers is a map of channels that are subscribed to certificate status changes
-	subscribers map[chan bool]struct{}
+	subscribers = make(map[chan bool]struct{})
 
 	// subscriberMux protects the subscribers map from concurrent access
 	subscriberMux sync.RWMutex
@@ -24,28 +25,35 @@ var (
 	processingMutex sync.RWMutex
 )
 
-func init() {
-	// Initialize channels and maps
-	statusChan = make(chan bool, 10) // Buffer to prevent blocking
-	subscribers = make(map[chan bool]struct{})
-
+func initBroadcastStatus(ctx context.Context) {
 	// Start broadcasting goroutine
-	go broadcastStatus()
+	go broadcastStatus(ctx)
 }
 
 // broadcastStatus listens for status changes and broadcasts to all subscribers
-func broadcastStatus() {
-	for status := range statusChan {
-		subscriberMux.RLock()
-		for ch := range subscribers {
-			// Non-blocking send to prevent slow subscribers from blocking others
-			select {
-			case ch <- status:
-			default:
-				// Skip if channel buffer is full
+func broadcastStatus(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			// Context cancelled, clean up resources and exit
+			close(statusChan)
+			return
+		case status, ok := <-statusChan:
+			if !ok {
+				// Channel closed, exit
+				return
 			}
+			subscriberMux.RLock()
+			for ch := range subscribers {
+				// Non-blocking send to prevent slow subscribers from blocking others
+				select {
+				case ch <- status:
+				default:
+					// Skip if channel buffer is full
+				}
+			}
+			subscriberMux.RUnlock()
 		}
-		subscriberMux.RUnlock()
 	}
 }
 

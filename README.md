@@ -30,7 +30,7 @@ To check out docs, visit [nginxui.com](https://nginxui.com).
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
-English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md)
+English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
 
 <details>
   <summary>Table of Contents</summary>
@@ -96,6 +96,7 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Cluster management supporting mirroring operations to multiple nodes, making multi-server environments easy to manage
 - Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments
 - Enhanced online ChatGPT assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
+- MCP (Model Context Protocol) provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
 - Online view Nginx logs

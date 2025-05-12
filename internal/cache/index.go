@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -19,6 +20,7 @@ type ScanCallback func(configPath string, content []byte) error
 
 // Scanner is responsible for scanning and watching nginx config files
 type Scanner struct {
+	ctx           context.Context        // Context for the scanner
 	watcher       *fsnotify.Watcher      // File system watcher
 	scanTicker    *time.Ticker           // Ticker for periodic scanning
 	initialized   bool                   // Whether the scanner has been initialized
@@ -39,24 +41,19 @@ var (
 	includeRegex = regexp.MustCompile(`include\s+([^;]+);`)
 
 	// Global callbacks that will be executed during config file scanning
-	scanCallbacks      []ScanCallback
+	scanCallbacks      = make([]ScanCallback, 0)
 	scanCallbacksMutex sync.RWMutex
 )
 
-func init() {
-	// Initialize the callbacks slice
-	scanCallbacks = make([]ScanCallback, 0)
-}
-
 // InitScanner initializes the config scanner
-func InitScanner() {
+func InitScanner(ctx context.Context) {
 	if nginx.GetConfPath() == "" {
 		logger.Error("Nginx config path is not set")
 		return
 	}
 
 	s := GetScanner()
-	err := s.Initialize()
+	err := s.Initialize(ctx)
 	if err != nil {
 		logger.Error("Failed to initialize config scanner:", err)
 	}
@@ -140,7 +137,7 @@ func UnsubscribeScanningStatus(ch chan bool) {
 }
 
 // Initialize sets up the scanner and starts watching for file changes
-func (s *Scanner) Initialize() error {
+func (s *Scanner) Initialize(ctx context.Context) error {
 	if s.initialized {
 		return nil
 	}
@@ -151,6 +148,7 @@ func (s *Scanner) Initialize() error {
 		return err
 	}
 	s.watcher = watcher
+	s.ctx = ctx
 
 	// Scan for the first time
 	err = s.ScanAllConfigs()
@@ -207,12 +205,24 @@ func (s *Scanner) Initialize() error {
 	// Setup a ticker for periodic scanning (every 5 minutes)
 	s.scanTicker = time.NewTicker(5 * time.Minute)
 	go func() {
-		for range s.scanTicker.C {
-			err := s.ScanAllConfigs()
-			if err != nil {
-				logger.Error("Periodic config scan failed:", err)
+		for {
+			select {
+			case <-s.ctx.Done():
+				return
+			case <-s.scanTicker.C:
+				err := s.ScanAllConfigs()
+				if err != nil {
+					logger.Error("Periodic config scan failed:", err)
+				}
 			}
 		}
+	}()
+
+	// Start a goroutine to listen for context cancellation
+	go func() {
+		<-s.ctx.Done()
+		logger.Debug("Context cancelled, shutting down scanner")
+		s.Shutdown()
 	}()
 
 	s.initialized = true
@@ -223,40 +233,58 @@ func (s *Scanner) Initialize() error {
 func (s *Scanner) watchForChanges() {
 	for {
 		select {
+		case <-s.ctx.Done():
+			return
 		case event, ok := <-s.watcher.Events:
 			if !ok {
 				return
 			}
 
-			// Check if this is a relevant event (create, write, rename, remove)
-			if event.Has(fsnotify.Create) || event.Has(fsnotify.Write) ||
-				event.Has(fsnotify.Rename) || event.Has(fsnotify.Remove) {
-				// If it's a directory, add it to the watch list
-				if event.Has(fsnotify.Create) {
-					fi, err := os.Stat(event.Name)
-					if err == nil && fi.IsDir() {
-						_ = s.watcher.Add(event.Name)
-					}
-				}
+			// Skip irrelevant events
+			if !event.Has(fsnotify.Create) && !event.Has(fsnotify.Write) &&
+				!event.Has(fsnotify.Rename) && !event.Has(fsnotify.Remove) {
+				continue
+			}
 
-				// Process file changes
-				if !event.Has(fsnotify.Remove) {
-					logger.Debug("Config file changed:", event.Name)
-					// Give the system a moment to finish writing the file
-					time.Sleep(100 * time.Millisecond)
-					// Only scan the changed file instead of all configs
-					err := s.scanSingleFile(event.Name)
-					if err != nil {
-						logger.Error("Failed to scan changed file:", err)
-					}
-				} else {
-					// For removed files, we need a full rescan
-					err := s.ScanAllConfigs()
-					if err != nil {
-						logger.Error("Failed to rescan configs after file removal:", err)
-					}
+			// Add newly created directories to the watch list
+			if event.Has(fsnotify.Create) {
+				if fi, err := os.Stat(event.Name); err == nil && fi.IsDir() {
+					_ = s.watcher.Add(event.Name)
 				}
 			}
+
+			// For remove events, perform a full scan
+			if event.Has(fsnotify.Remove) {
+				logger.Debug("Config item removed:", event.Name)
+				if err := s.ScanAllConfigs(); err != nil {
+					logger.Error("Failed to rescan configs after removal:", err)
+				}
+				continue
+			}
+
+			// Handle non-remove events
+			fi, err := os.Stat(event.Name)
+			if err != nil {
+				logger.Error("Failed to stat changed path:", err)
+				continue
+			}
+
+			if fi.IsDir() {
+				// Directory change, perform full scan
+				logger.Debug("Config directory changed:", event.Name)
+				if err := s.ScanAllConfigs(); err != nil {
+					logger.Error("Failed to rescan configs after directory change:", err)
+				}
+			} else {
+				// File change, scan only the single file
+				logger.Debug("Config file changed:", event.Name)
+				// Give the system a moment to finish writing the file
+				time.Sleep(100 * time.Millisecond)
+				if err := s.scanSingleFile(event.Name); err != nil {
+					logger.Error("Failed to scan changed file:", err)
+				}
+			}
+
 		case err, ok := <-s.watcher.Errors:
 			if !ok {
 				return
@@ -320,7 +348,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 			if strings.Contains(includePath, "*") {
 				// If it's a relative path, make it absolute based on nginx config dir
 				if !filepath.IsAbs(includePath) {
-					configDir := filepath.Dir(nginx.GetConfPath("", ""))
+					configDir := filepath.Dir(nginx.GetConfPath())
 					includePath = filepath.Join(configDir, includePath)
 				}
 
@@ -345,7 +373,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 				// Handle single file include
 				// If it's a relative path, make it absolute based on nginx config dir
 				if !filepath.IsAbs(includePath) {
-					configDir := filepath.Dir(nginx.GetConfPath("", ""))
+					configDir := filepath.Dir(nginx.GetConfPath())
 					includePath = filepath.Join(configDir, includePath)
 				}
 
@@ -385,7 +413,7 @@ func (s *Scanner) ScanAllConfigs() error {
 	}()
 
 	// Get the main config file
-	mainConfigPath := nginx.GetConfPath("", "nginx.conf")
+	mainConfigPath := nginx.GetConfEntryPath()
 	err := s.scanSingleFile(mainConfigPath)
 	if err != nil {
 		logger.Error("Failed to scan main config:", err)
@@ -454,4 +482,13 @@ func IsScanningInProgress() bool {
 	s.scanMutex.RLock()
 	defer s.scanMutex.RUnlock()
 	return s.scanning
+}
+
+// WithContext sets a context for the scanner that will be used to control its lifecycle
+func (s *Scanner) WithContext(ctx context.Context) *Scanner {
+	// Create a context with cancel if not already done in Initialize
+	if s.ctx == nil {
+		s.ctx = ctx
+	}
+	return s
 }

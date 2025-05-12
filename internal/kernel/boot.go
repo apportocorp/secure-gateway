@@ -1,10 +1,13 @@
 package kernel
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"mime"
+	"os"
 	"path"
+	"path/filepath"
 	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
@@ -13,8 +16,10 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
+	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -27,20 +32,27 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-func Boot() {
+var Context context.Context
+
+func Boot(ctx context.Context) {
 	defer recovery()
+
+	Context = ctx
 
 	async := []func(){
 		InitJsExtensionType,
-		InitDatabase,
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
-		cache.Init,
-		CheckAndCleanupOTAContainers,
+		self_check.Init,
+		func() {
+			InitDatabase(ctx)
+			cache.Init(ctx)
+		},
+		CheckAndCleanupOTA,
 	}
 
-	syncs := []func(){
+	syncs := []func(ctx context.Context){
 		analytic.RecordServerAnalytic,
 	}
 
@@ -49,12 +61,12 @@ func Boot() {
 	}
 
 	for _, v := range syncs {
-		go v()
+		go v(ctx)
 	}
 }
 
-func InitAfterDatabase() {
-	syncs := []func(){
+func InitAfterDatabase(ctx context.Context) {
+	syncs := []func(ctx context.Context){
 		registerPredefinedUser,
 		cert.InitRegister,
 		cron.InitCronJobs,
@@ -66,7 +78,7 @@ func InitAfterDatabase() {
 	}
 
 	for _, v := range syncs {
-		go v()
+		go v(ctx)
 	}
 }
 
@@ -78,20 +90,18 @@ func recovery() {
 	}
 }
 
-func InitDatabase() {
+func InitDatabase(ctx context.Context) {
 	cModel.ResolvedModels()
 	// Skip install
 	if settings.NodeSettings.SkipInstallation {
 		skipInstall()
 	}
 
-	if cSettings.AppSettings.JwtSecret != "" {
-		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
-		model.Use(db)
-		query.Init(db)
+	db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
+	model.Use(db)
+	query.Init(db)
 
-		InitAfterDatabase()
-	}
+	InitAfterDatabase(ctx)
 }
 
 func InitNodeSecret() {
@@ -134,8 +144,32 @@ func InitJsExtensionType() {
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 }
 
-// CheckAndCleanupOTAContainers Check and cleanup OTA update temporary containers
-func CheckAndCleanupOTAContainers() {
+// CheckAndCleanupOTA Check and cleanup OTA update temporary containers
+func CheckAndCleanupOTA() {
+	if !helper.InNginxUIOfficialDocker() {
+		// If running on Windows, clean up .nginx-ui.old.* files
+		if runtime.GOOS == "windows" {
+			execPath, err := os.Executable()
+			if err != nil {
+				logger.Error("Failed to get executable path:", err)
+				return
+			}
+
+			execDir := filepath.Dir(execPath)
+			logger.Info("Cleaning up .nginx-ui.old.* files on Windows in:", execDir)
+
+			pattern := filepath.Join(execDir, ".nginx-ui.old.*")
+			files, err := filepath.Glob(pattern)
+			if err != nil {
+				logger.Error("Failed to list .nginx-ui.old.* files:", err)
+			} else {
+				for _, file := range files {
+					_ = os.Remove(file)
+				}
+			}
+		}
+		return
+	}
 	// Execute the third step cleanup operation at startup
 	err := docker.UpgradeStepThree()
 	if err != nil {

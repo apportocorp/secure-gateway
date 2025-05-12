@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync/atomic"
+	"time"
 
+	"code.pfad.fr/risefront"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/version"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/jpillora/overseer"
 	"github.com/minio/selfupdate"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
@@ -35,6 +35,7 @@ type CoreUpgradeResp struct {
 }
 
 type Upgrader struct {
+	Channel string
 	Release version.TRelease
 	version.RuntimeInfo
 }
@@ -49,6 +50,7 @@ func NewUpgrader(channel string) (u *Upgrader, err error) {
 		return
 	}
 	u = &Upgrader{
+		Channel:     channel,
 		Release:     data,
 		RuntimeInfo: runtimeInfo,
 	}
@@ -98,7 +100,6 @@ func downloadRelease(url string, dir string, progressChan chan float64) (tarName
 	multiWriter := io.MultiWriter(progressWriter)
 
 	_, err = io.Copy(multiWriter, resp.Body)
-	close(progressChan)
 
 	tarName = file.Name()
 	return
@@ -152,13 +153,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		return
 	}
 
-	githubProxy := settings.HTTPSettings.GithubProxy
-	if githubProxy != "" {
-		digest.BrowserDownloadUrl, err = url.JoinPath(githubProxy, digest.BrowserDownloadUrl)
-		if err != nil {
-			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
-			return
-		}
+	if u.Channel != string(version.ReleaseTypeDev) {
+		digest.BrowserDownloadUrl = version.GetUrl(digest.BrowserDownloadUrl)
 	}
 
 	resp, err := http.Get(digest.BrowserDownloadUrl)
@@ -171,12 +167,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	dir := filepath.Dir(u.ExPath)
 
-	if githubProxy != "" {
-		downloadUrl, err = url.JoinPath(githubProxy, downloadUrl)
-		if err != nil {
-			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
-			return
-		}
+	if u.Channel != string(version.ReleaseTypeDev) {
+		downloadUrl = version.GetUrl(downloadUrl)
 	}
 
 	tarName, err = downloadRelease(downloadUrl, dir, progressChan)
@@ -224,7 +216,14 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 	defer updateInProgress.Store(false)
 
-	opts := selfupdate.Options{}
+	oldExe := ""
+	if runtime.GOOS == "windows" {
+		oldExe = filepath.Join(filepath.Dir(u.ExPath), ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+	}
+
+	opts := selfupdate.Options{
+		OldSavePath: oldExe,
+	}
 
 	if err = opts.CheckPermissions(); err != nil {
 		return err
@@ -242,7 +241,13 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 		return
 	}
 
-	f, err := os.Open(filepath.Join(tempDir, "nginx-ui"))
+	nginxUIExName := "nginx-ui"
+
+	if u.OS == "windows" {
+		nginxUIExName = "nginx-ui.exe"
+	}
+
+	f, err := os.Open(filepath.Join(tempDir, nginxUIExName))
 	if err != nil {
 		err = errors.Wrap(err, "PerformCoreUpgrade open error")
 		return
@@ -268,8 +273,10 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 		return err
 	}
 
-	// gracefully restart
-	overseer.Restart()
+	// wait for the file to be written
+	time.Sleep(1 * time.Second)
 
+	// gracefully restart
+	risefront.Restart()
 	return
 }

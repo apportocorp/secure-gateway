@@ -67,6 +67,10 @@ const dryRun = computed(() => {
   return !!route.query.dry_run
 })
 
+const testCommitAndRestart = computed(() => {
+  return !!route.query.test_commit_and_restart
+})
+
 async function performUpgrade() {
   progressStatus.value = 'active'
   modalClosable.value = false
@@ -84,6 +88,7 @@ async function performUpgrade() {
     ws.send(JSON.stringify({
       dry_run: dryRun.value,
       channel: channel.value,
+      test_commit_and_restart: testCommitAndRestart.value,
     }))
   }
 
@@ -123,20 +128,31 @@ async function performUpgrade() {
       return
 
     const t = setInterval(() => {
+      const interval = data.value.in_docker ? 10000 : 1000
       upgrade.current_version().then(() => {
         clearInterval(t)
-        progressStatus.value = 'success'
-        progressPercent.value = 100
-        modalClosable.value = true
-        log('Upgraded successfully')
-
-        setInterval(() => {
-          location.reload()
-        }, 1000)
+        setTimeout(() => {
+          progressStatus.value = 'success'
+          progressPercent.value = 100
+          modalClosable.value = true
+          log('Upgraded successfully')
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
+        }, interval)
       })
     }, 2000)
   }
 }
+
+const performUpgradeBtnText = computed(() => {
+  if (channel.value === 'dev')
+    return $gettext('Install')
+  else if (isLatestVer.value)
+    return $gettext('Reinstall')
+  else
+    return $gettext('Upgrade')
+})
 </script>
 
 <template>
@@ -162,7 +178,10 @@ async function performUpgrade() {
     </AModal>
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
-      <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
+      <h3>
+        {{ $gettext('Current Version') }}: v{{ version.version }}
+        <span v-if="data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>
+      </h3>
       <template v-if="getReleaseError">
         <AAlert
           type="error"
@@ -200,7 +219,7 @@ async function performUpgrade() {
         </AFormItem>
         <template v-if="!loading">
           <AAlert
-            v-if="isLatestVer"
+            v-if="isLatestVer && channel !== 'dev'"
             type="success"
             :message="$gettext('You are using the latest version')"
             banner
@@ -226,7 +245,7 @@ async function performUpgrade() {
                 ghost
                 @click="performUpgrade"
               >
-                {{ isLatestVer ? $gettext('Reinstall') : $gettext('Upgrade') }}
+                {{ performUpgradeBtnText }}
               </AButton>
             </ASpace>
           </div>
