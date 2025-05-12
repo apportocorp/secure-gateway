@@ -15,7 +15,7 @@ const modelRef = reactive({
   email: '',
   username: '',
   password: '',
-  database: '',
+  database: 'database',
 })
 
 const rulesRef = reactive({
@@ -41,13 +41,7 @@ const rulesRef = reactive({
       max: 20,
       message: () => $gettext('Password length cannot exceed 20 characters'),
     },
-  ],
-  database: [
-    {
-      message: () =>
-        $gettext('The filename cannot contain the following characters: %{c}', { c: '& &quot; ? < > # {} % ~ / \\' }),
-    },
-  ],
+  ]
 })
 
 const { validate, validateInfos } = Form.useForm(modelRef, rulesRef)
@@ -101,17 +95,6 @@ function onSubmit() {
           <LockOutlined />
         </template>
       </AInputPassword>
-    </AFormItem>
-    <AFormItem>
-      <AInput
-        v-bind="validateInfos.database"
-        v-model:value="modelRef.database"
-        :placeholder="$gettext('Database (Optional, default: database)')"
-      >
-        <template #prefix>
-          <DatabaseOutlined />
-        </template>
-      </AInput>
     </AFormItem>
     <AFormItem>
       <AButton
