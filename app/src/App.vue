@@ -104,9 +104,15 @@ if (user.isLogin) {
   }
 }
 
+.light{
+  .ant-card{
+    border:1px solid #CED3D9
+  }
+}
+
 .ant-layout-header {
   padding: 0 !important;
-  background-color: #fff !important;
+  background-color: #fafcff !important;
 }
 
 .ant-layout-sider {

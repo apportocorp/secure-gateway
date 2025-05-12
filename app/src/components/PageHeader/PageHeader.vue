@@ -23,7 +23,7 @@ const name = computed(() => {
         <div class="main">
           <div class="row">
             <h1 class="title">
-              {{ name }}
+              {{ name === "Dashboard" ? "Gateway Dashboard" : name }}
             </h1>
             <div class="action">
               <slot name="action" />
@@ -48,9 +48,8 @@ const name = computed(() => {
 }
 
 .page-header {
-  background: #fff;
+  background: inherit;
   padding: 16px 32px 0;
-  border-bottom: 1px solid #e8e8e8;
 
   .breadcrumb {
     margin-bottom: 16px;
@@ -86,11 +85,13 @@ const name = computed(() => {
       }
 
       .title {
-        font-size: 20px;
-        font-weight: 500;
-        line-height: 28px;
         margin-bottom: 16px;
         flex: auto;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.32px;
       }
 
       .logo {

@@ -143,6 +143,9 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
         </ASubMenu>
       </template>
     </AMenu>
+    <div class="footer-logo">
+      <Logo logo-height="30px" />
+    </div>
   </div>
 </template>
 
@@ -155,10 +158,16 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-
-    img {
-      margin-left: -18px;
-    }
+  }
+  .footer-logo {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

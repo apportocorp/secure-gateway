@@ -4,7 +4,7 @@ export const authRoutes: RouteRecordRaw[] = [
   {
     path: '/install',
     name: 'Install',
-    component: () => import('@/views/install/Install.vue'),
+    component: () => import('@/views/other/Install.vue'),
     meta: { name: () => $gettext('Install'), noAuth: true },
   },
   {
