@@ -2,7 +2,7 @@
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
-import Authorization from '@/components/TwoFA/Authorization.vue'
+import Authorization from '@/components/TwoFA'
 import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'
 import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
@@ -212,6 +212,7 @@ async function handlePasskeyLogin() {
                     enabled: true,
                     otp_status: true,
                     passkey_status: false,
+                    recovery_codes_generated: true,
                   }"
                   @submit-o-t-p="handleOTPSubmit"
                 />

@@ -4,7 +4,7 @@
 
 <template>
   <div class="project-title">
-    <h1>Nginx UI</h1>
+    <h1>Secure Gateway</h1>
     <h3>
       {{ $gettext('Install') }}
     </h3>
@@ -12,6 +12,9 @@
 </template>
 
 <style lang="less" scoped>
+.light h1{
+  color: rgb(34, 83, 143);
+}
 .project-title {
   margin: 50px;
   margin-bottom: 20px;

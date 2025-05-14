@@ -7,6 +7,8 @@ import InstallFooter from './InstallFooter.vue'
 import InstallForm from './InstallForm.vue'
 import InstallHeader from './InstallHeader.vue'
 import TimeoutAlert from './TimeoutAlert.vue'
+import LoginHeader from '../../other/LoginHeader.vue'
+import Logo from '@/components/Logo/Logo.vue'
 
 const installTimeout = ref(false)
 const activeTab = ref('1')
@@ -15,6 +17,8 @@ const selfCheckStore = useSelfCheckStore()
 const { hasError } = storeToRefs(selfCheckStore)
 
 const router = useRouter()
+
+const thisYear = new Date().getFullYear()
 
 function init() {
   install.get_lock().then(async r => {
@@ -70,6 +74,9 @@ const steps = computed(() => {
 
 <template>
   <ALayout>
+    <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
+      <LoginHeader/>
+    </ALayoutHeader>
     <ALayoutContent>
       <div class="login-container">
         <InstallHeader />
@@ -116,9 +123,11 @@ const steps = computed(() => {
               />
             </ATabPane>
           </ATabs>
-        </div>
-
-        <InstallFooter />
+        </div>   
+        <div class="footer">
+            <Logo />
+            <p>Copyright © {{thisYear}} Apporto.com.</p>
+         </div>   
       </div>
     </ALayoutContent>
   </ALayout>
@@ -158,5 +167,12 @@ const steps = computed(() => {
 .timeout-alert {
   max-width: 400px;
   margin: 0 auto;
+}
+
+.footer {
+  margin-top: 100px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
 }
 </style>

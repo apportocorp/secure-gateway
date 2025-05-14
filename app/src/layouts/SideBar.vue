@@ -4,8 +4,9 @@ import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Ico
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { Key } from 'ant-design-vue/es/_util/type'
 import ngx from '@/api/ngx'
-import EnvIndicator from '@/components/EnvIndicator'
-import Logo from '@/components/Logo'
+import type { ComputedRef, Ref } from 'vue'
+import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
+import Logo from '@/components/Logo/Logo.vue'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { routes } from '@/routes'
 
