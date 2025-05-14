@@ -29,7 +29,9 @@ func installLockStatus() bool {
 
 // Check if installation time limit (10 minutes) is exceeded
 func isInstallTimeoutExceeded() bool {
-	return time.Since(startupTime) > 10*time.Minute
+	// return false for unlimited installation time
+	return false
+	//return time.Since(startupTime) > 10*time.Minute
 }
 
 func InstallLockCheck(c *gin.Context) {

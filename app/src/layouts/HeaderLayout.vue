@@ -87,7 +87,7 @@ const { width: userWrapperWidth } = useElementSize(userWrapperRef)
   height: 64px;
   padding: 0 20px 0 0;
   background: transparent;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.00);
   width: 100%;
   position: relative;
   a {
