@@ -23,7 +23,7 @@ import 'nprogress/nprogress.css'
 // Combine child routes for the main layout
 const mainLayoutChildren: RouteRecordRaw[] = [
   ...dashboardRoutes,
-  // ...sitesRoutes,
+  ...sitesRoutes,
   // ...streamsRoutes,
   // ...configRoutes,
   ...certificatesRoutes,
