@@ -68,7 +68,7 @@ const log = computed(() => {
     }
     catch {
       // fallback to legacy log format
-      const matches = line.match(/\[Nginx UI\] (.*)/)
+      const matches = line.match(/\[Secure Gateway UI\] (.*)/)
       if (matches?.[1])
         return line.replaceAll(matches[1], $gettext(matches[1]))
       return line
@@ -89,7 +89,7 @@ const isManaged = computed(() => {
     >
       <div class="mb-2">
         <AAlert
-          :message="$gettext('This certificate is managed by Nginx UI')"
+          :message="$gettext('This certificate is managed by Secure Gateway UI')"
           type="success"
           show-icon
         />

@@ -126,26 +126,26 @@ async function handleRestartNginx() {
       <template #extra>
         <ASpace>
           <APopconfirm
-            :title="$gettext('Are you sure you want to reload Nginx on the following sync nodes?')"
+            :title="$gettext('Are you sure you want to reload Secure Gateway on the following sync nodes?')"
             :ok-text="$gettext('Yes')"
             :cancel-text="$gettext('No')"
             placement="bottom"
             @confirm="handleReloadNginx"
           >
             <AButton type="link" size="small" :loading="loading.reload">
-              {{ $gettext('Reload Nginx') }}
+              {{ $gettext('Reload Secure Gateway') }}
             </AButton>
           </APopconfirm>
 
           <APopconfirm
-            :title="$gettext('Are you sure you want to restart Nginx on the following sync nodes?')"
+            :title="$gettext('Are you sure you want to restart Secure Gateway on the following sync nodes?')"
             :ok-text="$gettext('Yes')"
             :cancel-text="$gettext('No')"
             placement="bottomRight"
             @confirm="handleRestartNginx"
           >
             <AButton type="link" danger size="small" :loading="loading.restart">
-              {{ $gettext('Restart Nginx') }}
+              {{ $gettext('Restart Secure Gateway') }}
             </AButton>
           </APopconfirm>
         </ASpace>

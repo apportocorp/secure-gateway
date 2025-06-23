@@ -14,7 +14,7 @@ function confirmChangeTLS(status: CheckedType) {
     title: $gettext('Do you want to enable TLS?'),
     content: $gettext('To make sure the certification auto-renewal can work normally, '
       + 'we need to add a location which can proxy the request from authority to backend, '
-      + 'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
+      + 'and we need to save this file and reload the Secure Gateway. Are you sure you want to continue?'),
     mask: false,
     centered: true,
     okText: $gettext('OK'),

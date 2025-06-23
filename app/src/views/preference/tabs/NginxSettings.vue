@@ -10,19 +10,19 @@ const { data } = storeToRefs(systemSettingsStore)
     <AFormItem :label="$gettext('Stub Status Port')">
       <AInputNumber v-model:value="data.nginx.stub_status_port" />
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Access Log Path')">
+    <AFormItem :label="$gettext('Secure Gateway Access Log Path')">
       {{ data.nginx.access_log_path }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Error Log Path')">
+    <AFormItem :label="$gettext('Secure Gateway Error Log Path')">
       {{ data.nginx.error_log_path }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Configurations Directory')">
+    <AFormItem :label="$gettext('Secure Gateway Configurations Directory')">
       {{ data.nginx.config_dir }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Configuration Path')">
+    <AFormItem :label="$gettext('Secure Gateway Configuration Path')">
       <p>{{ data.nginx.config_path }}</p>
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Log Directory Whitelist')">
+    <AFormItem :label="$gettext('Secure Gateway Log Directory Whitelist')">
       <div
         v-for="dir in data.nginx.log_dir_white_list"
         :key="dir"
@@ -31,19 +31,19 @@ const { data } = storeToRefs(systemSettingsStore)
         {{ dir }}
       </div>
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx PID Path')">
+    <AFormItem :label="$gettext('Secure Gateway PID Path')">
       {{ data.nginx.pid_path }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Test Config Command')">
+    <AFormItem :label="$gettext('Secure Gateway Test Config Command')">
       <p>{{ data.nginx.test_config_cmd }}</p>
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Reload Command')">
+    <AFormItem :label="$gettext('Secure Gateway Reload Command')">
       {{ data.nginx.reload_cmd }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Restart Command')">
+    <AFormItem :label="$gettext('Secure Gateway Restart Command')">
       {{ data.nginx.restart_cmd }}
     </AFormItem>
-    <AFormItem :label="$gettext('Nginx Control Mode')">
+    <AFormItem :label="$gettext('Secure Gateway Control Mode')">
       <div v-if="data.nginx.container_name">
         <ATag color="blue" tag>
           {{ $gettext('External Docker Container') }}

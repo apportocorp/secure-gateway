@@ -32,13 +32,13 @@ function batchUpgrade() {
 
 function reloadNginx() {
   if (selectedNodeIds.value.length === 0) {
-    message.warning($gettext('Please select at least one node to reload Nginx'))
+    message.warning($gettext('Please select at least one node to reload Secure Gateway'))
     return
   }
 
   loadingReload.value = true
   node.reloadNginx(selectedNodeIds.value).then(() => {
-    message.success($gettext('Nginx reload operations have been dispatched to remote nodes'))
+    message.success($gettext('Secure Gateway reload operations have been dispatched to remote nodes'))
   }).finally(() => {
     loadingReload.value = false
   })
@@ -46,13 +46,13 @@ function reloadNginx() {
 
 function restartNginx() {
   if (selectedNodeIds.value.length === 0) {
-    message.warning($gettext('Please select at least one node to restart Nginx'))
+    message.warning($gettext('Please select at least one node to restart Secure Gateway'))
     return
   }
 
   loadingRestart.value = true
   node.restartNginx(selectedNodeIds.value).then(() => {
-    message.success($gettext('Nginx restart operations have been dispatched to remote nodes'))
+    message.success($gettext('Secure Gateway restart operations have been dispatched to remote nodes'))
   }).finally(() => {
     loadingRestart.value = false
   })
@@ -109,7 +109,7 @@ const inTrash = computed(() => {
 
         <ATooltip
           v-if="selectedNodeIds.length === 0"
-          :title="$gettext('Please select at least one node to reload Nginx')"
+          :title="$gettext('Please select at least one node to reload Secure Gateway')"
           placement="topLeft"
         >
           <AButton
@@ -117,7 +117,7 @@ const inTrash = computed(() => {
             :loading="loadingReload"
             @click="reloadNginx"
           >
-            {{ $gettext('Reload Nginx') }}
+            {{ $gettext('Reload Secure Gateway') }}
           </AButton>
         </ATooltip>
         <AButton
@@ -125,12 +125,12 @@ const inTrash = computed(() => {
           :loading="loadingReload"
           @click="reloadNginx"
         >
-          {{ $gettext('Reload Nginx') }}
+          {{ $gettext('Reload Secure Gateway') }}
         </AButton>
 
         <ATooltip
           v-if="selectedNodeIds.length === 0"
-          :title="$gettext('Please select at least one node to restart Nginx')"
+          :title="$gettext('Please select at least one node to restart Secure Gateway')"
           placement="topLeft"
         >
           <AButton
@@ -138,7 +138,7 @@ const inTrash = computed(() => {
             :loading="loadingRestart"
             @click="restartNginx"
           >
-            {{ $gettext('Restart Nginx') }}
+            {{ $gettext('Restart Secure Gateway') }}
           </AButton>
         </ATooltip>
         <AButton
@@ -146,7 +146,7 @@ const inTrash = computed(() => {
           :loading="loadingRestart"
           @click="restartNginx"
         >
-          {{ $gettext('Restart Nginx') }}
+          {{ $gettext('Restart Secure Gateway') }}
         </AButton>
       </ASpace>
     </FooterToolBar>

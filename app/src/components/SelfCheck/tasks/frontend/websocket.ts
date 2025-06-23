@@ -11,7 +11,7 @@ const WebsocketTask: FrontendTask = {
   key: 'websocket',
   name: () => 'WebSocket',
   description: () => $gettext('Support communication with the backend through the WebSocket protocol. '
-    + 'If your Nginx UI is being used via an Nginx reverse proxy, '
+    + 'If your Secure Gateway UI is being used via an Secure Gateway reverse proxy, '
     + 'please refer to this link to write the corresponding configuration file: '
     + 'https://nginxui.com/guide/nginx-proxy-example.html'),
   check: async (): Promise<ReportStatusType> => {

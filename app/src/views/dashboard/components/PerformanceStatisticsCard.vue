@@ -91,7 +91,7 @@ const maxRPS = computed(() => {
       <!-- Total Nginx processes -->
       <ACol :xs="24" :sm="12" :md="8" :lg="6">
         <AStatistic
-          :title="$gettext('Total Nginx Processes')"
+          :title="$gettext('Total Secure Gateway Processes')"
           :value="nginxInfo.workers + nginxInfo.master + nginxInfo.cache + nginxInfo.other"
           :value-style="{ color: '#722ed1', fontSize: '24px' }"
         >

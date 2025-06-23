@@ -78,7 +78,7 @@ async function performUpgrade() {
   progressPercent.value = 0
   logContainer.value!.innerHTML = ''
 
-  log($gettext('Upgrading Nginx UI, please wait...'))
+  log($gettext('Upgrading Secure Gateway UI, please wait...'))
 
   const ws = websocket('/api/upgrade/perform', false)
 
@@ -177,7 +177,7 @@ const performUpgradeBtnText = computed(() => {
       />
     </AModal>
     <div class="upgrade-container">
-      <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
+      <p>{{ $gettext('You can check Secure Gateway UI upgrade at this page.') }}</p>
       <h3>
         {{ $gettext('Current Version') }}: v{{ version.version }}
         <span v-if="data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>

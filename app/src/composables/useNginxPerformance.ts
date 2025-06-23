@@ -40,12 +40,12 @@ export function useNginxPerformance() {
         updateLastUpdateTime()
       }
       else {
-        error.value = $gettext('Nginx is not running')
+        error.value = $gettext('Secure Gateway is not running')
         nginxInfo.value = null
       }
     }
     catch (err) {
-      console.error('Failed to get Nginx performance data:', err)
+      console.error('Failed to get Secure Gateway performance data:', err)
       error.value = $gettext('Failed to get performance data')
       nginxInfo.value = null
     }

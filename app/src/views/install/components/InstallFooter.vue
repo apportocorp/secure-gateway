@@ -7,7 +7,7 @@ const thisYear = new Date().getFullYear()
 
 <template>
   <div class="footer">
-    <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
+    <p>Copyright © 2021 - {{ thisYear }} Secure Gateway UI</p>
     Language
     <SetLanguage class="inline" />
     <div class="flex justify-center mt-4">

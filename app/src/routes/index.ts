@@ -68,7 +68,7 @@ const router = createRouter({
 const nprogress = useNProgress()
 
 router.beforeEach((to, _, next) => {
-  document.title = `${to?.meta.name?.() ?? ''} | Nginx UI`
+  document.title = `${to?.meta.name?.() ?? ''} | Secure Gateway`
 
   nprogress.start()
 

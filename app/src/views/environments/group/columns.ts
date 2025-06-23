@@ -21,7 +21,7 @@ const columns: Column[] = [{
       return $gettext('No Action')
     }
     else if (text === PostSyncAction.ReloadNginx) {
-      return $gettext('Reload Nginx')
+      return $gettext('Reload Secure Gateway')
     }
     return text
   },

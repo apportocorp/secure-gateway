@@ -72,7 +72,7 @@ function handleCopy(copy) {
     <AAlert
       show-icon
       type="info"
-      :message="$gettext('Create system backups including Nginx configuration and Nginx UI settings. Backup files will be automatically downloaded to your computer.')"
+      :message="$gettext('Create system backups including Secure Gateway configuration and Secure Gateway UI settings. Backup files will be automatically downloaded to your computer.')"
       class="mb-4"
     />
 

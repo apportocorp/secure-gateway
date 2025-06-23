@@ -66,7 +66,7 @@ const steps = computed(() => {
     },
     {
       title: $gettext('Installation'),
-      description: $gettext('Setup your Nginx UI'),
+      description: $gettext('Setup your Secure Gateway'),
     },
   ]
 })
