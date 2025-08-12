@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
-import { message } from 'ant-design-vue'
 
 const currentStep = ref(0)
 
@@ -63,6 +63,13 @@ const hasServerName = computed(() => {
   return false
 })
 
+// If user uses a multi-line directive (saved with empty directive name),
+// don't show the server_name alert because server_name may exist inside the raw block.
+const hasMultiLineDirective = computed(() => {
+  const directives = curServerDirectives.value || []
+  return directives.some(d => !d.directive)
+})
+
 async function next() {
   await save()
   currentStep.value++
@@ -88,11 +95,11 @@ async function next() {
         </AForm>
 
         <AAlert
-          v-if="!hasServerName"
+          v-if="!hasServerName && !hasMultiLineDirective"
           type="warning"
           class="mb-4"
           show-icon
-          :message="$gettext('The parameter of server_name is required')"
+          :message="$gettext('The parameter of server_name is required, or switch to multi-line directive mode')"
         />
 
         <DirectiveEditor
@@ -117,7 +124,7 @@ async function next() {
       <ASpace v-if="currentStep < 2">
         <AButton
           type="primary"
-          :disabled="!ngxConfig.name || !hasServerName"
+          :disabled="!ngxConfig.name || (!hasServerName && !hasMultiLineDirective)"
           @click="next"
         >
           {{ $gettext('Next') }}
