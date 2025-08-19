@@ -57,14 +57,6 @@ const { width: userWrapperWidth } = useElementSize(userWrapperRef)
 
       <SwitchAppearance />
 
-      <div v-if="!isWorkspace" class="workspace-entry">
-        <RouterLink to="/workspace">
-          <ATooltip :title="$gettext('Workspace')">
-            <DesktopOutlined />
-          </ATooltip>
-        </RouterLink>
-      </div>
-
       <ProcessingStatus />
 
       <Notification :header-ref="headerRef" />
@@ -109,12 +101,6 @@ const { width: userWrapperWidth } = useElementSize(userWrapperRef)
   position: absolute;
   left: 20px;
   @media (min-width: 600px) {
-    display: none;
-  }
-}
-
-.workspace-entry {
-  @media (max-width: 600px) {
     display: none;
   }
 }

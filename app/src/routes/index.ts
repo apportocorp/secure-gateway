@@ -48,14 +48,14 @@ export const routes: RouteRecordRaw[] = [
     },
     children: mainLayoutChildren,
   },
-  {
-    path: '/workspace',
-    name: 'Workspace',
-    component: () => import('@/views/workspace/WorkSpace.vue'),
-    meta: {
-      name: () => $gettext('Workspace'),
-    },
-  },
+  // {
+  //   path: '/workspace',
+  //   name: 'Workspace',
+  //   component: () => import('@/views/workspace/WorkSpace.vue'),
+  //   meta: {
+  //     name: () => $gettext('Workspace'),
+  //   },
+  // },
   ...authRoutes,
   ...errorRoutes,
 ]
