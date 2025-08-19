@@ -34,7 +34,7 @@ import columns from '@/views/environments/group/columns'
               {{ $gettext('No Action') }}
             </ASelectOption>
             <ASelectOption :value="PostSyncAction.ReloadNginx">
-              {{ $gettext('Reload Nginx') }}
+              {{ $gettext('Reload Secure Gateway') }}
             </ASelectOption>
           </ASelect>
         </AFormItem>

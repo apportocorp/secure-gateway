@@ -141,17 +141,17 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
       },
       {
         key: '4',
-        name: $gettext('Other Nginx processes'),
+        name: $gettext('Other Secure Gateway processes'),
         value: nginxInfo.value.other,
       },
       {
         key: '5',
-        name: $gettext('Nginx CPU usage rate'),
+        name: $gettext('Secure Gateway CPU usage rate'),
         value: `${nginxInfo.value.cpu_usage.toFixed(2)}%`,
       },
       {
         key: '6',
-        name: $gettext('Nginx Memory usage'),
+        name: $gettext('Secure Gateway Memory usage'),
         value: `${nginxInfo.value.memory_usage.toFixed(2)} MB`,
       },
     ]

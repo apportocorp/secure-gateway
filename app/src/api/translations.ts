@@ -8,11 +8,11 @@ export default async function loadTranslations(route: RouteLocationNormalizedLoa
     })
 
     if (route?.meta?.name)
-      document.title = `${route.meta.name?.()} | Nginx UI`
+      document.title = `${route.meta.name?.()} | Secure Gateway UI`
   }
 
   watch(() => route, () => {
     if (route?.meta?.name)
-      document.title = `${route.meta.name?.()} | Nginx UI`
+      document.title = `${route.meta.name?.()} | Secure Gateway UI`
   })
 }

@@ -50,8 +50,8 @@ const totalProcesses = computed(() => {
       </div>
 
       <div class="mt-2 text-xs text-gray-500 overflow-hidden text-ellipsis">
-        {{ $gettext('Total Nginx processes') }}: {{ nginxInfo.workers + nginxInfo.master + nginxInfo.cache + nginxInfo.other }}
-        <ATooltip :title="$gettext('Includes master process, worker processes, cache processes, and other Nginx processes')">
+        {{ $gettext('Total Secure Gateway processes') }}: {{ nginxInfo.workers + nginxInfo.master + nginxInfo.cache + nginxInfo.other }}
+        <ATooltip :title="$gettext('Includes master process, worker processes, cache processes, and other Secure Gateway processes')">
           <InfoCircleOutlined class="ml-1" />
         </ATooltip>
       </div>

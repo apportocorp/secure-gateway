@@ -97,17 +97,17 @@ const workerData = computed(() => {
     },
     {
       key: '4',
-      name: $gettext('Other Nginx processes'),
+      name: $gettext('Other Secure Gateway processes'),
       value: props.nginxInfo.other,
     },
     {
       key: '5',
-      name: $gettext('Nginx CPU usage rate'),
+      name: $gettext('Secure Gateway CPU usage rate'),
       value: `${props.nginxInfo.cpu_usage.toFixed(2)}%`,
     },
     {
       key: '6',
-      name: $gettext('Nginx Memory usage'),
+      name: $gettext('Secure Gateway Memory usage'),
       value: `${props.nginxInfo.memory_usage.toFixed(2)} MB`,
     },
   ]
@@ -178,7 +178,7 @@ const maxRPS = computed(() => {
         <div class="mt-4">
           <AAlert type="info" show-icon>
             <template #message>
-              {{ $gettext('Nginx theoretical maximum performance') }}
+              {{ $gettext('Secure Gateway theoretical maximum performance') }}
             </template>
             <template #description>
               <p>

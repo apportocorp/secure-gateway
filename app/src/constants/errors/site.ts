@@ -3,7 +3,7 @@ export default {
   50001: () => $gettext('Destination file already exists'),
   50002: () => $gettext('Site is enabled'),
   50003: () => $gettext('Site is in maintenance mode'),
-  50004: () => $gettext('Nginx test failed: {0}'),
-  50005: () => $gettext('Nginx reload failed: {0}'),
+  50004: () => $gettext('Secure Gateway test failed: {0}'),
+  50005: () => $gettext('Secure Gateway reload failed: {0}'),
   50006: () => $gettext('Read dir failed: {0}'),
 }

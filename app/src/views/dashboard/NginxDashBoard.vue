@@ -74,7 +74,7 @@ function connectSSE() {
         updateLastUpdateTime()
       }
       else {
-        error.value = data.message || $gettext('Nginx is not running')
+        error.value = data.message || $gettext('Secure Gateway is not running')
       }
       stubStatusEnabled.value = data.stub_status_enabled
     },
@@ -106,7 +106,7 @@ onMounted(() => {
     <div class="mb-4 mx-6 md:mx-0 flex flex-wrap gap-4 justify-between items-center">
       <div class="flex items-center">
         <ABadge :status="status === NginxStatus.Running ? 'success' : 'error'" />
-        <span class="font-medium">{{ status === NginxStatus.Running ? $gettext('Nginx is running') : $gettext('Nginx is not running') }}</span>
+        <span class="font-medium">{{ status === NginxStatus.Running ? $gettext('Secure Gateway is running') : $gettext('Secure Gateway is not running') }}</span>
       </div>
       <div class="flex items-center">
         <ClockCircleOutlined class="mr-1 text-gray-500" />
@@ -125,7 +125,7 @@ onMounted(() => {
       class="mb-4"
       type="warning"
       show-icon
-      :message="$gettext('Nginx is not running')"
+      :message="$gettext('Secure Gateway is not running')"
       :description="$gettext('Cannot get performance data in this state')"
     />
 
@@ -147,7 +147,7 @@ onMounted(() => {
             {{ $gettext('Enable stub_status module') }}
           </div>
           <div class="text-gray-500 text-sm">
-            {{ $gettext('This module provides Nginx request statistics, connection count, etc. data. After enabling it, you can view performance statistics') }}
+            {{ $gettext('This module provides Secure Gateway request statistics, connection count, etc. data. After enabling it, you can view performance statistics') }}
           </div>
           <div v-if="stubStatusError" class="text-red-500 text-sm mt-1">
             {{ stubStatusError }}

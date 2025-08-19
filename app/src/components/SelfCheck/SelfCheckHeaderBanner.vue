@@ -34,7 +34,7 @@ onMounted(() => {
 <template>
   <div v-show="hasError && !loading">
     <div ref="alertEl" class="self-check-alert" :style="{ visibility: shouldHideAlert ? 'hidden' : 'visible' }">
-      <AAlert type="error" show-icon :message="$gettext('Self check failed, Nginx UI may not work properly')">
+      <AAlert type="error" show-icon :message="$gettext('Self check failed, Secure Gateway UI may not work properly')">
         <template #action>
           <AButton class="ml-4" size="small" danger @click="router.push('/system/self_check')">
             {{ $gettext('Check') }}
@@ -57,7 +57,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <CloseCircleOutlined class="text-red-500" />
           <div>
-            {{ $gettext('Self check failed, Nginx UI may not work properly') }}
+            {{ $gettext('Self check failed, Secure Gateway UI may not work properly') }}
           </div>
           <div>
             <AButton size="small" danger @click="router.push('/system/self_check')">

@@ -57,8 +57,8 @@ async function fetchPerformanceSettings() {
     data.value = await ngx.get_performance()
   }
   catch (error) {
-    console.error('Failed to get Nginx performance settings:', error)
-    message.error($gettext('Failed to get Nginx performance settings'))
+    console.error('Failed to get Secure Gateway performance settings:', error)
+    message.error($gettext('Failed to get Secure Gateway performance settings'))
   }
   finally {
     loading.value = false
@@ -86,8 +86,8 @@ async function savePerformanceSettings() {
     message.success($gettext('Performance settings saved successfully'))
   }
   catch (error) {
-    console.error('Failed to save Nginx performance settings:', error)
-    message.error($gettext('Failed to save Nginx performance settings'))
+    console.error('Failed to save Secure Gateway performance settings:', error)
+    message.error($gettext('Failed to save Secure Gateway performance settings'))
   }
   finally {
     loading.value = false

@@ -91,7 +91,7 @@ onMounted(() => {
         </ATabPane>
         <ATabPane
           key="nginx"
-          :tab="$gettext('Nginx')"
+          :tab="$gettext('Secure Gateway')"
         >
           <NginxSettings />
         </ATabPane>

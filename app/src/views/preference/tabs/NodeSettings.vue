@@ -39,7 +39,6 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     >
       <AInput
         v-model:value="data.node.icp_number"
-        :placeholder="$gettext('For Chinese user')"
       />
     </AFormItem>
     <AFormItem
@@ -51,7 +50,6 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     >
       <AInput
         v-model:value="data.node.public_security_number"
-        :placeholder="$gettext('For Chinese user')"
       />
     </AFormItem>
   </AForm>

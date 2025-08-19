@@ -81,7 +81,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           break
         default:
           // If it is a nginx ui log, increase the percent.
-          if (r.message.includes('[Nginx UI]'))
+          if (r.message.includes('[Secure Gateway UI]'))
             progressPercent.value += 8
           break
       }

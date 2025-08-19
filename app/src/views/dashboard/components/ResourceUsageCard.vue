@@ -35,7 +35,7 @@ const cpuUsage = computed(() => {
             :show-info="false"
           />
           <div v-if="nginxInfo.cpu_usage > 50" class="text-xs text-orange-500 mt-1">
-            {{ $gettext('CPU usage is relatively high, consider optimizing Nginx configuration') }}
+            {{ $gettext('CPU usage is relatively high, consider optimizing Secure Gateway configuration') }}
           </div>
         </ACol>
       </ARow>

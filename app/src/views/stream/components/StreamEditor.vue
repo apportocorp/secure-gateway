@@ -71,7 +71,7 @@ const showHistory = ref(false)
           class="mb-4"
         >
           <AAlert
-            :message="$gettext('Nginx Configuration Parse Error')"
+            :message="$gettext('Secure Gateway Configuration Parse Error')"
             :description="parseErrorMessage"
             type="error"
             show-icon

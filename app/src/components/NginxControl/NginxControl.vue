@@ -23,7 +23,7 @@ function reloadNginx() {
   status.value = NginxStatus.Reloading
   ngx.reload().then(r => {
     if (r.level < logLevel.Warn)
-      message.success($gettext('Nginx reloaded successfully'))
+      message.success($gettext('Secure Gateway reloaded successfully'))
     else if (r.level === logLevel.Warn)
       message.warn(r.message)
     else
@@ -37,7 +37,7 @@ async function restartNginx() {
 
   getStatus().then(r => {
     if (r.level < logLevel.Warn)
-      message.success($gettext('Nginx restarted successfully'))
+      message.success($gettext('Secure Gateway restarted successfully'))
     else if (r.level === logLevel.Warn)
       message.warn(r.message)
     else
@@ -61,7 +61,7 @@ watch(visible, v => {
   >
     <template #content>
       <div class="content-wrapper">
-        <h4>{{ $gettext('Nginx Control') }}</h4>
+        <h4>{{ $gettext('Secure Gateway Control') }}</h4>
         <ABadge
           v-if="status === NginxStatus.Running"
           color="green"

@@ -135,11 +135,11 @@ async function doRestore() {
     message.success($gettext('Restore completed successfully'))
 
     if (data.nginx_restored) {
-      message.info($gettext('Nginx configuration has been restored'))
+      message.info($gettext('Secure Gateway configuration has been restored'))
     }
 
     if (data.nginx_ui_restored) {
-      message.info($gettext('Nginx UI configuration has been restored'))
+      message.info($gettext('Secure Gateway UI configuration has been restored'))
       // If UI was restored, show the countdown modal
       resetCountdown()
     }
@@ -220,22 +220,22 @@ async function doRestore() {
         <template v-if="showNginxOptions">
           <AFormItem>
             <ACheckbox v-model:checked="formModel.restoreNginx">
-              {{ $gettext('Restore Nginx Configuration') }}
+              {{ $gettext('Restore Secure Gateway Configuration') }}
             </ACheckbox>
             <div class="text-gray-500 ml-6 mt-1 text-sm">
               <p class="mb-0">
-                {{ $gettext('This will restore all Nginx configuration files. Nginx will restart after the restoration is complete.') }}
+                {{ $gettext('This will restore all Secure Gateway configuration files. Secure Gateway will restart after the restoration is complete.') }}
               </p>
             </div>
           </AFormItem>
 
           <AFormItem>
             <ACheckbox v-model:checked="formModel.restoreNginxUI">
-              {{ $gettext('Restore Nginx UI Configuration') }}
+              {{ $gettext('Restore Secure Gateway UI Configuration') }}
             </ACheckbox>
             <div class="text-gray-500 ml-6 mt-1 text-sm">
               <p class="mb-0">
-                {{ $gettext('This will restore configuration files and database. Nginx UI will restart after the restoration is complete.') }}
+                {{ $gettext('This will restore configuration files and database. Secure Gateway UI will restart after the restoration is complete.') }}
               </p>
             </div>
           </AFormItem>
@@ -297,22 +297,22 @@ async function doRestore() {
         <template v-if="showNginxOptions">
           <AFormItem>
             <ACheckbox v-model:checked="formModel.restoreNginx">
-              {{ $gettext('Restore Nginx Configuration') }}
+              {{ $gettext('Restore Secure Gateway Configuration') }}
             </ACheckbox>
             <div class="text-gray-500 ml-6 mt-1 text-sm">
               <p class="mb-0">
-                {{ $gettext('This will restore all Nginx configuration files. Nginx will restart after the restoration is complete.') }}
+                {{ $gettext('This will restore all Secure Gateway configuration files. Secure Gateway will restart after the restoration is complete.') }}
               </p>
             </div>
           </AFormItem>
 
           <AFormItem>
             <ACheckbox v-model:checked="formModel.restoreNginxUI">
-              {{ $gettext('Restore Nginx UI Configuration') }}
+              {{ $gettext('Restore Secure Gateway UI Configuration') }}
             </ACheckbox>
             <div class="text-gray-500 ml-6 mt-1 text-sm">
               <p class="mb-0">
-                {{ $gettext('This will restore configuration files and database. Nginx UI will restart after the restoration is complete.') }}
+                {{ $gettext('This will restore configuration files and database. Secure Gateway UI will restart after the restoration is complete.') }}
               </p>
             </div>
           </AFormItem>
@@ -333,7 +333,7 @@ async function doRestore() {
       :mask-closable="false"
     >
       <p>
-        {{ $gettext('Nginx UI configuration has been restored and will restart automatically in a few seconds.') }}
+        {{ $gettext('Secure Gateway UI configuration has been restored and will restart automatically in a few seconds.') }}
       </p>
       <p v-if="countdown > 0">
         {{ $gettext('You can close this dialog in %{countdown} seconds', { countdown: countdown.toString() }) }}

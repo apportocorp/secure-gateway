@@ -12,7 +12,7 @@ const { nginxStatus: status } = storeToRefs(global)
     class="mb-4"
     type="warning"
     show-icon
-    :message="$gettext('Nginx is not running')"
+    :message="$gettext('Secure Gateway is not running')"
   />
 </template>
 

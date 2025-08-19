@@ -6,20 +6,20 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
 
   // general module notifications
   'Reload Remote Nginx Error': {
-    title: () => $gettext('Reload Remote Nginx Error'),
-    content: (args: any) => $gettext('Reload Nginx on %{node} failed, response: %{resp}', args),
+    title: () => $gettext('Reload Remote Secure Gateway Error'),
+    content: (args: any) => $gettext('Reload Secure Gateway on %{node} failed, response: %{resp}', args),
   },
   'Reload Remote Nginx Success': {
-    title: () => $gettext('Reload Remote Nginx Success'),
-    content: (args: any) => $gettext('Reload Nginx on %{node} successfully', args),
+    title: () => $gettext('Reload Remote Secure Gateway Success'),
+    content: (args: any) => $gettext('Reload Secure Gateway on %{node} successfully', args),
   },
   'Restart Remote Nginx Error': {
-    title: () => $gettext('Restart Remote Nginx Error'),
-    content: (args: any) => $gettext('Restart Nginx on %{node} failed, response: %{resp}', args),
+    title: () => $gettext('Restart Remote Secure Gateway Error'),
+    content: (args: any) => $gettext('Restart Secure Gateway on %{node} failed, response: %{resp}', args),
   },
   'Restart Remote Nginx Success': {
-    title: () => $gettext('Restart Remote Nginx Success'),
-    content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
+    title: () => $gettext('Restart Remote Secure Gateway Success'),
+    content: (args: any) => $gettext('Restart Secure Gateway on %{node} successfully', args),
   },
   'Certificate Expired': {
     title: () => $gettext('Certificate Expired'),

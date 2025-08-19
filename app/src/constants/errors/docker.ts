@@ -6,7 +6,7 @@ export default {
   500005: () => $gettext('Command exited with unexpected exit code: {0}, error: {1}'),
   500006: () => $gettext('Container status unknown'),
   500007: () => $gettext('Failed to inspect container: {0}'),
-  500008: () => $gettext('Nginx is not running in another container'),
+  500008: () => $gettext('Secure Gateway is not running in another container'),
   500009: () => $gettext('Failed to get container id: {0}'),
   500010: () => $gettext('Failed to pull image: {0}'),
   500011: () => $gettext('Failed to inspect current container: {0}'),
